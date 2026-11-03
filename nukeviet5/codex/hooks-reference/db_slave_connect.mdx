@@ -1,0 +1,30 @@
+---
+title: "db_slave_connect"
+description: "Khi kết nối với máy chủ CSDL Slave."
+---
+
+Khi kết nối với máy chủ CSDL Slave.
+
+### Tham số
+
+| STT | Tên biến    | Kiểu dữ liệu | Ghi chú |
+|-----|:------------|:-------------|:--------|
+| 0   | \$db        | Object       |         |
+| 1   | \$db_config | Array        |         |
+
+### Dữ liệu trả về
+
+Biến `$db` là Object mang thông tin kết nối với máy chủ Slave, nếu không có thông tin kết nối vẫn phải trả về biến `$db` ở tham số đầu vào
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'db_slave_connect', $priority, function($vars) {
+    $db = $vars[0];
+    $db_config = $vars[1];
+
+    // Thực hiện code hook tại đây...
+
+    return $db;
+});
+```

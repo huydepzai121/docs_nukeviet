@@ -1,0 +1,54 @@
+---
+title: "Những yêu cầu sử dụng NukeViet 5"
+description: "NukeViet 4 hoạt động đòi hỏi cấu hình phần cứng rất thấp, ngay cả cả các sharehosting rẻ nhất hiện nay đều có khả năng chạy được. Băng thông internet, dung l..."
+---
+
+## Máy chủ
+
+### Môi trường máy chủ
+
+**Yêu cầu bắt buộc**
+
+- Hệ điều hành: Linux (Ubuntu, Fedora, AlmaLinux, RockyLinux...) hoặc Windows. Nếu được nên triển khai sản phâm trên AlmaLinux 9
+- PHP: PHP từ 7.2 đến PHP 8.5 và kèm thao các thư viện bắt buộc sau
+  - Hỗ trợ PHP Data Objects (PDO)
+  - PHP hỗ trợ opendir
+  - PHP hỗ trợ thư viện xử lý ảnh GD
+  - PHP hỗ trợ thư viện mã hóa Openssl
+  - PHP hỗ trợ session
+  - PHP hỗ trợ uploads file
+- MySQL: MySQL 5.7.7+ hoặc MariaDB 10.2.2+
+
+**Tùy chọn bổ sung**
+
+- Máy chủ Apache cần hỗ trợ mod mod_rewrite.
+- Máy chủ Nginx cấu hình các thông số rewite.
+- Máy chủ IIS 7.0 hoặc IIS 7.5 cần cài thêm module rewrite
+- Môi trường PHP mở rộng: Các thư viện PHP cần có: file_uploads, session, mbstring, curl, gd2, zlib, soap, php_zip.
+
+<u>**Ghi chú:**</u>
+
+- Những yêu cầu trên không có nghĩa là NukeViet 4 không làm việc trên các hệ thống khác, điều quan trọng là cần thiết lập môi trường làm việc phù hợp.
+
+### Cấu hình phần cứng
+
+NukeViet 4 hoạt động đòi hỏi cấu hình phần cứng rất thấp, ngay cả cả các sharehosting rẻ nhất hiện nay đều có khả năng chạy được. Băng thông internet, dung lượng hosting hoặc ổ cứng hoàn toàn phụ thuộc nhu cầu sử dụng của đơn vị (Bộ cài phần mềm NukeViet chỉ chiếm khoảng 10MB dung lượng (file nén zip) và khi giải nén là ~30MB).
+
+<u>**Ghi chú:**</u>
+
+- Với những website sử dụng hosting, NukeViet 4 làm việc tốt nhất trên các hosting Linux cài sẵn Apache 2.2, PHP 5.6, MySQL 5.6, DirectAdmin hoặc Cpanel.
+- Với các website cần chịu tải cao, nên sử dụng Nginx, PHP7 (php-fpm). Tham khảo: [Cài đặt Server chịu tải cao chạy NukeViet 4](/web_server/cai-dat-server-chi-tai-cao)
+
+## Máy tính người truy cập
+
+NukeViet 4 cho kết quả là chuẩn HTML5 và CSS 3, đây là định dạng chuẩn mà hầu hết các trình duyệt hiện nay đang hỗ trợ.
+
+**NukeViet trước 4.6.00:**
+
+Website làm trên nền NukeViet 4 có thể truy cập tốt trên các phiên bản mới nhất của trình duyệt FireFox, Internet Explorer 9, Google Chrome ... Máy tính người truy cập chỉ cần cài một trong các trình duyệt này là có thể tương tác với NukeViet thông qua internet hoặc intranet.
+
+**NukeViet 4.6.00 về sau:**
+
+Trình duyệt cần hỗ trợ JavaScript ES6 (ECMAScript 2015) trở đi. Bạn chỉ cần sử dụng các trình duyệt trên máy tính và điện thoại hiện hành là sử dụng được.
+
+Lưu ý: Internet Explorer không được hỗ trợ

@@ -1,0 +1,47 @@
+---
+title: "override_sendmail"
+description: "Hook dùng để gửi email ngoài chức năng hiện có của hệ thống (dùng phpmailer để gửi). Thích hợp dùng để gửi email qua các nhà cung cấp khác ví dụ Amazon SES"
+---
+
+Hook dùng để gửi email ngoài chức năng hiện có của hệ thống (dùng phpmailer để gửi). Thích hợp dùng để gửi email qua các nhà cung cấp khác ví dụ Amazon SES
+
+### Tham số
+
+| STT | Tên biến           | Kiểu dữ liệu | Ghi chú |
+|-----|:-------------------|:-------------|:--------|
+| 0   | \$from             | array        |         |
+| 1   | \$to               | string~array |         |
+| 2   | \$subject          | string       |         |
+| 3   | \$message          | string       |         |
+| 4   | \$files            | string       |         |
+| 5   | \$AddEmbeddedImage | boolean      |         |
+| 6   | \$cc               | string       |         |
+| 7   | \$bcc              | string       |         |
+| 8   | \$testmode         | boolean      |         |
+
+### Dữ liệu trả về
+
+Tùy người lập trình
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'override_sendmail', $priority, function($vars) {
+    $from = $vars[0];
+    $to = $vars[1];
+    $subject = $vars[2];
+    $message = $vars[3];
+    $files = $vars[4];
+    $AddEmbeddedImage = $vars[5];
+    $cc = $vars[6];
+    $bcc = $vars[7];
+    $testmode = $vars[8];
+
+    // Thực hiện code hook tại đây...
+    
+    return ($testmode ? '' : true);
+    //return 9999;
+});
+```
+
+Nếu giá trị trả về là 9999 thì hệ thống sẽ tiếp tục gửi email theo mặc định. Nếu dùng hook này để gửi email thì kết quả trả về tương tự hàm nv_sendmail

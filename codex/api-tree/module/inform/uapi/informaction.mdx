@@ -1,0 +1,25 @@
+---
+title: "Hướng dẫn sử dụng API InformAction"
+description: "API dùng để thay đổi trạng thái của thông báo đẩy: đã xem/chưa xem, đã ẩn/chưa ẩn, yêu thích/Hủy yêu thích"
+---
+
+## Tác dụng
+
+API dùng để thay đổi trạng thái của thông báo đẩy: đã xem/chưa xem, đã ẩn/chưa ẩn, yêu thích/Hủy yêu thích
+
+### Tham số có thể truyền vào:
+
+### Request Parameters
+
+| Tham số | Kiểu dữ liệu | Tính bắt buộc | Mô tả |
+|:---|----|----|:---|
+| id | int | Bắt buộc | ID của thông báo trong CSDL |
+| setStatus | string | Bắt buộc | Trạng thái mới của thông báo: Đã xem (viewed), Chưa xem (unviewed), Yêu thích (favorite), Bỏ yêu thích (unfavorite), Ẩn (hidden), Bỏ ẩn (unhidden) |
+
+### Dữ liệu trả về:
+
+| Thuộc tính | Kiểu dữ liệu | Mô tả |
+|----|----|:---|
+| status | string | Trạng thái truy vấn: thành công (success) hoặc lỗi (error) |
+| code | int | Mã lỗi (0000 – nếu trạng thái success) |
+| message | string | Thông báo lỗi (Rỗng nếu trạng thái success) |

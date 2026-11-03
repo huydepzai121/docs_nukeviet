@@ -1,0 +1,154 @@
+---
+title: "Sử dụng ngôn ngữ trong module và template"
+description: "NukeViet 5 sử dụng phần quản lý ngôn ngữ mới, khác với NukeViet 3 và 4. Lớp NukeVietCoreLanguage được sử dụng để quản lý ngôn ngữ."
+---
+
+NukeViet 5 sử dụng phần quản lý ngôn ngữ mới, khác với NukeViet 3 và 4. Lớp `\NukeViet\Core\Language` được sử dụng để quản lý ngôn ngữ.
+
+
+## Giao diện Smarty
+
+> Nếu trong function chưa gọi global cần gọi global \$nv_Lang
+
+Trong php cần assign:
+
+``` php
+$tpl->assign('LANG', $nv_Lang);
+```
+
+Trong file tpl:
+
+``` smarty
+{$LANG->get('admin_logout_title')}
+```
+
+Nếu trong keylang có truyền tham số (%s, %d ...) thì dùng
+
+``` smarty
+{$LANG->get('admin_logout_title', $para1, $para2 ...)}
+```
+
+Phương thức get sẽ tìm keylang theo thứ tự lang global, lang module, lang block. Nếu keylang không có sẽ xuất luôn keylang ra.
+
+Nếu tìm riêng ở lang nhỏ hơn dùng
+
+``` smarty
+{$LANG->getModule('admin_logout_title')}
+{$LANG->getGlobal('admin_logout_title')}
+{$LANG->getBlock('admin_logout_title')}
+```
+
+## Giao diện sử dụng Xtemplate
+
+Xuất lang ra trong php
+
+``` php
+$tpl->assign('GLANG', \NukeViet\Core\Language::$lang_global);
+$tpl->assign('MLANG', \NukeViet\Core\Language::$lang_module);
+$tpl->assign('BLANG', \NukeViet\Core\Language::$lang_block);
+```
+
+Trong file tpl dùng như cũ `{MLANG.lang_key}`
+
+> Không cần gọi global biến \$nv_Lang nếu dùng Xtemplate
+
+# Hướng dẫn ngôn ngữ ở cấp độ hệ thống
+
+**Khởi tạo lang**
+
+``` php
+$nv_Lang = new \NukeViet\Core\Language();
+```
+
+**Đọc ngôn ngữ global**
+
+``` php
+$nv_Lang->loadGlobal($admin = false);
+```
+
+Nếu \$admin = false thì đọc ở global.php nếu \$admin = true đọc admin_global.php
+
+**Đọc ngôn ngữ module**
+
+``` php
+$nv_Lang->loadModule($module_file, $admin = false, $modadmin = false);
+```
+
+Nếu \$modadmin = true đọc ở includes/language/admin_xxx.php
+
+Nếu \$modadmin = false đọc ở modules/xxx/language/yyy.php tùy theo \$admin mà đọc admin_vi.php hay vi.php
+
+**Đọc ngôn ngữ giao diện**
+
+``` php
+$nv_Lang->loadTheme($global_config['module_theme'], $admin = false);
+```
+
+Nếu \$admin = false đọc themes/xxx/language/vi.php ngược lại đọc admin_vi.php
+
+**Đọc ngôn ngữ install**
+
+``` php
+$nv_Lang->loadInstall($lang);
+```
+
+**Đọc file ngôn ngữ bất kỳ**
+
+``` php
+$nv_Lang->loadBlock($filepath);
+```
+
+## Ngôn ngữ tạm
+
+Ví dụ khi giao diện quét các file admin.menu.php để lấy ra menu của admin thì cần phải load các ngôn ngữ của module vào. Khi đó dùng:
+
+``` php
+$nv_LangTmp = new \NukeViet\Core\Language();
+$nv_LangTmp->loadModule($mod, $admin, $modadmin, $temp);
+```
+
+Giá trị `$temp` đưa vào là true, khi đọc thì hệ thống không làm ảnh hưởng đến các giá trị:
+
+``` php
+\NukeViet\Core\Language::$lang_global;
+\NukeViet\Core\Language::$lang_module;
+\NukeViet\Core\Language::$lang_block;
+```
+
+Sau khi dùng xong `unset($nv_LangTmp);` để giải phóng bộ nhớ
+
+## Đọc ngôn ngữ khác, không phải là NV_LANG_INTERFACE hiện tại
+
+Để đọc ngôn ngữ khác cần chú ý đến hai phương thức:
+
+``` php
+$nv_Lang->setLang($lang);
+$nv_Lang->changeLang($lang);
+```
+
+Nếu dùng setLang hệ thống sẽ làm rỗng toàn bộ lang hiện tại bao gồm ngôn ngữ tạm và cả phần
+
+``` php
+\NukeViet\Core\Language::$lang_global;
+\NukeViet\Core\Language::$lang_module;
+\NukeViet\Core\Language::$lang_block;
+```
+
+Nếu dùng `changeLang` hệ thống chỉ làm rỗng ngôn ngữ tạm đã đọc để chuyển sang ngôn ngữ được change để đọc =\> Phần này dùng để thay đổi ngôn ngữ tạm cần đọc.
+
+Khi dùng `changelang` mà không truyền vào biến `$lang` thì hệ thống sẽ giữ nguyên lang hiện tại, chỉ làm rỗng dữ liệu đã đọc.
+
+## Thay đổi ngôn ngữ đã đọc vào
+
+Áp dụng khi cần nạp ngôn ngữ từ một mảng cố định vào ngôn ngữ đã đọc. Cú pháp:
+
+``` php
+$nv_Lang->setGlobal($langkey, $langvalue);
+$nv_Lang->setModule($langkey, $langvalue);
+$nv_Lang->setBlock($langkey, $langvalue);
+```
+
+Có hai cách sử dụng:
+
+1.  Truyền cả \$langkey và \$langvalue dạng chuỗi.
+2.  Chỉ truyền \$langkey dạng mảng, không truyền vào \$langvalue.

@@ -1,0 +1,26 @@
+---
+title: "emailtemplates_after_delete"
+description: "Sự kiện xảy ra sau khi một mẫu email bị xóa."
+---
+
+Sự kiện xảy ra sau khi một mẫu email bị xóa.
+
+### Tham số
+
+| STT | Tên biến  | Kiểu dữ liệu | Ghi chú             |
+|-----|:----------|:-------------|:--------------------|
+| 0   | \$emailid | int          | ID mẫu email bị xóa |
+
+### Dữ liệu trả về
+
+Tùy người lập trình
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'emailtemplates_after_delete', $priority, function($vars) {
+    $emailid = $vars[0];
+
+    // Thực hiện code hook tại đây...
+});
+```

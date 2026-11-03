@@ -1,0 +1,26 @@
+---
+title: "get_qr_code"
+description: "Xuất ảnh QR-Code ra trình duyệt khi có truy vấn get second = qr."
+---
+
+Xuất ảnh QR-Code ra trình duyệt khi có truy vấn get second = qr.
+
+### Tham số
+
+| STT | Tên biến     | Kiểu dữ liệu | Ghi chú |
+|-----|:-------------|:-------------|:--------|
+| 0   | \$nv_Request | Object       |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_qr_code', $priority, function($vars) {
+    $nv_Request = $vars[0];
+
+    // Thực hiện code hook tại đây...
+});
+```

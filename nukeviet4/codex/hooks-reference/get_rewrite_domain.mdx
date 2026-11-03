@@ -1,0 +1,23 @@
+---
+title: "get_rewrite_domain"
+description: "Trong hàm nvurlrewritecallback, để lấy ra tên miền tuyệt đối hay tương đối khi tạo url rewrite."
+---
+
+Trong hàm nv_url_rewrite_callback, để lấy ra tên miền tuyệt đối hay tương đối khi tạo url rewrite.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú |
+|-----|:---------|:-------------|:--------|
+
+### Dữ liệu trả về
+
+Tùy người lập trình
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_rewrite_domain', $priority, function($vars) {
+    // Thực hiện code hook tại đây...
+});
+```

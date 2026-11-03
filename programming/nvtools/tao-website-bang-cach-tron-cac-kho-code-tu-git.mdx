@@ -1,0 +1,126 @@
+---
+title: "Tạo website bằng cách trộn các kho code từ git"
+description: "Lưu ý: để sử dụng theo cách này các bạn phải sử dụng được git từ dòng lệnh."
+---
+
+Lưu ý: để sử dụng theo cách này các bạn phải sử dụng được git từ dòng lệnh.
+
+## Bước 1: Tạo kho code chính
+
+Khởi tạo kho code để lưu trữ.
+
+## Bước 2: Check out kho code chính
+
+checkout kho git
+
+## Bước 3: Lấy kho code NukeViet
+
+Sử dụng Terminal chạy lần lượt các câu lện sau để lấy code NukeViet 4 nhánh ổn định tại thời điểm hiện tại.
+
+``` text
+git remote add nukeviet https://github.com/nukeviet/nukeviet.git
+git fetch nukeviet
+git merge nukeviet/nukeviet4.3 --allow-unrelated-histories
+```
+
+Sau này muốn cập nhật các thay đổi từ kho NukeViet chỉ cần chạy các câu lện sau
+
+``` text
+git fetch nukeviet
+git merge nukeviet/nukeviet4.3
+```
+
+**Lưu ý: nếu muốn lấy nhánh develop thì thay release thành develop**
+
+## Bước 4: Lấy các module
+
+Ví dụ lấy module shops 4 nhánh ổn định tại thời điểm hiện tại
+
+Sử dụng Terminal chạy lần lượt các câu lện sau:
+
+``` text
+git remote add shops https://github.com/nukeviet/module-shops.git
+git fetch shops
+git merge shops/nukeviet4.3 --allow-unrelated-histories
+```
+
+\*\*Lấy các Module khác tưong tự. Trong quá trình trộn code sẽ xảy ra xung đột (Thường là xung đột file .gitigone) chúng ta cần xử lý xung đột. Ví dụ với xung đột file .gitigone chúng ta thay nội dung file này như bước dưới sau đó comit lên \*\*
+
+## Bước 5: Cài đặt site
+
+Cài đặt site như bình thường
+
+Sau khi cài đặt site, sẽ phát sinh một số file như file config.php
+
+Nên cần sửa lại file .gitignore để đưa các file này lên kho code
+
+Thay thế file .gitignore có nội dung như sau
+
+``` text
+# Base ignore
+/.project
+/.buildpath
+/.settings
+/data/cache/
+/data/config/diagnostic-*.xml
+/data/logs/*
+/data/logs/data_logs/
+/data/logs/error_logs/
+/data/logs/ip_logs/
+/data/logs/ref_logs/
+/data/logs/voting_logs/
+/data/tmp/
+
+composer.lock
+#vendor test ignore 
+/vendor/**/demo/
+/vendor/**/example/
+/vendor/**/examples/
+/vendor/**/Examples/
+/vendor/**/test/
+/vendor/**/tests/
+/vendor/**/Tests/
+/vendor/**/travis*
+/vendor/**/.travis.yml
+/vendor/**/.scrutinizer.yml
+/vendor/**/phpunit.xml*
+/vendor/**/phpunit.php
+
+#vendor docs ignore
+/vendor/**/doc/
+/vendor/**/docs/
+/vendor/**/Documentation/
+/vendor/**/readme*
+/vendor/**/README*
+/vendor/**/changelog*
+/vendor/**/CHANGELOG*
+/vendor/**/FAQ*
+/vendor/**/CONTRIBUTING*
+/vendor/**/HISTORY*
+/vendor/**/UPGRADING*
+/vendor/**/UPGRADE*
+/vendor/**/package*
+/vendor/**/phpunit.php
+/vendor/**/.gitignore
+/vendor/**/composer.*
+```
+
+Để tránh xung đột trước khi up lên kho code, ta làm như sau. Chọn file .gitignore chuột phải và chọn Team --\> Add to index
+
+## Bước 6: Code
+
+Việc code, thêm sửa file như bình thường, sau khi thực hiện xong 1 công việc cần commit để lưu lại lịch sử làm việc
+
+## Bước 7: Đưa code lên Site
+
+Sau khi chỉnh sửa xong, tạo thư mục vinades đưa CSDL và các tài liệu vào đó để người khác có thể cài đặt được nhanh.
+
+## Bước 8: Lấy các file đã thay đổi đưa lên hosting
+
+Để Zip các file mới sửa, thêm mới giữa hai commit Sử dụng lệnh:
+
+``` text
+git archive -o update_g09.zip HEAD $(git diff-tree -r --name-only --diff-filter=ACMRT 798d90a90848af8a5f67b525fb3460e81a8f9072  72ff06e8029e6fdfa81db0e25d8d9719d8242006)
+```
+
+Chú ý: Tên các file không có khoảng cách mới dùng được cách này

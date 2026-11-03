@@ -1,0 +1,71 @@
+---
+title: "Thay thế code của trang NukeViet đang chạy"
+description: "Một nguy cơ rất hay xảy ra đối với các website sử dụng share hosting đó là bị hack local. Khi site bạn bị hack local, việc hacker sửa hoặc chèn những đoạn co..."
+---
+
+## Đặt vấn đề
+
+Một nguy cơ rất hay xảy ra đối với các website sử dụng share hosting đó là bị hack local. Khi site bạn bị hack local, việc hacker sửa hoặc chèn những đoạn code độc hại vào site của bạn là chuyện rất đơn giản. Mục đích hack phá hoại hoặc hack chơi giờ không còn nhiều như trước, những kẻ hack site bạn giờ có thể sẽ tham lam hơn. Vì thế, đôi khi site bạn bị hack mà không hề có dấu hiệu gì cả, đơn giản hacker chỉ muốn cài shell, chèn những đoạn mã độc hại nhằm tìm cơ hội ăn cắp những thứ có giá trị hơn (ví dụ mật khẩu của admin chẳng hạn, biết đâu nó giống mật khẩu email của bạn, và biết đâu trong email lại chứa hàng tá mật khẩu khác...).
+
+Trong nhiều trường hợp khác, bạn cũng sẽ cần phải phục hồi code mặc định của NukeViet:
+
+- Site bị nhiễm virus/sâu, nó chèn mã độc vào code website. Các thành viên diễn đàn NukeViet từng ghi nhận những trường hợp virus/sâu đã sửa đổi các file index.\*, config.php và cả file .htaccess cũng có thể bị sửa đổi[^1].
+- Bạn sửa vào code quá nhiều, site lỗi tùm lum và bạn muốn phục hồi lại code NukeViet nguyên bản.
+- Bản backup của bạn chỉ còn phần dữ liệu (Bao gồm tệp tin dữ liệu, cơ sở dữ liệu và các file cấu hình...) mà không có code.
+
+Phương án phục hồi lại trở về bộ code mặc định của NukeViet luôn là phương án tối ưu nhất cho trường hợp này. Đảm bảo bạn sẽ có một bộ code sạch virus và ít lỗi nhất.
+
+## Các bước chuẩn bị
+
+Để thay thế code thì thực tế quá trình hoàn toàn giống với việc phục hồi dữ liệu của một site bị xóa (chúng ta đã có đầy đủ dữ liệu được sao lưu). Chúng ta cần có các dữ liệu cần thiết của site đang chạy, bao gồm:
+
+- Cơ sở dữ liệu mới nhất. Bạn có thể sử dụng tệp tin sao lưu hàng ngày hoặc vào admin control panel sao lưu một bản cơ sở dữ liệu.
+- Các tệp tin được đưa lên trong quá trình sử dụng:
+  - uploads/ (toàn bộ các tệp tin và thư mục trong thư mục này).
+  - files/ (toàn bộ các tệp tin và thư mục trong thư mục này).
+- Các tệp tin cấu hình:
+  - config.php (cần nhất là giá trị `$global_config['sitekey']` ở file này).
+  - data/ (toàn bộ các tệp tin và thư mục trong thư mục này).
+
+Chúng ta cũng cần phải biết tên phiên bản của site đang chạy. Để biết phiên bản NukeViet đang chạy bạn xem trong file `/data/config_global.php`, tìm đến 2 giá trị: Tên phiên bản:
+
+``` php
+$global_config['version'] = "3.4.01";
+```
+
+Tên revision:
+
+``` php
+$global_config['revision'] = 1758;
+```
+
+Và cần phải tải về bộ code NukeViet đúng với phiên bản này.
+
+Ngoài ra, nếu cài thêm các module, block, theme cho site, bạn nên ghi lại danh sách này để có thể cài bổ sung về sau.
+
+## Các bước thực hiện
+
+1\. Cài đặt site mới sử dụng NukeViet với phiên bản đúng với phiên bản site đang chạy. Đảm bảo file cài tải về đúng từ địa chỉ phát hành: [http://code.nukeviet.vn](http://code.nukeviet.vn), bạn có thể tìm các bản NukeViet gốc được phát hành tại kho code của NukeViet trên Google code tại đây: [http://code.google.com/p/nuke-viet/downloads/list?can=1](http://code.google.com/p/nuke-viet/downloads/list?can=1)
+
+2\. Cài lại các thành phần: giao diện, module, block cần sử dụng. Lưu ý sử dụng các bản phát hành chính gốc nếu không, nguy cơ đưa shell lên site hoặc gây lỗi site sẽ rất lớn. Nên nhớ rằng chúng ta đang giải quyết bộ code không sạch, đừng thay thế nó bằng một bộ code cũng không sạch khác.
+
+3\. Nhập dữ liệu cũ vào site mới:
+
+- Xóa cơ sở dữ liệu site vừa cài và nhập (import) vào cơ sở dữ liệu cũ. Nếu cơ sở dữ liệu nhỏ, bạn có thể sử dụng [phpmyadmin](/mysql/phpmyadmin/import), nếu cơ sở dữ liệu quá lớn, hãy sử dụng MySQLdumper.
+- Phục hồi các dữ liệu tệp tin từ 2 thư mục:
+  - uploads/ (toàn bộ các tệp tin và thư mục trong thư mục này).
+  - files/ (toàn bộ các tệp tin và thư mục trong thư mục này).
+- Phục hồi file cấu hình (quan trọng nhất là phục hồi giá trị sitekey trong tệp config.php, nếu bạn mất dữ liệu này, mọi tài khoản người dùng sẽ không thể đăng nhập).
+
+Bạn cần lưu ý rà soát những file phục hồi vì rất có thể có tệp tin chứa mã độc được cài trong đó, thậm chí mã độc được chèn trực tiếp vào file config.php
+
+4\. Kiểm tra site được phục hồi:
+
+- Đăng nhập và kiểm tra trong Admin Control Panel. Thực hiện xóa các dữ liệu tạm bằng cách truy cập Admin Control Panel =\> Công cụ web =\> Dọn dẹp hệ thống.
+- Kiểm tra các dữ liệu ngoài site.
+
+5\. Nâng cấp site lên phiên bản mới nhất để vá các lỗi bảo mật (nếu có).
+
+Những công việc trên bạn nên thực hiện trên localhost để mọi việc có thể thực hiện nhanh nhất, sau khi mọi việc hoàn tất, hãy [đưa site lên host](/nukeviet/setup/change_host). Như vậy bạn đã có một bộ code hoàn toàn sạch cho website của mình, việc cần làm tiếp theo là làm sao giữ cho bộ code đó luôn sạch. Ban Quản Trị NukeViet sẽ chia sẻ với bạn kinh nghiệm này tại diễn đàn [http://nukeviet.vn](http://nukeviet.vn)
+
+[^1]: [http://forum.nukeviet.vn/viewtopic.php?f=106&t=22867](http://forum.nukeviet.vn/viewtopic.php?f=106&t=22867)

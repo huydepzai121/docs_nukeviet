@@ -1,0 +1,313 @@
+---
+title: "Lập trình Modules cho NukeViet 3.x"
+description: "Các module của NukeViet được đặt trong thư mục modules/. Tên mỗi module bao gồm chữ cái, chữ số và dấu gạch ngang. Cấu trúc cơ bản của một module bao gồm các..."
+---
+
+## Tổng quan về Module của NukeViet
+
+Các module của NukeViet được đặt trong thư mục `modules/`. Tên mỗi module bao gồm chữ cái, chữ số và dấu gạch ngang. Cấu trúc cơ bản của một module bao gồm các file và thư mục:
+
+- admin.functions.php
+- version.php
+- funcs
+- funcs/main.php
+- admin
+- admin/main.php
+- functions.php
+
+Chức năng của các file như sau:
+
+- file version.php: file này có chức năng khai báo tiêu đề module, các funcs có block, tác giả module, thông tin phiên bản, cấu trúc thư mục trong thư mục uploads.
+- File admin.functions.php: File này thường chứa các function, hằng dùng trong admin
+- File function.php: File này thường chứa các function, hằng dùng cho ngoài site
+- admin/main.php: File này sẽ thể hiện nội dung của module phần admin
+- funcs/main.php: FIle này sẽ thể hiện nội dung (trang chính) của module bên ngoài site.
+
+Thứ tự khởi động một module như sau: Khi module được chạy thì tùy theo admin hay ngoài site mà file `admin.functions.php` hay `file function.php` được chạy trước sau đó là các file trong thư mục admin hay funcs được chạy tiếp theo mặc định sẽ là `file main.php`.
+
+Ta thường thấy url trang web nukeviet (chưa bật rewrite) có dạng
+
+``` text
+http://yourdomain/index.php?lang=vi&nv= music&op=listenone
+```
+
+Trong đó `lang` chính là ngôn ngữ của site, `nv` là module đang chạy, `op` chính là funcs đang chạy (ở đây là listenone). Giá trị `op` này chính là tên của funsc trong thư mục funcs hay admin. Nếu trên url mà khuyết phần `op=` có nghĩa funcs `main.php` đang được chạy.
+
+## Quy tắc đặt tên phiên bản module
+
+Quy tắc đặt tên phiên bản module tương tự quy tắc đặt tên phiên bản chính của NukeViet (nhưng không liên quan đến phiên bản NukeViet đang có). Theo quy tắc này, phiên bản của module có dạng: X.Y.ZZ
+
+Trong đó:
+
+- X: Chuỗi phiên bản chính, 1 chữ số; sẽ tăng khi có sự thay đổi lớn trong module mà theo đó hệ thống mới có thể khác 1 phần hay hoàn toàn hệ thống cũ.
+- Y: Chuỗi phiên bản phụ, 1 chữ số; sẽ tăng khi có sự thay đổi module mà không làm mất tính tương thích trong cùng phiên bản chính.
+- ZZ: Chuỗi phiên bản cấu tạo. Đánh dấu sự khác nhau trong cùng 1 phiên bản của module, 2 chữ số; sẽ tăng khi có đóng gói nhằm các mục đích phát hành, thử nghiệm...
+
+Ví dụ:
+
+| Sai quy tắc | =\> |          Đúng quy tắc          |
+|:-----------:|:---:|:------------------------------:|
+|    1.0.1    | =\> |             1.0.01             |
+|     1.0     | =\> |       1.0.00 hoặc 0.1.00       |
+|      1      | =\> | 1.0.00 hoặc 0.1.00 hoặc 0.0.01 |
+
+## Viết module đơn giản
+
+Để viết một module đơn giản việc đầu tiên là tạo thư mục trong thư mục modules/ sau đó tiếp tục tạo các file và thư mục bên trong như sau:
+
+- admin.functions.php
+- version.php
+- funcs
+- funcs/main.php
+- admin
+- admin/main.php
+- functions.php
+
+``` php
+<?php
+
+/**
+* @Project NUKEVIET-MUSIC
+* @Author Phan Tan Dung (phantandung92@gmail.com)
+* @copyright 2011
+* @createdate 05/12/2010 09:47
+*/
+
+if ( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' )) die( 'Stop!!!' );
+
+$module_version = array( 
+"name" => "QuanLyHocSinh", // Tieu de module
+"modfuncs" => "main" ,
+"is_sysmod" => 0,
+"virtual" => 1,
+"version" => "3.0.01",
+"date" => "Wed, 26 Jan 2011 12:47:15 GMT",
+"author" => "PHAN TAN DUNG (email: phantandung1912@gmail.com)",
+"note"=>"",
+"uploads_dir" => array(
+   $module_name
+)
+);
+?>
+```
+
+Trong đó:
+
+- Name: Tiêu đề của module.
+- Modfuncs: Các funcs được sử dụng
+- is_sysmod: Có phải module hệ thống hay không.
+- Virtual: Cho phép ảo hóa hay không.
+- Version: Phiên bản của module.
+- Date: Ngày xuất bản module.
+- Author: Tác giả module.
+- uploads_dir: Các thư mục tải lên của module.
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 3.0
+ * @Author VINADES., JSC (contact@vinades.vn)
+ * @Copyright (C) 2010 VINADES ., JSC. All rights reserved
+ * @Createdate Dec 3, 2010  11:11:28 AM 
+ */
+
+if ( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' ) or ! defined( 'NV_IS_MODADMIN' ) ) die( 'Stop!!!' );
+
+$submenu['addques'] = $lang_module['addques'];
+$submenu['test'] = $lang_module['test'];
+$submenu['addtest'] = $lang_module['addtest'];
+$submenu['compulsory'] = $lang_module['compulsory'];
+$submenu['addcompulsory'] = $lang_module['addcompulsory'];
+
+$allow_func = array( 
+    'main', 'addques', 'test', 'addtest', 'compulsory', 'addcompulsory', 'delques', 'delallques', 'delalltest', 'delallcompulsory', 'deltest', 'delcompulsory' 
+);
+
+define( 'NV_IS_ONBAI_ADMIN', true );
+
+?>
+```
+
+Trong đó cần chú ý đến :
+
+- \$submenu là biến lưu thông tin menu trái trong phần quản trị site.
+- \$allow_func: Danh sách các func cho phép hoạt động trong admin.
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 3.0
+ * @Author VINADES., JSC (contact@vinades.vn)
+ * @Copyright (C) 2010 VINADES ., JSC. All rights reserved
+ * @Createdate Dec 3, 2010  11:11:28 AM 
+ */
+
+if (!defined('NV_SYSTEM')) die('Stop!!!'); 
+
+define('NV_IS_MOD_ONBAI', true); 
+
+?>
+```
+
+File này thường chứa các hàm sử dụng bên ngoài site, nếu module không có dùng các hàm, có thể để trống file này (như trên), tuy nhiên không được xóa nó.
+
+``` php
+<?php
+/**
+ * @Project NUKEVIET 3.0
+ * @Author VINADES., JSC (contact@vinades.vn)
+ * @Copyright (C) 2010 VINADES ., JSC. All rights reserved
+ * @Createdate Dec 3, 2010  11:10:39 AM 
+ */
+if(!defined('NV_IS_FILE_MODULES'))
+    die('Stop!!!');
+
+$sql_drop_module = array();
+$sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_quessions`";
+
+$sql_create_module = $sql_drop_module;
+$sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_quessions` (
+`id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`quession` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`anwser` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+)ENGINE=MyISAM  DEFAULT CHARSET=utf8";
+
+?>
+```
+
+Cần chú ý đến biến `$sql_drop_module` và `$sql_create_module`. Biến `$sql_drop_module` sẽ được dùng khi xóa một module và biến `$sql_create_module` sẽ được dùng khi cài lại module và thiết lập module mới.
+
+Thư mục language chứa các file ngôn ngữ. Các file ngôn ngữ trong admin có dạng admin_ngon-ngu.php, các file ngôn ngữ ngoài site có dạng ngon-ngu.php. Cấu trúc cơ bản của file ngôn ngữ:
+
+``` php
+<?php
+/**
+ * @Project NUKEVIET 3.0
+ * @Author VINADES., JSC (contact@vinades.vn)
+ * @Copyright (C) 2010 VINADES ., JSC. All rights reserved
+ * @Language Vietnamese
+ * @Createdate Dec 3, 2010  11:30:02 AM 
+ */
+
+if ( ! defined( 'NV_MAINFILE' ) )
+{
+    die( 'Stop!!!' );
+}
+
+$lang_translator['author'] = "VINADES.,JSC (contact@vinades.vn)";
+$lang_translator['createdate'] = "04/03/2010, 15:22";
+$lang_translator['copyright'] = "@Copyright (C) 2010 VINADES.,JSC. All rights reserved";
+$lang_translator['info'] = "";
+$lang_translator['langtype'] = "lang_module";
+
+$lang_module['main'] = "Câu hỏi ôn bài";
+$lang_module['ans'] = "Đáp án";
+
+?>
+```
+
+Biến `$lang_module` là biến lưu ngôn ngữ của module.
+
+Thư mục js gồm hai file user.js và admin.js. File user.js chứa các câu lệnh javascript (nếu có) ngoài site, admin.js chứa javascript (nếu có) trong admin.
+
+Lưu ý: Để xuất nội dung của module và kết thúc ta thực hiện thao tác:
+
+- Đối với admin:
+
+``` php
+include ( NV_ROOTDIR . "/includes/header.php" );
+echo nv_admin_theme( $contents );
+include ( NV_ROOTDIR . "/includes/footer.php" );
+```
+
+biến \$contents là toàn bộ nội dung hiển thị của module.
+
+- Đối với khu vực site:
+
+``` php
+include ( NV_ROOTDIR . "/includes/header.php" );
+echo nv_site_theme( $contents );
+include ( NV_ROOTDIR . "/includes/footer.php" );
+```
+
+biến `$contents` là toàn bộ nội dung hiển thị của module.
+
+## Viết module nâng cao
+
+- Để hợp chuẩn với hệ thống, một module cần phải đảm bảo các yêu cầu sau:
+  - Sử dụng Xtemplate, điều này đồng nghĩa với việc tách biệt hoàn toàn giữa PHP và HTML, các file PHP không được chứa mã HTML.
+  - Các funcs ngoài site cần chuyển toàn bộ các đoạn mã xử lý việc hiển thị nội dung module vào một function trong file theme.php trong thư mục chứa module (ngang hàng với file version.php), điều này sẽ giúp cho việc thay đổi cấu trúc giao diện cho mỗi theme một cách dễ dàng.
+- Nếu module có chức năng RSS cần thêm file rssdata.php vào thư mục gốc của module và file rss.php vào thư mục funcs.
+  - File `rssdata.php` cần đảm bảo trả về một mảng như sau:
+    ``` php
+    $rssarray[] = array( 'catid' => 0, 'parentid' => 0, 'title' => '', 'link' =>  '');
+    ```
+  - File rss.php là phần xử lý rss. Cần xử lý dữ liệu để cuối cùng thực hiện hàm `nv_rss_generate( $channel, $items );`
+
+Trong đó:
+
+`$channel` là biến lưu thông tin kênh RSS:
+
+``` php
+$channel['title'] = $global_config['site_name'] . ' RSS: ' . $module_info['custom_title'];
+$channel['link'] = NV_MY_DOMAIN . NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name;
+$channel['atomlink'] = NV_MY_DOMAIN . NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=rss";
+$channel['description'] = $global_config['site_description'];
+```
+
+`$items` là biến lưu các item cần xuất ra. Cần đảm bảo môi phần tử của \$items là một mảng một chiều:
+
+``` php
+$items[] = array(  //
+'title' => $title, //
+    'link' => $link, //
+    'guid' => $module_name . '_' . $id, //
+    'description' => $content, //
+    'pubdate' => $publtime  //
+);
+```
+
+- Nếu module có chức năng tìm kiếm cần:
+  - Thêm file `search.php` vào thư mục funcs. File này được viết tương tự các funcs khác.
+  - Thêm file search.php vào thư mục gốc của module. File này sẽ được gọi ra khi module search làm việc. Cần xử lý để file này trả về một mảng:
+
+``` php
+        $result_array[] = array( //
+            'link' => $link , //
+            'title' => BoldKeywordInStr( $tilte, $key, $logic ), //
+            'content' => BoldKeywordInStr( $content, $key, $logic ) //
+         );
+```
+
+Là các kết quả tìm kiếm.
+
+Cần chú ý biến `$module_info` trong file này không được sử dụng, thay vào đó cần dùng biến `$m_values`.
+
+- Để hiển thị thông tin về module ngay tại khu vực quản trị website, thêm file siteinfo.php vào thư mục gốc của module. Để lấy ngôn ngữ admin của module:
+
+``` php
+$lang_siteinfo = nv_get_lang_module( $mod );
+```
+
+Cần đảm bảo file này xuất ra biến `$siteinfo`. Ví dụ:
+
+``` php
+$siteinfo[] = array( 
+ 'key' => $lang_siteinfo['siteinfo_expired'], 'value' => $number 
+);
+```
+
+## Lấy giá trị của biến khi submit form
+
+- [Xem chi tiết](/programming/module/submit_form)
+
+## Xem thêm
+
+- [Viết Blocks cho NukeViet 3.x](/programming/block) \| [Khái niệm Block](/nukeviet/concepts/block) \| [Quản lý block](/nukeviet/admin/themes/blocks)
+- [Viết Giao diện hệ thống NukeViet 3.x](/programming/theme) \| [Công cụ tạo gói giao diện mới](/programming/nvtools/theme) \| [Khái niệm theme](/nukeviet/concepts/theme) \| [Quản lý giao diện](/nukeviet/admin/themes)
+- [Công cụ tạo module](/programming/nvtools/module)
+- [Khái niệm module trong hệ thống NukeViet](/nukeviet/concepts/module) \| [Quản lý modules](/nukeviet/admin/modules)
+- Thảo luận tại diễn đàn: [http://nukeviet.vn/phpbb/viewtopic.php?f=117&t=15405](http://nukeviet.vn/phpbb/viewtopic.php?f=117&t=15405)

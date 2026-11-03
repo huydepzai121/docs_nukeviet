@@ -1,0 +1,55 @@
+---
+title: "Viết Cronjobs (Tác vụ tự động) cho NukeViet 4.x"
+description: "Cronjob là các tác vụ tự động của NukeViet được thực thi thông qua các Cron."
+---
+
+## Tổng quan về cronjob
+
+[Cronjob](/nukeviet/concepts/cronjobs) là các [tác vụ tự động](/nukeviet/admin/settings/cronjobs) của NukeViet được thực thi thông qua các Cron.
+
+Các Cron của NukeViet được chứa trong thư mục `includes/cronjobs/`. NukeViet cung cấp 9 cronjobs mặc định, trong đó 8 cronjobs được kích hoạt sẵn và 1 cronjobs admin có thể kích hoạt. Với các cronjobs là cronjobs hệ thống, admin sẽ không được phép tạm dừng cũng như xóa chúng.
+
+Tên của các file chứa cronjobs bao gồm chữ cái, chữ số và dấu gạch dưới (\_). Một file có thể chứa nhiều cronjobs khác nhau. Mỗi cronjobs là một hàm bắt đầu bằng tiếp đầu tố cron\_, hệ thống sẽ không chấp nhận các hàm không bắt đầu bằng cron\_.
+
+## Viết Cron
+
+Để tạo mới một cron ta có thể thêm vào một file có sẵn hoặc tạp một file mới. Nếu tạo một file mới cần có dòng:
+
+``` php
+if (!defined('NV_IS_CRON'))
+    die('Stop!!!');
+```
+
+Tiếp theo đó là function cron_ten-cron.
+
+Dưới đây là Cronjob có nhiệm vụ xóa những sessions bị quá thời gian online cho phép:
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate 10/03/2010 10:51
+ */
+
+if (!defined('NV_MAINFILE'))
+    die('Stop!!!');
+
+if (!defined('NV_IS_CRON'))
+    die('Stop!!!');
+
+function cron_online_expired_del()
+{
+    global $db;
+
+    $query = "DELETE FROM " . NV_SESSIONS_GLOBALTABLE . " WHERE onl_time < " . NV_DEL_ONLINE_TIME;
+    $db->query($query);
+    return true;
+}
+
+```
+
+**Lưu ý:** Có thể dùng các tài nguyên có sẵn như ([Các hàm](/programming4/function), [các biến](/programming4/variables), [các class](/programming4/class)...) để viết cron.

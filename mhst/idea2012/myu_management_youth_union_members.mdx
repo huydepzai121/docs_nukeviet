@@ -1,0 +1,75 @@
+---
+title: "Module Quản lí đoàn viên trên nền NukeViet"
+description: "Tên module: Quản lí đoàn viên"
+---
+
+Tên module: Quản lí đoàn viên
+
+#### 1.1. Tóm tắt ý tưởng
+
+Hiện nay công tác đoàn đã và đang được ứng dụng công nghệ thông tin nhằm quản lý thông tin đoàn viên Đoàn Thanh Niên một cách thực sự hiệu quả. Những năm gần đây đã có một số nơi mua ứng dụng để triển khai nhưng hoặc chi phí tương đối cao hoặc không đáp ứng được nhu cầu sử dụng phía cơ sở (Trong khi đoàn cấp trên không thể cấp kinh phí liên tục để thay đổi theo nhu cầu của đoàn cơ sở). Giải pháp một hệ thống quản lý đoàn viên làm bằng mã nguồn mở sẽ giiar quyết triệt để các bất cập hiện tại, hơn thế nữa, nếu viết bằng Module cho NukeViet thì rất tiện lợi vì có thể tích hợp vào các website đang chạy bằng NukeViet (tỉ lệ các website sử dụng NukeViet hiện nay không hề nhỏ).
+
+#### 1.2. Kỹ năng yêu cầu
+
+- Ngôn ngữ lập trình: PHP, MySQL, xHTML, CSS…
+- Đánh giá độ khó của ý tưởng: "trung bình".
+
+Ghi chú: Độ khó trung bình được giả định với một nhóm khoảng 3 SV thành thạo các kỹ năng yêu cầu chắc chắn sẽ hoàn thành dự án trong 3 tháng, không cần làm toàn thời gian.
+
+#### 1.3. Mô tả chi tiết
+
+- Hệ thống các cơ sở Đoàn trực thuộc: Đoàn cơ sở =\>\> Chi đoàn.
+- Các thông tin của Đoàn viên:
+  - Họ và tên
+  - Ngày sinh
+  - Giới tính
+  - Dân tộc
+  - Chức vụ
+  - Nơi sinh
+  - Ngày vào Đoàn
+  - Nơi vào Đoàn
+  - Ngày vào Đảng
+  - Nơi vào Đảng
+  - Chỗ ở hiện nay
+  - Số điện thoại liên lạc
+  - Email
+  - Ngày chuyển đến – Nơi chuyển đến
+  - Ngày chuyển đi – Nơi chuyển đến
+  - Thành tích cá nhân
+- Đối với admin
+  - Có thể thêm, bớt các phân hệ (cơ sở Đoàn, Chi đoàn…)
+  - Có thể tạo các account quản lý cho Bí thư các cơ sở Đoàn (các account này sẽ có quyền nhập các số liệu Đoàn viên Thanh niên của Chi đoàn mình. Account của Chi đoàn nào thì chỉ được quyền nhập số liệu cho Chi đoàn đó)
+  - Có thể kết xuất các số liệu thống kê sau (số liệu đối với từng Chi đoàn và đối với tất cả các cơ sở Đoàn):
+- Tổng số Đoàn viên
+- Tổng số Thanh niên chưa vào Đoàn
+- Tổng số Đảng viên
+- Tổng số Nam, Nữ
+- Thông kê độ tuổi (từ \* ? đến \* ?)
+- Số Dân tộc
+- Số chuyển đi, số chuyển đến (đến thời điểm hiện tại của nhiệm kỳ)
+  - Có thể chuyển công văn lên module (nếu có module công văn).
+  - Có thể đăng tin bài lên module tin tức (nếu có module tin tức)
+- Đối với Bí thư các cơ sở Đoàn:
+  - Được nhận account từ admin, có quyền thay đổi pass đăng nhập hệ thống
+  - Có quyền nhập, sửa các thông tin của Đoàn viên Thanh niên trong đơn vị (chi đoàn) của mình đang quản lý.
+  - Có quyền xem các số liệu thống kê của đơn vị (chi đoàn) mình đang quản lý.
+- Đối với Đoàn viên Thanh niên: Xem công khai các thông tin Đoàn viên Thanh niên. Tất cả mọi người được xem các thông tin của các cơ sở Đoàn
+
+#### 1.4. Thông tin khác
+
+NukeViet hiện đang được sử dụng làm website của hàng trăm trường học và các cơ sở giáo dục (Số liệu điều tra năm 2011 của nukeviet.vn cho thấy có 250 website trường học và các cơ sở giáo dục có sử dụng NukeViet. Hiện nay tra trên Google cho khoảng 229.000 kết quả về NukeViet từ các website có tên miền .edu.vn). Ngoài khối trường học, rất nhiều cơ sở khác có duy trì tổ chức Đoàn Thanh Niên có thể triển khai ứng dụng này.
+
+#### 1.5. Người hướng dẫn
+
+Mentor:
+
+Co-mentor:
+
+- Đội ngũ phát triển mã nguồn mở NukeViet, cộng đồng [http://nukeviet.vn/phpbb/index.php](http://nukeviet.vn/phpbb/index.php)
+- Công ty cổ phần phát triển nguồn mở Việt Nam (VINADES.,JSC)
+- Địa chỉ: Phòng 407 tòa nhà CT1 FODACON, 18 Trần Phú, Hà Đông, Hà Nội.
+- Tel: +84-4-85872007
+- Emai: contact(at)vinades.vn
+- Website: [http://vinades.vn](http://vinades.vn)
+
+Quay lại [Danh sách ý tưởng - MHST 2012](/mhst/idea2012)

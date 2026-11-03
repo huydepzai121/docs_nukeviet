@@ -1,0 +1,26 @@
+---
+title: "user_delete"
+description: "Khi thành viên bị xóa khỏi hệ thống."
+---
+
+Khi thành viên bị xóa khỏi hệ thống.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú |
+|-----|:---------|:-------------|:--------|
+| 0   | \$userid | Integer      |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'user_delete', $priority, function($vars) {
+    $userid = $vars[0];
+
+    // Thực hiện code hook tại đây...
+});
+```

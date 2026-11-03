@@ -1,0 +1,33 @@
+---
+title: "get_email_data_before_fetch"
+description: "Xử lý biến $emaildata trước khi tạo nội dung email gửi đi trong hàm nvsendmailfromtemplate."
+---
+
+Xử lý biến \$email_data trước khi tạo nội dung email gửi đi trong hàm nv_sendmail_from_template.
+
+### Tham số
+
+| STT | Tên biến       | Kiểu dữ liệu | Ghi chú            |
+|-----|:---------------|:-------------|:-------------------|
+| 0   | \$emailid      | int          |                    |
+| 0   | \$email_data   | array        |                    |
+| 1   | \$merge_fields | array        | Các field tùy biến |
+| 2   | \$row          | array        | Dữ liệu truyền vào |
+
+### Dữ liệu trả về
+
+Biến `$email_data`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_email_data_before_fetch', $priority, function($vars) {
+    $emailid = $vars[0];
+    $merge_fields = $vars[1];
+    $row = $vars[2];
+
+    // Thực hiện code hook tại đây...
+
+    return $email_data;
+});
+```

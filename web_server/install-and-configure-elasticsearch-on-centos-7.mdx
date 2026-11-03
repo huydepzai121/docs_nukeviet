@@ -1,0 +1,93 @@
+---
+title: "Install and Configure Elasticsearch on CentOS 7"
+description: "In /etc/sysconfig/selinux , change the following lines:"
+---
+
+## 1. Elasticsearch là gì
+
+- Elasticsearch là một search engine.
+- Elasticsearch được xây dựng để hoạt động như một server cloud theo cơ chế của RESTful.
+- Kế thừa và phát triển từ Lucene Apache.
+- Phát triển bằng ngôn ngữ Java.
+- Là phần mềm open-source được phát hành theo giất phép của Apache License.
+- Tương tự : Solr (Apache).
+- Những ai đã dùng Elasticsearch :
+
+``` text
+    *     Mozilla
+    *     Quora
+    *     SoundCloud
+    *     GitHub
+    *     Stack Exchange
+    *     Center for Open Science
+    *     Reverb
+    *     Netflix.
+```
+
+## 2. Setup
+
+### Disable selinux
+
+In /etc/sysconfig/selinux , change the following lines:
+
+``` text
+sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
+sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
+```
+
+reboot, and verify the selinux status by running `sestatus`. It should say: SELinux status: `disabled`
+
+### Cấu hình firewall
+
+``` text
+yum install firewalld  -y
+systemctl enable firewalld.service
+systemctl start firewalld.service
+firewall-cmd --permanent --new-zone=elasticsearch
+firewall-cmd --permanent --zone=elasticsearch --add-port=9200/tcp
+firewall-cmd --permanent --zone=elasticsearch --add-source=10.0.0.124
+firewall-cmd --permanent --zone=elasticsearch --add-source=10.0.0.99
+firewall-cmd --reload
+```
+
+Trong đó
+
+10.0.0.124 là IP của elasticsearch server
+
+10.0.0.99 là IP của máy cần truy cập
+
+### Cài đặt và kiểm tra phiên bản của java
+
+``` text
+yum install java wget -y
+java -version
+wget https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.3.3/elasticsearch-2.3.3.rpm
+rpm -ivh elasticsearch-2.3.3.rpm 
+systemctl enable elasticsearch.service
+```
+
+Sửa \<file:vi> /etc/elasticsearch/elasticsearch.yml
+
+``` text
+  network.host: 10.0.0.124 # 10.0.0.124 là IP của elasticsearch server
+  cluster.name: NukeViet_MangVN
+  node.name: node-1
+```
+
+Chạy: elasticsearch
+
+``` text
+systemctl start elasticsearch.service
+curl -X GET 'http://10.0.0.124:9200'
+```
+
+**Install Elasticsearch-Head Plugin**
+
+``` text
+cd /usr/share/elasticsearch
+bin/plugin install mobz/elasticsearch-head
+```
+
+Truy cập thử vào địa chỉ: [http://10.0.0.124:9200/_plugin/head/](http://10.0.0.124:9200/_plugin/head/)
+
+Để tích hợp tìm kiếm của NukeViet sử dụng elasticsearch xem chi thêm tại: [http://wiki.nukeviet.vn/web_server:use-elasticsearch-in-nukeviet](http://wiki.nukeviet.vn/web_server:use-elasticsearch-in-nukeviet)

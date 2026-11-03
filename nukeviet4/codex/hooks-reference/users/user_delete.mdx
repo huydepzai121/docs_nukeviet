@@ -1,0 +1,41 @@
+---
+title: "user_delete"
+description: "Sự kiện khi xóa tài khoản."
+---
+
+Sự kiện khi xóa tài khoản.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú                                   |
+|-----|:---------|:-------------|:------------------------------------------|
+| 0   | \$userid | int          | ID tài khoản bị xóa                       |
+| 1   | \$row    | array        | Thêm một số thông tin về tài khoản bị xóa |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook('users', 'user_delete', $priority, function($vars) {
+    $userid = $vars[0];
+    $row = $vars[1];
+
+    // Thực hiện code hook tại đây...
+});
+```
+
+Trong biến `$row` có các phần tử khả dụng sau:
+
+- group_id ID nhóm chính
+- username tên đăng nhập
+- first_name tên
+- last_name họ
+- gender giới tính
+- email địa chỉ email
+- photo đường dẫn ảnh đại diện
+- in_groups danh sách các ID nhóm phân cách bởi dấu phảy
+- idsite ID website
+- language json ngôn ngữ

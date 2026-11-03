@@ -1,0 +1,32 @@
+---
+title: "change_site_buffer"
+description: "Sau khi hệ thống gọi hàm nvurlrewrite để chuẩn bị xuất dữ liệu về người dùng."
+---
+
+Sau khi hệ thống gọi hàm nv_url_rewrite để chuẩn bị xuất dữ liệu về người dùng.
+
+### Tham số
+
+| STT | Tên biến        | Kiểu dữ liệu | Ghi chú |
+|-----|:----------------|:-------------|:--------|
+| 0   | \$global_config |              |         |
+| 1   | \[\$contents    |              |         |
+| 2   | \$headers\]     |              |         |
+
+### Dữ liệu trả về
+
+Biến `$contents`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'change_site_buffer', $priority, function($vars) {
+    $global_config = $vars[0];
+    [$contents = $vars[1];
+    $headers] = $vars[2];
+
+    // Thực hiện code hook tại đây...
+
+    return $contents;
+});
+```

@@ -1,0 +1,26 @@
+---
+title: "emailtemplates_content_after_save"
+description: "Gọi ra sau khi lưu mẫu email vào CSDL (thêm mẫu email, sửa mẫu email)."
+---
+
+Gọi ra sau khi lưu mẫu email vào CSDL (thêm mẫu email, sửa mẫu email).
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú                |
+|-----|:---------|:-------------|:-----------------------|
+| 0   | \$array  | array        | Dữ liệu để lưu vào SDL |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'emailtemplates_content_after_save', $priority, function($vars) {
+    $array = $vars[0];
+
+    // Thực hiện code hook tại đây...
+});
+```

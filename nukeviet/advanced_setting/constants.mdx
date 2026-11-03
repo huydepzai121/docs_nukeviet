@@ -1,0 +1,170 @@
+---
+title: "Constants"
+description: "Các thiết lập mặc định nằm trong file includes/constants.php, các thiết lập này được khuyến cáo chỉ nên làm một lần và làm trước khi cài đặt NukeViet."
+---
+
+1.  Thiết lập các giá trị mặc định  
+    Các thiết lập mặc định nằm trong file `includes/constants.php`, các thiết lập này được khuyến cáo chỉ nên làm một lần và làm trước khi cài đặt NukeViet.  
+    Nếu thay đổi các thiết lập này sau khi website đã được cài đặt, sau khi thay đổi cần vào khu vực quản trị site phần cấu hình chung để lưu lại.
+    1.  Thiết lập file `config.php`.
+        ``` php
+        define( "NV_CONFIG_FILENAME", "config.php" );
+        ```
+
+        Có thể thay config.php bằng bất kì tên nào cũng như đường dẫn đến file đó.  
+        Ví dụ:
+        ``` php
+        define( "NV_CONFIG_FILENAME", "hh/dfggfd.nuke" );
+        ```
+
+        như vậy file config.php giờ có tên dfggfd.nuke và nằm trong thư mục hh.
+    2.  Thay đổi tên thư mục `admin`:  
+        Ví dụ:
+        ``` php
+        define( "NV_ADMINDIR", "nukemin" );
+        ```
+
+        như vậy thư mục admin bây giờ được hệ thống hiểu có tên `nukemin`.
+    3.  Thay đổi thư mục `Editors`:
+        ``` php
+        define( "NV_EDITORSDIR", "admin/editors" );
+        ```
+    4.  Thay đổi thư mục chứa diễn đàn:
+        ``` php
+        define( "DIR_FORUM", "forum" );
+        ```
+    5.  Thay đổi thư mục upload:
+        ``` php
+        define( "NV_UPLOADS_DIR", "uploads" );
+        ```
+    6.  Thay đổi thư mục file:
+        ``` php
+        define( "NV_FILES_DIR", "files" );
+        ```
+    7.  Thay đổi thư mục banners:
+        ``` php
+        define( "NV_BANNER_DIR", "banners" );
+        ```
+    8.  Thay đổi thư mục chứa các file log:
+        ``` php
+        define( "NV_LOGS_DIR", "logs" );
+        ```
+    9.  Thay đổi thư mục chứa các file tạm:
+        ``` php
+        define( " NV_TEMP_DIR ", "tmp" );
+        ```
+    10. Thay đổi thư mục chứa session:
+        ``` php
+        define( " NV_SESSION_SAVE_PATH ", " sess" );
+        ```
+    11. Thay đổi thư mục chứa cache:
+        ``` php
+        define( "NV_CACHEDIR", "cache" );
+        ```
+    12. Thay đổi thư mục chứa data:
+        ``` php
+        define( "NV_DATADIR", "data" );
+        ```
+    13. Tiếp đầu tố của các file tạm:
+        ``` php
+        define( "NV_TEMPNAM_PREFIX", "nv_" );
+        ```
+
+        Lưu ý: tiếp đầu tố có tối đa 3 kí tự.
+    14. Tên file error_log:
+        ``` php
+        define( 'NV_ERRORLOGS_FILENAME', 'error_log' );
+        ```
+    15. Đuôi của file log:
+        ``` php
+        define( "NV_LOGS_EXT", "log" );
+        ```
+    16. Tên thay thế cho biến \$name:
+        ``` php
+        define( "NV_NAME_VARIABLE", "nv" );
+        ```
+    17. Tên thay thế cho biến \$op:
+        ``` php
+        define( "NV_OP_VARIABLE", "op" );
+        ```
+    18. Tên thay thế cho biến ngôn ngữ:
+        ``` php
+        define( "NV_LANG_VARIABLE", "language" );
+        ```
+    19. Tên biến kiểm tra lại mật khẩu admin:
+        ``` php
+        define( "NV_ADMINRELOGIN_VARIABLE", "adminrelogin" );
+        ```
+    20. Số lần đăng nhập tối đa của admin:
+        ``` php
+        define( "NV_ADMINRELOGIN_MAX", 3 );
+        ```
+    21. Xác định thời gian kiểm tra lại mật khẩu admin nếu không hoạt động:
+        ``` php
+        define( "NV_ADMIN_CHECK_PASS_TIME", 3600 );
+        ```
+    22. Thời gian tồn tại của cookie (tính theo đơn vị giây):
+        ``` php
+        define( 'NV_LIVE_COOKIE_TIME', 31536000 );
+        ```
+    23. Thời gian tồn tại session:
+        ``` php
+        define( 'NV_LIVE_SESSION_TIME', 0 );
+        ```
+
+        giá trị mặc định bằng 0, giá trị này sẽ thiết lập session tồn tại cho đến khi của sổ trình duyệt đóng lại.
+    24. Mức độ nén trang:
+        ``` php
+        define( 'ZLIB_OUTPUT_COMPRESSION_LEVEL', 6 );
+        ```
+    25. Phương thức mã hóa mật khẩu:
+        ``` php
+        define( 'NV_CRYPT_SHA1', 1 );
+        ```
+
+        chọn một trong hai giá trị: 1 - mã hóa md5, 2- mã hóa sha1.
+    26. Số kí tự tối đa và tối thiểu của tên đăng nhập:
+        ``` php
+        define( 'NV_UNICKMAX', 20 );
+        ```
+
+        ``` php
+        define( 'NV_UNICKMIN', 4 );
+        ```
+    27. Số kí tự tối đa và tối thiểu của mật khẩu:
+        ``` php
+        define( 'NV_UPASSMAX', 20 );
+        ```
+
+        ``` php
+        define( 'NV_UPASSMIN', 5 );
+        ```
+    28. Số kí tự mã bảo vệ:
+        ``` php
+        define( 'NV_GFX_NUM', 6 );
+        ```
+    29. Kích thước ảnh mã bảo vệ:
+        ``` php
+        define( 'NV_GFX_WIDTH', 120 );
+        ```
+
+        ``` php
+        define( 'NV_GFX_HEIGHT', 25 );
+        ```
+    30. Thời gian online của thành viên (giây):
+        ``` php
+        define( 'NV_ONLINE_UPD_TIME', 300 );
+        ```
+    31. Bật tắt chức năng chống flood (tràn dữ liệu):
+        ``` php
+        define( 'NV_IS_FLOOD_BLOCKER', 1 );
+        ```
+    32. Bật tắt chức năng chống IFRAME (Inline Frame - chèn trang web dưới dạng khung):
+        ``` php
+        define( "NV_ANTI_IFRAME", 0 );
+        ```
+    33. Các thẻ html cho phép trong request
+        ``` php
+        // Ma HTML duoc chap nhan
+        define( 'NV_ALLOWED_HTML_TAGS', 'embed, object, param, a, b, blockquote, br, caption, col, colgroup, div, em, h1, h2, h3, h4, h5, h6, hr, i, img, li, p, span, strong, sub, sup, table, tbody, td, th, tr, u, ul' );
+        ```

@@ -1,0 +1,22 @@
+---
+title: "force_ssl_redirect"
+description: "Xác định có tự chuyển sang https nếu bật ssl hay không. Mặc định là có tự chuyển sang https."
+---
+
+Xác định có tự chuyển sang https nếu bật ssl hay không. Mặc định là có tự chuyển sang https.
+
+### Tham số
+
+Không có, có thể sử dụng các hằng hoặc biến global trong code để xử lý.
+
+### Dữ liệu trả về
+
+Giá trị true hoặc false, nếu true hệ thống tự ép thành https nếu false hệ thống vẫn để http mặc dù có cấu hình dùng ssl
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'force_ssl_redirect', $priority, function($vars) {
+    return false;
+});
+```

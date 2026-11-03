@@ -1,0 +1,73 @@
+---
+title: "Thay đổi từ PHP 7.4 lên 8.0 và cách sửa code ở PHP 7.4 tương thích PHP 8.0"
+description: "Xem các điểm mới ở PHP 8.0 so với 7.4"
+---
+
+## Tính năng mới
+
+[Xem các điểm mới ở PHP 8.0 so với 7.4](/php/version/7-8/new)
+
+## Kiểm tra và sửa các module của NukeViet bằng tay
+
+> Tài liệu này chỉ liệt kê những thay đổi cần làm gặp phải trong NukeViet, không liệt kê toàn bộ. Ai có gặp trường hợp nào ngoài tài liệu này thì bổ sung thêm vào nhé.
+
+### So sánh số với chuỗi (chuỗi không phải số hoặc chuỗi số)
+
+Kết quả có thể có sự khác biệt với trước
+
+- `0 == "foo"` trước cho true giờ cho false
+- `0 == ""` trước cho true giờ cho false
+- `42 == "42foo"` trước cho true giờ cho false
+
+Thật may phần này trong NukeViet ít gặp bởi khi lấy giá trị thì \$nv_Request đã phân định và xử lý rõ dữ liệu trước khi đem lưu cũng như so sánh.
+
+### Thay đổi trong cách viết tham số ở hàm
+
+Nếu hàm của bạn có một tham số có giá trị mặc định trước một tham số bắt buộc khác thì nó không còn hiệu lực nữa. Điều này có nghĩa tất cả các tham số có giá trị mặc định phải ở sau cùng.
+
+Cách sửa đơn giản là tìm những hàm như thế và bỏ tham số mặc định phía trước tham số bắt buộc đi để nó trở thành bắt buộc. Ví dụ
+
+``` php
+function test($a = [], $b) {}
+```
+
+Sửa thành
+
+``` php
+function test($a, $b) {}
+```
+
+Bạn có thể tìm các hàm này trong code bằng regex sau `function\s+[a-z_]+[a-zA-Z0-9_]*\s*\(\s*(?:\$[a-z_]+[a-zA-Z0-9_]*\s*,\s*)*(?:\$[a-z_]+[a-zA-Z0-9_]*\s*\=[^\$]+)+,\s*\$[a-z_]+[a-zA-Z0-9_]*\s*[,\)\$]+`
+
+Lưu ý: Regex bên trên có thể tìm thấy cả những hàm đúng quy tắc, tuy nhiên nó giúp bạn tìm nhanh thấy trong code những đoạn sai quy tắc mới để sửa
+
+Chú ý: Không được dùng null gán cho tham số của hàm không được khai báo là nullable ví dụ `strlen(null);` nó sẽ báo lỗi
+
+### Thay đổi trong cách gọi phương thức class
+
+Không được phép gọi các phương thức không tĩnh của class như cách gọi các phương thức tĩnh
+
+``` php
+class ClassName {
+  public static function staticMethod() {
+    echo "Hello World!";
+  }
+
+  public function nonStaticMethod() {
+    echo "Hello World!";
+  }
+}
+```
+
+Đúng `ClassName::staticMethod();`, Sai `ClassName::nonStaticMethod();`. Có thể tìm kiếm những chỗ gọi bằng regex sau `[a-zA-Z_][a-zA-Z0-9_]*\:\:[a-zA-Z_][a-zA-Z0-9_]*[\r\n\s\t]*\(` sau khi tìm ra những chỗ đó bạn tiến hành kiểm tra hết xem phương thức đó có phải tĩnh không, không phải tĩnh thì phải thêm static cho nó
+
+### Kiểm tra và điều chỉnh khác
+
+- Tìm hàm `each()`, nếu có phải chuyển thành `foreach()`. Có thể tìm hết những chỗ dùng hàm này bằng regex sau `[\r\n\s\t]*\=[\r\n\s\t]*each[\r\n\s\t]*\(`
+- Tìm hàm `array_key_exists`, nếu có thì kiểm tra kiểu dữ liệu đối số truyền vào nếu là object thì phải thay thành isset() hoặc property_exists()
+- Tìm trong code của bạn nếu có comment bắt đầu bằng `#[` thì chuyển nó thành `//[` bởi cú pháp `#[` được quy định cho việc khác
+- Kiểm tra xem nếu có đoạn kiểm tra chuỗi dạng \{\} thì đổi thành \[\]. Ví dụ: `$login{$max}` thành `$login[$max]`. Có thể tìm hết các file bị vấn đề này bằng regex sau `\$[a-zA-Z_][a-zA-Z0-9_]*[\r\n\s\t]*\{`
+- Tìm CURLOPT_POSTFIELDS nếu có hãy xem giá trị của nó đang dùng là gì, nếu là object cần ép nó thành mảng hoặc dùng hàm nv_object2array để chuyển thành mảng. Cái này ít khi gặp trong các module
+- Tìm hàm parse_str nếu có dùng nó mà không có tham số thứ 2 thì buộc phải sửa lại bổ sung tham số thứ 2
+- Tìm trong code nếu có các hàm hebrevc(), convert_cyr_string(), money_format(), ezmlm_hash(), restore_include_path(), get_magic_quotes_gpc(), get_magic_quotes_runtime(), fgetss(), gzgetss() thì phải xóa và tìm các hàm thay thế. Các hàm này hầu như không có lịch sử sử dụng trong NukeViet
+- Tìm trong code những chỗ dùng hàm `is_resource($var)` ví dụ `if (is_resource($var))` cần sửa lại thành `if ($var !== false)` (Cái này không phải 100%, tuy nhiên rất nhiều hàm đã chuyển từ resource sang object) nên is_resource sẽ bị lỗi khá nhiều

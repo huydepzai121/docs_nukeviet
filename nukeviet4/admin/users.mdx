@@ -1,0 +1,200 @@
+---
+title: "Hướng dẫn sử dụng module users"
+description: "Hướng dẫn này dựa trên phiên bản NukeViet 4.0.13, Các phiên bản 4x khác có thể có đôi chút khác biệt."
+---
+
+Hướng dẫn này dựa trên phiên bản NukeViet 4.0.13, Các phiên bản 4x khác có thể có đôi chút khác biệt.
+
+## Giới thiệu
+
+Đây là module quản lý các tài khoản thành viên trong website.
+
+- Cho phép bạn thêm ,xóa, sửa thông tin thành viên.
+- Cấu hình thông tin thành viên:
+  - Thành lập nhóm thành viên
+  - Câu hỏi bí mật để lấy lại mật khẩu
+  - Cho phép sửa tên đăng nhập/ email
+  - Cho phép sử dụng OpenID để đăng ký nhanh
+  - Các từ khóa bị cấm
+  - ...
+
+Đặc biệt bạn có thể điều chỉnh, trao quyền quản lý cấp cao hoặc một phần cho thành viên tại control trong module này.
+
+Một điều mới trong phiên bản nukeviet4x là khả năng tùy biến trường dữ liệu, giúp websie bạn cá nhân hóa trong việc phân loại khách đăng ký thành viên.
+
+## Cấu hình module thành viên
+
+Đầu tiên đăng nhập vào control Admin \> Tài khoản -\> Cấu hình module ![](/images/nukeviet4/admin/cau_hinh_module_thanh_vien.png) Có rất nhiều tùy chọn cho bạn dễ dàng sử dụng ![](/images/nukeviet4/admin/co_rat_nhieu_tuy_chon_cho_ban_de_dang_su_dung.png)
+
+**So với phiên bản NukeViet 4 thì từ phiên bản NukeViet 4.5.01 đến 4.5.06 đã có một số nội dung mới như sau:**
+
+- Về phần cấu hình quyền hạn sử dụng module:
+
+``` text
+  Một số mục đã được thêm:
+- Xem danh sách tài khoản
+- Kiểm duyệt thông tin
+  Thay vì sử dụng cụm từ “Thành viên” thì ở phiên bản 4.5.06 đã thay thế thành “Tài khoản”
+```
+
+![](/images/nukeviet4/admin/cau_hinh_quyen_han_su_dung_module.jpg)
+
+- Về phần cấu hình đăng ký tài khoản:
+
+``` text
+  Một số mục đã được thêm:
+- Tự động đăng nhập sau khi đăng ký thành công
+- Kích hoạt chức năng xác thực thành viên
+- Bật kiểm duyệt chỉnh sửa tài khoản
+- Tự động xử lý trùng Email Oauth
+```
+
+![](/images/nukeviet4/admin/cau_hinh_dang_ky_tai_khoan.jpg)
+
+## Câu hỏi bảo mật
+
+- Tài khoản \> Câu hỏi bản mật
+- Câu hỏi bảo mật sẽ được hiển thị khi khách đăng ký. Tại thời điểm khách đắng ký, họ sẽ được chọn một trong số các câu hỏi mà bạn đưa ra.
+- Trong trường hợp họ quên mật khẩu và các thông tin đăng ký khác, họ có thể xin cấp lại mật khẩu nếu khai báo đúng câu hỏi bảo mật đã chọn.
+
+![](/images/nukeviet4/admin/cau_hinh_module_thanh_vien.png)
+
+Để cá nhân hóa website của bạn nếu website của bạn thuộc một chủ đề nhất định. Bạn có thể thay đổi các câu hỏi bảo mật này cho phù hợp.
+
+Ví dụ website về cây cảnh thì có thể hỏi: “Cây cảnh trồng gần đây nhất?”. Hoặc website chuyên về lịch sử thì có thể hỏi: “Đảo nào có diện tích lớn nhất tại quàn đảo Trường Sa của Việt Nam?".
+
+Bạn nên khuyến khích người đăng ký trả lời câu hỏi bí mật viết không dấu và viết liền, bởi nếu họ không viết chính xác tuyệt đối thì việc xin cấp lại mật khẩu có thể không thành công.
+
+## Quy định đăng kí
+
+- Tài khoản \> Quy định đăng kí
+- Nội quy site sẽ được hiển thị khi khách đăng ký làm thành viên. Họ phải đồng ý với các điều kiện nội quy để trở thành thành viên.
+
+![](/images/nukeviet4/admin/screenshot_2026-03-02_141848.png) Mặc định nukeviet đã có sẵn nội quy. Nếu website bạn có chuyên đề riêng biệt , bạn có thể thêm những điều khoản riêng cho phù hợp với chủ đề trên website.
+
+## Tùy biến dữ liệu
+
+Bắt đầu từ nukeviet4 module users sẽ có phần tùy biến dữ liệu.
+
+Điều này rất quan trọng. Giúp bạn tối đa hóa cá nhân website của bạn khi khách đăng ký. Giả sử bạn có website chuyên về máy tính và yêu cầu thành viên tham gia phải biết về kiến thức đó thì có thể đăng thêm các cấu hỏi.
+
+Đây là hình ảnh form đăng ký mặc định: ![](/images/nukeviet4/admin/day_la_hinh_anh_form_dang_ky_mac_dinh.png)
+
+Giả sử tôi có website về chủ đề máy tính. Tôi sẽ đặt thêm vài câu hỏi về máy tính như sau:
+
+1.  *Bạn có máy tính đầu tiên vào năm bao nhiêu tuổi*
+2.  *Tên hãng mãy tính bạn thường dùng*
+3.  *Bạn đang dùng thiết bị nào*
+4.  *Thói quen sử dụng phần mềm bản quyền*
+
+Bạn quan sát các hình sau đây:
+
+- *Bạn có máy tính đầu tiên vào năm bao nhiêu tuổi*
+
+![](/images/nukeviet4/admin/ban_co_may_tinh_dau_tien_vao_nam_bao_nhieu_tuoi.png)
+
+- *Tên hãng mãy tính bạn thường dùng*
+
+![](/images/nukeviet4/admin/ten_hang_may_tinh_ban_thuong_dung.png)
+
+- *Bạn đang dùng thiết bị nào*
+
+![](/images/nukeviet4/admin/ban_dang_dung_thiet_bi_nao.png)
+
+- *Thói quen sử dụng phần mềm bản quyền*
+
+![](/images/nukeviet4/admin/thoi_quen_su_dung_phan_mem_ban_quyen.png)
+
+Sau khi thêm một số câu hỏi tùy biến. Tại phần khách đăng ký thành viên sẽ có form được như sau:
+
+![](/images/nukeviet4/admin/cau_hoi_tuy_bien.png)
+
+## Thêm tài khoản mới
+
+Ngoài tài khoản khách đăng ký trực tuyến, admin cũng có thể tự thêm tài khoản trong control admin. form đăng ký này nhìn cung cũng tương tự như form mà người dùng đăng ký ở ngoài.
+
+![](/images/nukeviet4/admin/screenshot_2026-03-02_142152.png) Sau khi đăng ký thành viên. Danh sách thành viên mới đăng sẽ hiển thị trên cùng
+
+![](/images/nukeviet4/admin/thanh_vien.png)
+
+## Thành viên đợi kích hoạt
+
+Trường hợp bạn cho người dùng đăng ký tự do, không cần kích hoạt thì không có danh sách thành viên nào tại đây.
+
+Trường hợp bạn cấu hình bắt buộc người đăng ký phải qua kiểm duyệt, thì bạn vào đây để xác nhận. ![](/images/nukeviet4/admin/thanh_vien_doi_kich_hoat.png)
+
+## Nhóm thành viên
+
+Ngoài những nhóm dữ liệu mẫu mặc định trong nukeviet. Bạn có thể thêm những nhóm khác để phù hợp với chủ đề website của bạn.
+
+![](/images/nukeviet4/admin/screenshot_2026-03-02_142319.png) ![](/images/nukeviet4/admin/screenshot_2026-03-02_142353.png)
+
+## Quản trị
+
+![](/images/nukeviet4/admin/quan_tri.png)
+
+Khi click vào menu này, website sẽ chuyển đến chương trình quản lý các tài khoảng quản trị.
+
+Tại đây bạn có thể thêm, bớt, trao quyền quản trị website toàn quyền hoặc một phần cho một thành viên nhất định.
+
+![](/images/nukeviet4/admin/admin.png)
+
+### Thêm quản trị
+
+- Bạn thêm quản trị bằng cách điền giá trị ID của thành viên được quản trị.
+  - Nếu bạn nhớ ID thì có thêm số trực tiếp như form hình dưới.
+  - Nếu bạn chỉ nhớ tên đăng nhập của thành viên đó hoặc nhớ một phần thì có thể click nút chọn để hiển thị form tìm kiếm thành viên và nhìn xem số ID của thành vien đó là gì.
+
+![](/images/nukeviet4/admin/them_quan_tri.png)
+
+Sau khi nhập ID thành viện được trao quyền quản trị. Ta tiếp tục thiết lập các quyền hạn cụ thể cho thành viên đó và Lưu.
+
+Phiên bản 4.5.7: Tùy chọn thêm quản trị sẽ có thêm tùy chọn Giao diện người quản trị ![](/images/nukeviet4/admin/screenshot_2026-03-02_151654.png)
+
+### Phân quyền hệ thống
+
+Bạn đánh dấu các quyền mà người quản trị có thể thực hiện tại mỗi module
+
+![](/images/nukeviet4/admin/screenshot_2026-03-02_142653.png)
+
+### Cấu hình
+
+![](/images/nukeviet4/admin/cau_hinh.png)
+
+#### Thêm tài khoản
+
+Ngoài tài khoản admin mà bạn đã đăng ký, tạo tại phần module user ![](/images/nukeviet4/admin/them_tai_khoan.png)
+
+- Để kích hoạt chức năng này, bạn phải cấu hình bật tường lửa.
+- Đây là tài khoản cần đăng nhập lần 1 sẽ hiển thị khi bạn truy cập vào `http://domainyou.com/admin/`, nó cũng tương tự như bạn nhập vào `ftp://domainyou.com`
+
+Ví dụ như hình:
+
+![](/images/nukeviet4/admin/bat_tuong_lua.png)
+
+- Nếu bạn nhập đúng tài khoản này thì bạn mới tiếp tục nhập tài khoản quản trị website.
+- Giả sử tôi có tài khoản “dangnhaplan1” như sau
+
+![](/images/nukeviet4/admin/dangnhaplan1.png)
+
+Nếu bạn đăng nhập thành công lần thứ nhất này, bạn sẽ tiếp tục đăng nhập vào tài khoản quản trị website
+
+![](/images/nukeviet4/admin/quan_tri_website.png)
+
+## Kiểm duyệt thông tin chỉnh sửa của thành viên
+
+> Chức năng này được thêm vào từ phiên bản 4.3.05
+
+### Cấu hình bật/tắt, thiết lập quyền hạn
+
+Mặc định khi cài đặt, chức năng này sẽ bị tắt đi. Để bật lên quản trị tiến hành vào mục cấu hình module để check vào ô như ảnh sau và lưu lại cấu hình.
+
+![Bật/tắt chức năng kiểm duyệt thông tin sửa](/images/nukeviet4/admin/14-03-2019-10-50-59-sa.jpg)
+
+Sau khi bật tắt quản trị tiến hành thiết lập quyền hạn đối với các nhóm được phép kiểm duyệt thông tin sửa hợp lý
+
+![Thiết lập quyền hạn](/images/nukeviet4/admin/14-03-2019-10-53-28-sa.jpg)
+
+### Thực hiện kiểm duyệt
+
+Sau khi thực hiện kích hoạt và thiết lập quyền hạn, các tài khoản có quyền hạn khi đăng nhập quản trị, vào khu vực quản lý của module sẽ có thêm một chức năng kiểm duyệt thông tin. Quản trị nhấp vào đây để thực hiện các thao tác. ![Danh sách thành viên cần kiểm duyệt thông tin sửa](/images/nukeviet4/admin/15-03-2019_7-51-05_sa.jpg) Tại đây quản trị có thể chọn duyệt ngay hoặc từ chối thông tin. Quản trị cũng có thể nhấp vào tên tài khoản của thành viên để xem chi tiết các nội dung thay đổi ![Chi tiết thông tin chỉnh sửa](/images/nukeviet4/admin/15-03-2019_7-51-24_sa.jpg) Tại đây quản trị có thể duyệt, từ chối hoặc hiệu chỉnh lại các thông tin trước khi duyệt.

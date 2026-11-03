@@ -1,0 +1,88 @@
+---
+title: "Viết plugin cho NukeViet 4"
+description: "Hướng dẫn cách viết plugin cho NukeViet"
+---
+
+Hướng dẫn cách viết plugin cho NukeViet
+
+## Vị trí plugin và cách đặt tên
+
+Các pugin bao gồm hai file: File thực thi và file cấu hình đặt tên giống nhau và khác phần mở rộng. File thực thi là file .php trong khi file cấu hình là file .ini
+
+> File cấu hình chỉ có ở phiên bản NukeViet 4.3.00 trở đi, các phiên bản NukeViet 4 trước đó plugin chỉ có một file thực thi php.
+
+Plugin đặt vào thư mục `includes/plugin/`, quy ước đặt tên file bao gồm chữ cái thường và dấu gạch dưới. Ví dụ một plugin đúng chuẩn sẽ có cấu trúc như sau:
+
+- includes/plugin/rewrite_obsolute.ini
+- includes/plugin/rewrite_obsolute.php
+
+## Cách viết file cấu hình ini
+
+Có cấu trúc XML dạng như sau
+
+``` xml
+<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+    <info>
+        <name>Plugin mysql master slave</name>
+        <author>VinaDes.,Jsc</author>
+        <website>http://vinades.vn</website>
+        <description></description>
+    </info>
+    <positions>
+    <position>
+        <id>2</id>
+        <note>Trước khi gọi các module</note>
+    </position>             
+    </positions>
+</plugin>
+```
+
+Phần info là thông tin của plugin
+
+- name: Tên gọi
+- author: Tác giả
+- website: Website của tác giả hoặc plugin
+- description: Mô tả về plugin
+
+Phần positions thiết lập các vị trí được phép đặt plugin trong hệ thống. Nếu plugin được phép đặt nhiều vị trí thì chỉ ra mỗi vị trí được phép trong thẻ `position`. Trong thẻ `position` là
+
+- id vị trí theo quy ước
+- note ghi chú thêm nếu có
+
+ID vị trí theo quy ước của NukeViet như sau:
+
+- `1` Trước khi kết nối CSDL
+- `2` Trước khi gọi các module
+- `3` Trước khi website gửi nội dung tới trình duyệt
+- `4` Sau khi gọi các module
+
+## Cách viết file thực thi php
+
+File thực thi php plugin nhìn chung viết rất tự do, người lập trình cần am hiểu sâu về cấu trúc của NukeViet để xử lý tình huống.
+
+Cấu trúc cơ bản của file thực thi như sau
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC <contact@vinades.vn>
+ * @Copyright (C) 2018 VINADES.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate Mon, 29 Jan 2018 07:32:56 GMT
+ */
+
+if (!defined('NV_MAINFILE')) {
+    die('Stop!!!');
+}
+
+// Nội dung code plugin viết vào đây
+
+```
+
+## Một số chú ý
+
+- Một số biến có sẵn trong hệ thống, khi sử dụng trong pulgin nếu bị báo lỗi không tồn tại biến cần gọi global các biến này. Nguyên nhân do một số vị trí plugin được gọi ra từ trong hàm.
+- Đối với plugin ở vị trí **Trước khi website gửi nội dung tới trình duyệt** thì không còn có thể sử dụng các biến của hệ thống `$lang_module, $language_array, $nv_parse_ini_timezone, $countries, $module_info, $site_mods` do các biến này đã bị unset

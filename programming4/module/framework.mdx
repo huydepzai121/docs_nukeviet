@@ -1,0 +1,105 @@
+---
+title: "Hướng dẫn sử dụng các framework trong lập trình module"
+description: "PhpSpreadsheet là thư viện phát triển để thay thế cho phpExcel, với các tính năng thừa hưởng từ phpexcel."
+---
+
+## PhpSpreadsheet
+
+PhpSpreadsheet là thư viện phát triển để thay thế cho phpExcel, với các tính năng thừa hưởng từ phpexcel.
+
+### 1. Yêu cầu hệ thống
+
+- PHP 5.6 hoặc cao hơn
+- PHP hỗ trợ thư viện php_zip
+- PHP hỗ trợ thư viện php_xml
+- PHP hỗ trợ thư viện php_gd2
+
+### 2. Cài đặt PhpSpreadsheet
+
+Để cài đặt PhpSpreadsheet cho NukeViet bạn chỉ cần chạy lệnh
+
+``` text
+composer require phpoffice/phpspreadsheet
+```
+
+### 3. Sử dụng
+
+Tham khảo các file mẫu tại [https://github.com/PHPOffice/PhpSpreadsheet/tree/develop/samples](https://github.com/PHPOffice/PhpSpreadsheet/tree/develop/samples)
+
+### 5. Một số chú ý
+
+#### Chú ý khi xuất dữ liệu ra excel
+
+Thông thường ta chỉ cần sử dụng lệnh
+
+``` php
+$objWorksheet->setCellValue('A' . $i, $value);
+```
+
+Để ghi ra ô `'A' . $i`. Cần chú ý một số điểm sau đối với `$value`.
+
+- Nếu `$value` là kiểu số, kiểu text thông thường không có các ký tự đặc biệt ta chỉ cần xuất bình thường như trên.
+- Nếu `$value` là giá trị từ trình soạn thảo, chứa các mã html thì cần dùng hàm strip_tags để lọc bỏ các mã html
+- Nếu `$value` chứa khoảng trắng dạng ` ` ta cần chuyển thành khoảng trắng space thông thường.
+- Nếu `$value` chứa các mã html đặc biệt hãy chuyển nó sang ký tự thông thường bằng hàm `nv_unhtmlspecialchars`
+- Nếu `$value` bắt đầu bằng ký tự `=` hoặc `$value` là dạng một hàm ví dụ
+
+``` text
+$value = '=MAX(F2)';
+```
+
+Khi dùng lệnh xuất trên sẽ lỗi, cần ghi ra bằng lệnh
+
+``` php
+$objWorksheet->setCellValueExplicit('A' . $i, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+```
+
+## phpExcel
+
+> Chú ý: Hiện tại thư viện này đã dừng phát triển và chuyển sang [PhpSpreadsheet](https://github.com/PHPOffice/PHPExcel) do đó bạn nên sử dụng PhpSpreadsheet thay thế cho PHPExcel.
+
+### 1. Điều kiện sử dụng PHPExcel
+
+Để sử dụng được bộ thư viện viết bằng php này thì đòi hỏi cấu hình Server bạn phải như sau:
+
+``` text
+  PHP version 5.2.0 hoặc mới hơn
+  PHP extension php_zip enabled 
+  PHP extension php_xml enabled
+  PHP extension php_gd2 enabled
+```
+
+### 2. Cài đặt PHPExcel
+
+Mở `composer.json` ở thư mục gốc website, thêm vào mục `require` giá trị
+
+``` text
+"phpoffice/phpexcel": "1.9.x-dev"
+```
+
+> Chú ý: Hiện này nhóm phát triển phpexcel đã xóa nhánh 1.9 trên kho của họ do đó để cài đặt, bạn có thể sử dụng kho dự phòng của tác giả Phan Tấn Dũng tại [https://github.com/hoaquynhtim99/phpexcel](https://github.com/hoaquynhtim99/phpexcel) bằng cách mở `composer.json` ở thư mục gốc website, thêm vào mục `require` giá trị
+
+``` text
+"hoaquynhtim99/phpexcel": "dev-master"
+```
+
+Sau đó chạy lệnh `composer update`
+
+### 3. Sử dụng
+
+Đoạn code sau để kiểm tra thư viện và đọc file excel, tìm số dòng, số cột của file
+
+``` php
+if (!is_dir(NV_ROOTDIR . '/vendor/phpoffice/phpexcel')) {
+    trigger_error('Open composer.json, add to require "phpoffice/phpexcel": "1.9.x-dev" then run Composer Update', 256);
+}
+
+$objPHPExcel = \PHPExcel\IOFactory::load(NV_UPLOADS_REAL_DIR . "/" . $module_name . "/" . $file_name);
+$objWorksheet = $objPHPExcel->getActiveSheet();
+
+$highestRow = $objWorksheet->getHighestRow();
+// e.g. 10
+$highestColumn = $objWorksheet->getHighestColumn();
+// e.g 'F'
+$highestColumnIndex = \PHPExcel\Cell::columnIndexFromString($highestColumn);
+```

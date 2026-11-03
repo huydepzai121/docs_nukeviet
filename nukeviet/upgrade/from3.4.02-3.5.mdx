@@ -1,0 +1,749 @@
+---
+title: "Thay đổi các module"
+description: "Các thay đổi cần chỉnh sửa cho giao diện từ NukeViet 3.4.02 cho NukeViet 4.0"
+---
+
+Các thay đổi cần chỉnh sửa cho giao diện từ NukeViet 3.4.02 cho NukeViet 4.0
+
+(Bài viết đang được cập nhật)
+
+
+Nukeviet 3.5 Sẽ không sử dụng các hàm filter_text_input, filter_text_textarea, nv_editor_filter_textarea, Nên cần sửa lại tất cả các module không có trong bản nukeviet mặc định như sau
+
+### 1) Thay thế filter_text_input
+
+được thay thế bằng phương thức get_title của class Request Nếu dùng (nhiều hơn 4 thanh số đầu vào)
+
+``` php
+$inputname = filter_text_input( $inputname, 'get,post', $default, $specialchars, $maxlength, $preg_replace )
+```
+
+Cần sửa lại thành
+
+``` php
+$inputname = nv_substr( $nv_Request->get_title($inputname, 'get,post', $default, $specialchars, $preg_replace), 0, $maxlength);
+```
+
+**Nếu dùng (từ 4 thanh số đầu vào trờ xuống)**
+
+``` php
+$inputname = filter_text_input( $inputname, 'get,post', $default, $specialchars );
+```
+
+Cần sửa lại thành
+
+``` php
+$inputname = $nv_Request->get_title($inputname, 'get,post', $default, $specialchars);
+```
+
+### 2) Thay thế filter_text_textarea
+
+được thay thế bằng phương thức get_textarea của class Request
+
+**Nếu dùng không có trình soạn thảo**
+
+``` php
+$inputname = filter_text_textarea( $inputname, $default, $allowed_html_tags, $save = false, $nl2br_replacemen )
+```
+
+Cần sửa lại thành
+
+``` php
+$inputname = $nv_Request->get_textarea( $inputname, $default, $allowed_html_tags, $save)
+```
+
+**Nếu dùng có trình soạn thảo**
+
+``` php
+$inputname = filter_text_textarea( $inputname, $default, $allowed_html_tags, $save, $nl2br_replacemen )
+```
+
+Cần sửa lại thành
+
+``` php
+$inputname = $nv_Request->get_editor( $inputname, $default, $allowed_html_tags, $save)
+```
+
+Tức cần thay thế filter_text_textarea bằng \$nv_Request-\>get_editor, hoặc \$nv_Request-\>get_textarea
+
+### 3) Thay thế nv_editor_filter_textarea
+
+được thay thế bằng phương thức get_textarea của class Request Nếu dùng
+
+``` php
+$inputname = nv_editor_filter_textarea( $inputname, $default, $allowed_html_tags, $save, $nl2br_replacemen )
+```
+
+Cần sửa lại thành
+
+``` php
+$inputname = $nv_Request->get_editor( $inputname, $default, $allowed_html_tags, $save)
+```
+
+Tức cần thay thế nv_editor_filter_textarea bằng \$nv_Request-\>get_editor
+
+### 4) Viết lại các phàn kết nối dữ liệu
+
+sử dụng PDO thay cho class db của Nukeviet 3.4
+
+Các thay đổi trên có thể sử dụng module_c34to40 để nâng cấp module [https://github.com/nukeviet/module_c34to40](https://github.com/nukeviet/module_c34to40)
+
+### 5) Thay thế các thư viện Javascript
+
+Thay thế thư viện autocomplete: /js/jquery/jquery.autocomplete.js bằng thư viện ui autocomplete: /js/ui/jquery.ui.autocomplete.min.js
+
+Thay thế thư viện popcalendar: /js/popcalendar/popcalendar.js bằng thư viện ui datepicker: /js/ui/jquery.ui.datepicker.min.js
+
+# Giao diện Site
+
+## 1) Thay đổi cronjobs
+
+Tìm và xóa đoạn sau trong file /themes/my_theme/layout/footer.tpl
+
+``` html
+<div id="run_cronjobs" style="visibility: hidden; display: none;">
+    <img alt="" title="" src="{THEME_IMG_CRONJOBS}" width="1" height="1" />
+</div>
+```
+
+Tìm và xóa đoạn sau trong file /themes/my_theme/theme.php
+
+``` php
+$xtpl->assign( 'THEME_IMG_CRONJOBS', NV_BASE_SITEURL . "index.php?second=cronjobs&amp;p=" . nv_genpass() );
+```
+
+## 2) Thay đổi bộ gõ mudim
+
+Tìm và xóa đoạn sau trong file /themes/my_theme/theme.php
+
+``` php
+if( NV_LANG_INTERFACE == 'vi' )
+{
+    $theme_footer_js .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/mudim.js\"></script>";
+}
+```
+
+(Xóa tất cả các chỗ có gắn js/mudim.js ngoại trừ function nv_change_buffer và /install/tpl/step6.tpl)
+
+## 3) Thay đổi giao diện để hỗ trợ hiển thị logo flash
+
+Tìm file nếu có: themes/my_theme/system/info_die.tpl Tìm đến đoạn:
+
+``` html
+<a href="{HOME_LINK}"><img border="0" src="{LOGO}" width="{WIDTH}" height="{HEIGHT}" alt="" /></a>
+```
+
+Thay bằng
+
+``` html
+<!-- BEGIN: image -->
+<a href="{HOME_LINK}"><img border="0" src="{LOGO}" width="{WIDTH}" height="{HEIGHT}" alt="" /></a>
+<!-- END: image -->
+<!-- BEGIN: swf -->
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="{WIDTH}" height="{HEIGHT}" >
+    <param name="wmode" value="transparent" />
+    <param name="movie" value="{LOGO}" />
+    <param name="quality" value="high" />
+    <param name="menu" value="false" />
+    <param name="seamlesstabbing" value="false" />
+    <param name="allowscriptaccess" value="samedomain" />
+    <param name="loop" value="true" />
+    <!--[if !IE]> <-->
+    <object type="application/x-shockwave-flash" width="{WIDTH}" height="{HEIGHT}" data="{LOGO}" >
+        <param name="wmode" value="transparent" />
+        <param name="pluginurl" value="http://www.adobe.com/go/getflashplayer" />
+        <param name="loop" value="true" />
+        <param name="quality" value="high" />
+        <param name="menu" value="false" />
+        <param name="seamlesstabbing" value="false" />
+        <param name="allowscriptaccess" value="samedomain" />
+    </object>
+    <!--> <![endif]-->
+</object>
+<!-- END: swf -->
+```
+
+Tìm đến đoạn:
+
+``` html
+<a href="{HOME_LINK}"><font color="#616161">{GO_HOMEPAGE}</font></a>
+```
+
+Thay bằng
+
+``` html
+<!-- BEGIN: sitelink -->
+<a href="{SITE_LINK}"><font color="#616161">{GO_SITEPAGE}</font></a>
+<!-- END: sitelink -->
+```
+
+**Tìm file nếu có: themes/my_theme/system/login.tp** Tìm đến đoạn:
+
+``` html
+<a title="{SITE_NAME}" href="{NV_BASE_SITEURL}"><img alt="{SITE_NAME}" src="{LOGO_SRC}" width="{LOGO_WIDTH}" height="{LOGO_HEIGHT}" /></a>
+```
+
+Thay bằng
+
+``` html
+<!-- BEGIN: image -->
+<a title="{SITE_NAME}" href="{NV_BASE_SITEURL}"><img border="0" src="{LOGO}" width="{WIDTH}" height="{HEIGHT}" alt="{SITE_NAME}" /></a>
+<!-- END: image -->
+<!-- BEGIN: swf -->
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="{WIDTH}" height="{HEIGHT}" >
+    <param name="wmode" value="transparent" />
+    <param name="movie" value="{LOGO}" />
+    <param name="quality" value="high" />
+    <param name="menu" value="false" />
+    <param name="seamlesstabbing" value="false" />
+    <param name="allowscriptaccess" value="samedomain" />
+    <param name="loop" value="true" />
+    <!--[if !IE]> <-->
+    <object type="application/x-shockwave-flash" width="{WIDTH}" height="{HEIGHT}" data="{LOGO}" >
+        <param name="wmode" value="transparent" />
+        <param name="pluginurl" value="http://www.adobe.com/go/getflashplayer" />
+        <param name="loop" value="true" />
+        <param name="quality" value="high" />
+        <param name="menu" value="false" />
+        <param name="seamlesstabbing" value="false" />
+        <param name="allowscriptaccess" value="samedomain" />
+    </object>
+    <!--> <![endif]-->
+</object>
+<!-- END: swf -->
+```
+
+## 4) Thay thế jquery.validate
+
+Tìm tất cả các chỗ có jquery.validate để thay thế Nếu mã html trước khi thay thế là
+
+``` html
+<script type="text/javascript" src="/js/jquery/jquery.validate.js"></script>
+```
+
+Cần sửa lại thành
+
+``` html
+<script type="text/javascript" src="/js/jquery/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/language/jquery.validator-vi.js"></script>
+```
+
+Trong đó vi: Là ngôn ngữ đang sử dụng của site
+
+## 5) Cập nhật thêm trạng thái cho module News.
+
+Nếu theme không sử dụng default hoặc modern thì mở file content.tpl của themes/ten-theme/modules/news (nếu có) tìm:
+
+``` html
+<input type="hidden" name="checkss" value="{CHECKSS}" />
+```
+
+Thêm vào sau đoạn:
+
+``` html
+<input type="submit" value="{LANG.save_draft}" name="status4">
+```
+
+## 6) Sửa module news để dùng ảnh thumb do module upload
+
+tạo ra làm ảnh thumb cho bài viết, cần viết lại tất cả các block của module này
+
+Thí dụ lúc trước xác đụng ảnh thumb theo cách
+
+``` php
+
+$array_img = ( ! empty( $item['homeimgthumb'] ) ) ? explode( "|", $item['homeimgthumb'] ) : $array_img = array( "", "" );
+
+if( $array_img[0] != "" and file_exists( NV_ROOTDIR . '/' . NV_FILES_DIR . '/' . $module_name . '/' . $array_img[0] ) )
+{
+    $item['imghome'] = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_name . '/' . $array_img[0];
+}
+elseif( nv_is_url( $item['homeimgfile'] ) )
+{
+    $item['imghome'] = $item['homeimgfile'];
+}
+elseif( $item['homeimgfile'] != "" and file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_name . '/' . $item['homeimgfile'] ) )
+{
+    $item['imghome'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_name . '/' . $item['homeimgfile'];
+}
+else
+{
+    $item['imghome'] = "";
+}
+```
+
+Giờ cần sửa lại code theo cách
+
+``` php
+if( $item['homeimgthumb'] == 1 ) //image thumb
+{
+    $item['imghome'] = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_name . '/' . $item['homeimgfile'];
+}
+elseif( $item['homeimgthumb'] == 2 ) //image file
+{
+    $item['imghome'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_name . '/' . $item['homeimgfile'];
+}
+elseif( $item['homeimgthumb'] == 3 ) //image url
+{
+    $item['imghome'] = $item['homeimgfile'];
+}
+else //no image
+{
+    $item['imghome'] = NV_BASE_SITEURL . 'themes/' . $global_config['site_theme'] . '/images/no_image.gif';
+}
+```
+
+Tool update, CSDL, ảnh của module được viết tại file update3.php
+
+## 7) Sửa module download
+
+để dùng ảnh thumb do module upload tạo ra làm ảnh thumb cho bài viết, cần viết lại tất cả các block của module này nếu sử dụng ảnh minh họa Ảnh minh họa = NV_BASE_SITEURL . NV_FILES_DIR . \$row\['fileimage'\]
+
+Sửa các file /themes/my_theme/modules/download/main_page.tpl /themes/my_theme/modules/download/viewcat_page.tpl
+
+tìm và thay thế
+
+``` html
+itemcat.fileimage.orig_src
+```
+
+hoặc
+
+``` html
+itemcat.fileimage.src
+```
+
+bằng
+
+``` html
+itemcat.imagesrc
+```
+
+tìm và thay thế
+
+``` html
+listpostcat.fileimage.orig_src
+```
+
+bằng
+
+``` html
+listpostcat.imagesrc
+```
+
+Xóa thư mục /uploads/download/thumb/
+
+## 8) Module bannner
+
+Tìm và thay thế trong file /themes/my_theme/blocks/global.banners.tpl
+
+``` html
+onclick="this.target='_blank'"
+```
+
+Bằng
+
+``` html
+onclick="this.target='{DATA.target}'"
+```
+
+## 9) Tùy biến trường dữ liệu thành viên
+
+Sửa file themes/my_theme/modules/users/register.tpl Tìm đến dòng
+
+``` html
+<!-- BEGIN: captcha -->
+```
+
+Thêm lên trên đoạn sau:
+
+``` html
+<!-- BEGIN: field -->
+<!-- BEGIN: loop -->
+<dl class="clearfix">
+    <dt class="fl">
+        <label>{FIELD.title}
+            <!-- BEGIN: required -->
+            <span class="error">(*)</span>
+            <!-- END: required -->
+        </label>
+        <br>
+        <i>{FIELD.description}</i>
+    </dt>
+    <dd class="fr">
+        <!-- BEGIN: textbox -->
+        <input class="{FIELD.required} {FIELD.class}" type="text" name="custom_fields[{FIELD.field}]" value="{FIELD.value}"/>
+        <!-- END: textbox -->
+        <!-- BEGIN: date -->
+        <input class="datepicker {FIELD.required} {FIELD.class}" type="text" name="custom_fields[{FIELD.field}]" value="{FIELD.value}"/>
+        <!-- END: date -->
+        <!-- BEGIN: textarea --><textarea name="custom_fields[{FIELD.field}]" class="{FIELD.class}">{FIELD.value}</textarea>
+        <!-- END: textarea -->
+        <!-- BEGIN: editor -->
+        {EDITOR}
+        <!-- END: editor -->
+        <!-- BEGIN: select -->
+        <select name="custom_fields[{FIELD.field}]" class="{FIELD.class}">
+            <!-- BEGIN: loop -->
+            <option value="{FIELD_CHOICES.key}" {FIELD_CHOICES.selected}>{FIELD_CHOICES.value}</option>
+            <!-- END: loop -->
+        </select>
+        <!-- END: loopselect -->
+        <!-- BEGIN: radio -->
+        <label for="lb_{FIELD_CHOICES.id}"> <input type="radio" name="custom_fields[{FIELD.field}]" value="{FIELD_CHOICES.key}" id="lb_{FIELD_CHOICES.id}" class="{FIELD.class}" {FIELD_CHOICES.checked}> {FIELD_CHOICES.value} </label>
+        <!-- END: radio -->
+        <!-- BEGIN: checkbox -->
+        <label for="lb_{FIELD_CHOICES.id}"> <input type="checkbox" name="custom_fields[{FIELD.field}][]" value="{FIELD_CHOICES.key}" id="lb_{FIELD_CHOICES.id}" class="{FIELD.class}" {FIELD_CHOICES.checked}> {FIELD_CHOICES.value} </label>
+        <!-- END: checkbox -->
+        <!-- BEGIN: multiselect -->
+        <select name="custom_fields[{FIELD.field}][]" multiple="multiple" class="{FIELD.class}">
+            <!-- BEGIN: loop -->
+            <option value="{FIELD_CHOICES.key}" {FIELD_CHOICES.selected}>{FIELD_CHOICES.value}</option>
+            <!-- END: loop -->
+        </select>
+        <!-- END: multiselect -->
+    </dd>
+</dl>
+<!-- END: loop -->
+<!-- END: field -->
+```
+
+Sửa file themes/my_theme/modules/users/info.tpl Tìm và xóa đoạn sau: (Liên quan đến: website, address, yahoo, phone, fax, mobile)
+
+``` html
+<dl class="clearfix">
+    <dt class="fl">
+        <label>
+            {LANG.website}
+        </label>
+    </dt>
+    <dd class="fl">
+        <input type="text" class="input" name="website" value="{DATA.website}" maxlength="255" />
+    </dd>
+</dl>
+<dl class="clearfix">
+    <dt class="fl">
+        <label>
+            {LANG.address}
+        </label>
+    </dt>
+    <dd class="fl">
+        <input type="text" class="input" name="address" value="{DATA.address}" maxlength="255" />
+    </dd>
+</dl>
+<dl class="clearfix">
+    <dt class="fl">
+        <label>
+            {LANG.yahoo}
+        </label>
+    </dt>
+    <dd class="fl">
+        <input type="text" class="input" name="yim" value="{DATA.yim}" maxlength="100" />
+    </dd>
+</dl>
+<dl class="clearfix">
+    <dt class="fl">
+        <label>
+            {LANG.phone}
+        </label>
+    </dt>
+    <dd class="fl">
+        <input type="text" class="input" name="telephone" value="{DATA.telephone}" maxlength="100" />
+    </dd>
+</dl>
+<dl class="clearfix">
+    <dt class="fl">
+        <label>
+            {LANG.fax}
+        </label>
+    </dt>
+    <dd class="fl">
+        <input type="text" class="input" name="fax" value="{DATA.fax}" maxlength="100" />
+    </dd>
+</dl>
+<dl class="clearfix">
+    <dt class="fl">
+        <label>
+            {LANG.mobile}
+        </label>
+    </dt>
+    <dd class="fl">
+        <input type="text" class="input" name="mobile" value="{DATA.mobile}" maxlength="100" />
+    </dd>
+</dl>
+```
+
+Tìm đến đoạn trước input submit
+
+``` html
+    </div>
+    <div style="text-align:center">
+        <input type="hidden" name="checkss" value="{DATA.checkss}" />
+        <input name="submit" type="submit" class="submit" value="{LANG.editinfo_confirm}" />
+    </div>
+</form>
+```
+
+Thêm lên trên đoạn sau
+
+``` html
+<!-- BEGIN: field -->
+<!-- BEGIN: loop -->
+<dl class="clearfix">
+    <dt class="fl">
+        <label>{FIELD.title}
+            <!-- BEGIN: required -->
+            <span class="error">(*)</span>
+            <!-- END: required -->
+        </label>
+        <br>
+        <i>{FIELD.description}</i>
+    </dt>
+    <dd class="fr">
+        <!-- BEGIN: textbox -->
+        <input class="{FIELD.required} {FIELD.class}" type="text" name="custom_fields[{FIELD.field}]" value="{FIELD.value}"/>
+        <!-- END: textbox -->
+        <!-- BEGIN: date -->
+        <input class="datepicker {FIELD.required} {FIELD.class}" type="text" name="custom_fields[{FIELD.field}]" value="{FIELD.value}"/>
+        <!-- END: date -->
+        <!-- BEGIN: textarea --><textarea name="custom_fields[{FIELD.field}]" class="{FIELD.class}">{FIELD.value}</textarea>
+        <!-- END: textarea -->
+        <!-- BEGIN: editor -->
+        {EDITOR}
+        <!-- END: editor -->
+        <!-- BEGIN: select -->
+        <select name="custom_fields[{FIELD.field}]" class="{FIELD.class}">
+            <!-- BEGIN: loop -->
+            <option value="{FIELD_CHOICES.key}" {FIELD_CHOICES.selected}>{FIELD_CHOICES.value}</option>
+            <!-- END: loop -->
+        </select>
+        <!-- END: loopselect -->
+        <!-- BEGIN: radio -->
+        <label for="lb_{FIELD_CHOICES.id}"> <input type="radio" name="custom_fields[{FIELD.field}]" value="{FIELD_CHOICES.key}" id="lb_{FIELD_CHOICES.id}" class="{FIELD.class}" {FIELD_CHOICES.checked}> {FIELD_CHOICES.value} </label>
+        <!-- END: radio -->
+        <!-- BEGIN: checkbox -->
+        <label for="lb_{FIELD_CHOICES.id}"> <input type="checkbox" name="custom_fields[{FIELD.field}][]" value="{FIELD_CHOICES.key}" id="lb_{FIELD_CHOICES.id}" class="{FIELD.class}" {FIELD_CHOICES.checked}> {FIELD_CHOICES.value} </label>
+        <!-- END: checkbox -->
+        <!-- BEGIN: multiselect -->
+        <select name="custom_fields[{FIELD.field}][]" multiple="multiple" class="{FIELD.class}">
+            <!-- BEGIN: loop -->
+            <option value="{FIELD_CHOICES.key}" {FIELD_CHOICES.selected}>{FIELD_CHOICES.value}</option>
+            <!-- END: loop -->
+        </select>
+        <!-- END: multiselect -->
+    </dd>
+</dl>
+<!-- END: loop -->
+<!-- END: field -->
+```
+
+Sửa file themes/my_theme/modules/users/userinfo.tpl
+
+Tìm và xóa đoạn sau: (Liên quan đến: website, address, yahoo, phone, fax, mobile)
+
+``` html
+    <dl class="clearfix">
+       <dt class="fl">{LANG.address}:</dt>
+       <dd class="fl">{USER.location}</dd>
+    </dl>
+    <dl class="clearfix">
+       <dt class="fl">{LANG.website}:</dt>
+       <dd class="fl">{USER.website}</dd>
+    </dl>
+    <dl class="clearfix">
+       <dt class="fl">{LANG.yahoo}:</dt>
+       <dd class="fl">{USER.yim}</dd>
+    </dl>
+    <dl class="clearfix">
+       <dt class="fl">{LANG.phone}:</dt>
+       <dd class="fl">{USER.telephone}</dd>
+    </dl>
+    <dl class="clearfix">
+       <dt class="fl">{LANG.fax}:</dt>
+       <dd class="fl">{USER.fax}</dd>
+    </dl>
+    <dl class="clearfix">
+       <dt class="fl">{LANG.mobile}:</dt>
+       <dd class="fl">{USER.mobile}</dd>
+    </dl>
+```
+
+## 10) Bỏ các giới hạn ký tự trong các formlogin
+
+(bởi các giá trị này có thể thay đổi, làm các tài khoản cũ không đăng nhập được) Trong file themes/my_theme/modules/users/block.login.tpl, /themes/my_theme/modules/users/login.tpl tìm và xóa các đoạn sau:
+
+``` text
+maxlength="{NICK_MAXLENGTH}"
+```
+
+``` text
+maxlength="{PASS_MAXLENGTH}"
+```
+
+# Giao diện Admin Site
+
+## 1) Bỏ Số lần truy cập CSDL
+
+Sửa file /themes/admin_my_theme/system/main.tpl
+
+Sửa file /themes/admin_my_theme/theme.php
+
+## 2) Thay đổi bộ gõ mudim
+
+Tìm và xóa đoạn sau trong file /themes/admin_my_theme/theme.php
+
+``` php
+if( NV_LANG_INTERFACE == 'vi' and NV_LANG_DATA == 'vi' )
+{
+    $xtpl->parse( 'main.nv_if_mudim' );
+}
+```
+
+Tìm và xóa đoạn sau trong file /themes/admin_my_theme/system/footer.tpl
+
+``` html
+<!-- BEGIN: nv_if_mudim -->
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/mudim.js"></script>
+<!-- END: nv_if_mudim -->
+```
+
+## 3) Thay đổi giao diện để hỗ trợ hiển thị logo flash
+
+Tìm file nếu có: themes/my_theme/system/info_die.tpl Tìm đến đoạn:
+
+``` html
+<a href="{HOME_LINK}"><img border="0" src="{LOGO}" width="{WIDTH}" height="{HEIGHT}" alt="" /></a>
+```
+
+Thay bằng
+
+``` html
+<!-- BEGIN: image -->
+<a href="{HOME_LINK}"><img border="0" src="{LOGO}" width="{WIDTH}" height="{HEIGHT}" alt="" /></a>
+<!-- END: image -->
+<!-- BEGIN: swf -->
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="{WIDTH}" height="{HEIGHT}" >
+    <param name="wmode" value="transparent" />
+    <param name="movie" value="{LOGO}" />
+    <param name="quality" value="high" />
+    <param name="menu" value="false" />
+    <param name="seamlesstabbing" value="false" />
+    <param name="allowscriptaccess" value="samedomain" />
+    <param name="loop" value="true" />
+    <!--[if !IE]> <-->
+    <object type="application/x-shockwave-flash" width="{WIDTH}" height="{HEIGHT}" data="{LOGO}" >
+        <param name="wmode" value="transparent" />
+        <param name="pluginurl" value="http://www.adobe.com/go/getflashplayer" />
+        <param name="loop" value="true" />
+        <param name="quality" value="high" />
+        <param name="menu" value="false" />
+        <param name="seamlesstabbing" value="false" />
+        <param name="allowscriptaccess" value="samedomain" />
+    </object>
+    <!--> <![endif]-->
+</object>
+<!-- END: swf -->
+```
+
+Tìm đến đoạn:
+
+``` html
+<a href="{HOME_LINK}"><font color="#616161">{GO_HOMEPAGE}</font></a>
+```
+
+Thay bằng
+
+``` html
+<!-- BEGIN: sitelink -->
+<a href="{SITE_LINK}"><font color="#616161">{GO_SITEPAGE}</font></a>
+<!-- END: sitelink -->
+```
+
+**Tìm file nếu có: themes/my_theme/system/login.tp** Tìm đến đoạn:
+
+``` html
+<a title="{SITE_NAME}" href="{NV_BASE_SITEURL}"><img alt="{SITE_NAME}" src="{LOGO_SRC}" width="{LOGO_WIDTH}" height="{LOGO_HEIGHT}" /></a>
+```
+
+Thay bằng
+
+``` html
+<!-- BEGIN: image -->
+<a title="{SITE_NAME}" href="{NV_BASE_SITEURL}"><img border="0" src="{LOGO}" width="{WIDTH}" height="{HEIGHT}" alt="{SITE_NAME}" /></a>
+<!-- END: image -->
+<!-- BEGIN: swf -->
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="{WIDTH}" height="{HEIGHT}" >
+    <param name="wmode" value="transparent" />
+    <param name="movie" value="{LOGO}" />
+    <param name="quality" value="high" />
+    <param name="menu" value="false" />
+    <param name="seamlesstabbing" value="false" />
+    <param name="allowscriptaccess" value="samedomain" />
+    <param name="loop" value="true" />
+    <!--[if !IE]> <-->
+    <object type="application/x-shockwave-flash" width="{WIDTH}" height="{HEIGHT}" data="{LOGO}" >
+        <param name="wmode" value="transparent" />
+        <param name="pluginurl" value="http://www.adobe.com/go/getflashplayer" />
+        <param name="loop" value="true" />
+        <param name="quality" value="high" />
+        <param name="menu" value="false" />
+        <param name="seamlesstabbing" value="false" />
+        <param name="allowscriptaccess" value="samedomain" />
+    </object>
+    <!--> <![endif]-->
+</object>
+<!-- END: swf -->
+```
+
+## 4) Bỏ các giới hạn ký tự trong các formlogin
+
+(bởi các giá trị này có thể thay đổi, làm các tài khoản cũ không đăng nhập được) Trong file themes/my_theme/modules/users/block.login.tpl, /themes/my_theme/modules/users/login.tpl tìm và xóa các đoạn sau:
+
+``` text
+maxlength="{NICKMAX}"
+```
+
+``` text
+maxlength="{PASSMAX}"
+```
+
+## 5) Thay thế jquery.validate
+
+Tìm tất cả các chỗ có jquery.validate để thay thế Nếu mã html trước khi thay thế là
+
+``` html
+<script type="text/javascript" src="/js/jquery/jquery.validate.js"></script>
+```
+
+Cần sửa lại thành
+
+``` html
+<script type="text/javascript" src="/js/jquery/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/language/jquery.validator-vi.js"></script>
+```
+
+Trong đó vi: Là ngôn ngữ đang sử dụng của site
+
+## 5) Các chỉnh sửa khác cần thao tác
+
+1\) Thêm chức năng Ping bài viết qua RPC - Chức năng này chỉ hoạt động nếu máy chủ support cURL cho php - Vào menu Công cụ web -\>Cấu hình dịch vụ PING để chọn các dịch vụ, sau đó lưu lại cấu hình đó. - Khi thêm hoặc sửa bài viết, nếu bài viết ở chế độ kích hoạt, hệ thống sẽ chuyển đến trang Dịch vụ PING và ping tự động bài viết. - Để bổ sung proxies hãy sửa file data\proxies.php, theo hướng dẫn trong file đó.
+
+2\) xóa popcalendar.js (bản nâng cấp không xóa js này, bởi nhiều module khách có thể sử dụng )
+
+3\) Quản lý menu ngang trong admin: - Có thể bổ sung module mới vào menu, (Module đưa lên menu ngan không bắt buộc là module hệ thống) - Phân quyền mỗi memu nhóm quản trị nào được dùng - Sắp xếp vị trí hiển thị các module
+
+3\) Cấu hình thời gian lặp lại quá trình backup CSDL
+
+4\) Thêm chức năng bỏ tên Module (mặc định) trong url
+
+5\) Kiểm tra lại link các trang web, các link để rewite được cần tuân theo các nguyên tắc sau - Sử dụng nháy đôi ("), trong việc viết mã html. - Các link để được rewite theo các dạng sau /index.php?language=\[ngôn ngữ\] /index.php?language=\[ngôn ngữ\]&nv=\[Tên module\] /index.php?language=\[ngôn ngữ\]&nv=\[Tên module\]&op=\[Tên op, các biến khác nên truyền hết vào biến này, cách nhau bởi dấu /\] /index.php?language=\[ngôn ngữ\]&nv=\[Tên module\]&op=\[Tên op, các biến khác nên truyền hết vào biến này, cách nhau bởi dấu /\].html
+
+\- Trong một số trường hợp link không rewite được (Do trong mã html không có dấu nháy đôi), cần gọi hàn xử lý như sau \$link = '/index.php?language=\[ngôn ngữ\]&nv=\[Tên module\]' \$link = nv_url_rewrite( \$link, true );
+
+6\) Hướng dẫn nâng cấp
+
+\- Download gói nâng cấp:
+
+\- Upload gói nân cấp theo đúng cấp trúc của nukeviet hoặc dùng chương trình cài đặt module của NukeViet
+
+\- Đăng nhập vào Admin với quyền quản trị tối cao, truy cập module Thông Tin và click vào link Thực hiện cập nhật để tiến hành nâng cấp, làm theo hướng dẫn

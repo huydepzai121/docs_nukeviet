@@ -1,0 +1,100 @@
+---
+title: "Tài liệu lập trình NukeViet 3"
+description: "Chú ý: Phiên bản NukeViet 3 đã ngừng phát triển. Vui lòng xem tài liệu Tài liệu lập trình NukeViet 4 là bản hiện tại của NukeViet."
+---
+
+Chú ý: Phiên bản NukeViet 3 đã ngừng phát triển. Vui lòng xem tài liệu [Tài liệu lập trình NukeViet 4](/technical_manual4) là bản hiện tại của NukeViet.
+
+1.  Tổng quan về cấu trúc NukeViet
+    1.  Các khái niệm
+        1.  [Theme](/nukeviet/concepts/theme)
+        2.  [Module](/nukeviet/concepts/module)
+        3.  [Block](/nukeviet/concepts/block)
+        4.  [Cronjobs](/nukeviet/concepts/cronjobs)
+    2.  [Cấu trúc file và folder](/programming/structure)
+        1.  Mô tả các file trong thư mục gốc
+        2.  Mô tả các thư mục
+2.  Thiết lập nâng cao cho hệ thống NukeViet
+    1.  [Thiết lập các giá trị mặc định](/nukeviet/advanced_setting/constants)
+    2.  [Thiết lập các nhà cung cấp OpenID](/nukeviet/advanced_setting/openid)
+    3.  [Kết nối vào cổng OpenID do NukeViet.VN cung cấp](/programming/connect_nukeviet_openid)
+    4.  [Thiết lập một số chức năng bảo mật](/nukeviet/advanced_setting/security)
+        1.  [Chống flood (chống lụt dữ liệu)](/nukeviet/advanced_setting/security)
+        2.  [Chống quá tải máy chủ](/nukeviet/advanced_setting/security)
+        3.  [Kiểm tra và chặn các máy tính dùng proxy](/nukeviet/advanced_setting/security)
+        4.  [Kiểm tra và chuyển hướng các REFERER bên ngoài đến trang chủ](/nukeviet/advanced_setting/security)
+        5.  [Sao lưu cơ sở dữ liệu](/nukeviet/advanced_setting/security)
+        6.  [Kiểm tra an ninh khu vực admin](/nukeviet/advanced_setting/security)
+3.  Các hàm được xây dựng sẵn, các class, các tài nguyên khác
+    1.  [Các hàm được xây dựng trong NukeViet](/programming/function)
+    2.  [Các biến dùng chung](/programming/variables)
+    3.  [Các hằng](/programming/other_constants)
+    4.  [Các class dùng trong lập trình NukeViet](/programming/class)
+        1.  Các class được gọi sẵn
+        2.  Các class có trong NukeViet thường được dùng
+    5.  [Thư viện javascript](/programming/lib)
+4.  [Lập trình NukeViet](/programming)
+    1.  [Quy định chung](/programming/rule)
+        1.  [Quy ước chính tả tiếng Việt](/rules/spelling)
+        2.  [Thuật ngữ Công nghệ thông tin trong tiếng Việt](/rules/glossary)
+    2.  [Themes](/programming/theme)
+        1.  Tổng quan về theme của NukeViet
+        2.  Xây dựng giao diện cơ bản
+        3.  Xây dựng giao diện nâng cao
+        4.  [Xây dựng giao diện cho mobile](/programming/mobile_theme)
+    3.  [Modules](/programming/module)
+        1.  Tổng quan về Module của NukeViet
+        2.  Viết module đơn giản
+        3.  Viết module nâng cao
+        4.  [Lấy giá trị của biến khi submit form trong NukeViet 3.4](/programming/module/submit_form)
+
+``` text
+  - [[/programming/block|Blocks]]
+    - Tổng quan về block
+    - Viết block module
+    - Viết block global
+  - [[/programming/cronjob|Cronjobs (Tác vụ tự động)]]
+    - Tổng quan về cronjob
+    - Viết cronjob
+  - [[/programming/note|Một số lưu ý]]
+  - Làm việc với ngôn ngữ và dịch thuật hệ thống NukeViet
+    - [[/nukeviet/concepts/language|Khái niệm ngôn ngữ giao diện và ngôn ngữ cơ sở dữ liệu]]
+    - [[/programming/multi_language|Lựa chọn phải pháp đa ngôn ngữ]]
+    - [[/programming/translate|Dịch thuật ngôn ngữ giao diện cho hệ thống]]
+  - [[/programming/moduleupdate|Cách nâng cấp module]]
+  - [[/programming/optimize|Tối ưu khi lập trình]]
+- [[/nukeviet/security|Bảo mật khi vận hành hệ thống NukeViet]]
+  - Cập nhật phiên bản mới nhất 
+  - Hạn chế sử dụng các module và block 
+  - Chặn truy cập thư mục không được phép 
+  - Vấn đề Chmod 
+  - Thông tin Admin 
+    - Đổi tên thư mục admin
+    - Bật chế độ captcha trong khi đăng nhập
+    - Bật chế độ Kiểm tra IP khi truy cập khu vực admin
+    - Bảo vệ thư mục admin bằng chức năng bảo vệ thư mục của hosting
+  - Giấu file config.php 
+  - Thay đổi đường dẫn tới các thư mục hệ thống 
+  - Mã hoá file cấu hình hệ thống 
+  - Cập nhật thông tin từ diễn đàn nukeviet.vn 
+- Làm việc với kho code của NukeViet
+  - [[/programming/vcs|Hệ thống quản lý phiên bản]]
+  - [[/programming/vcs/subversion|Làm việc với hệ thống quản lý phiên bản Subversion (SVN) của Google code]]
+  - [[/programming/vcs/git|Làm việc với hệ thống quản lý phiên bản Git của github]]
+- [[/programming/optimize_javascript|Hướng dẫn tối ưu tập tin JavaScript trong mã nguồn mở NukeViet 3.x]]
+  - [[/programming/optimize_javascript|Các kiểu tối ưu JavaScript]]
+    - [[/programming/optimize_javascript|Kiểu RegExp]]
+    - [[/programming/optimize_javascript|Mã hóa kiểu Gzip nửa vời]]
+    - [[/programming/optimize_javascript|Giảm kích thước tập tin dựa trên công nghệ tối ưu cấu trúc mã nguồn và rút gọn các ký tự.]]
+  - [[/programming/optimize_javascript|Cách sử dụng Google Closure Compiler tối ưu JavaScript cho NukeViet 3]]
+    - [[/programming/optimize_javascript|Tối ưu cho các lập trình viên.]]
+    - [[/programming/optimize_javascript|Tối ưu cho khách truy cập web.]]
+- Các công cụ dành cho người phát triển NukeViet
+  - [[/programming/nvtools/module|Công cụ tạo module]]
+  - [[/programming/nvtools/theme|Công cụ tạo gói giao diện mới]]
+  - [[/programming/nvtools/jscompiler|Công cụ nén JavaScript]]
+  - [[/programming/nvtools/csscompiler|Công cụ nén CSS]]
+  - [[/programming/nvtools/translate|Công cụ dịch thuật dành cho NukeViet]]
+```
+
+![Lượt truy cập của bạn](http://hostingtoolbox.com/bin/Count.cgi)

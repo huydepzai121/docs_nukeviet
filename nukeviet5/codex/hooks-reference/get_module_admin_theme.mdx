@@ -1,0 +1,34 @@
+---
+title: "get_module_admin_theme"
+description: "Sau khi xác định giao diện của module trong admin. Dùng để tùy chỉnh giao diện admin của từng module theo ý thích."
+---
+
+Sau khi xác định giao diện của module trong admin. Dùng để tùy chỉnh giao diện admin của từng module theo ý thích.
+
+### Tham số
+
+| STT | Tên biến                          | Kiểu dữ liệu | Ghi chú |
+|-----|:----------------------------------|:-------------|:--------|
+| 0   | \$global_config\['module_theme'\] |              |         |
+| 1   | \$module_name                     |              |         |
+| 2   | \$module_info                     |              |         |
+| 3   | \$op                              |              |         |
+
+### Dữ liệu trả về
+
+Biến `$module_theme`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_module_admin_theme', $priority, function($vars) {
+    $module_theme = $vars[0];
+    $module_name = $vars[1];
+    $module_info = $vars[2];
+    $op = $vars[3];
+
+    // Thực hiện code hook tại đây...
+
+    return $module_theme;
+});
+```

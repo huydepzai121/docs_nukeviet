@@ -1,0 +1,30 @@
+---
+title: "modify_sso_login_url"
+description: "Hiệu chỉnh link đăng nhập SSO, khi khách viếng thăm chưa đăng nhập."
+---
+
+Hiệu chỉnh link đăng nhập SSO, khi khách viếng thăm chưa đăng nhập.
+
+Bổ sung từ phiên bản: **5.0.00**.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú                           |
+|-----|:---------|:-------------|:----------------------------------|
+| 0   | \$url    | string       | Url đăng nhập lúc chưa hiệu chỉnh |
+
+### Dữ liệu trả về
+
+Biến `$url`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'modify_sso_login_url', $priority, function($vars) {
+    $url = $vars[0];
+
+    // Thực hiện code hook tại đây...
+
+    return $url;
+});
+```

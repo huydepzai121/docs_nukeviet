@@ -1,0 +1,25 @@
+---
+title: "Cấu hình cronjobs, để chạy các trình tự động"
+description: "Cron NukeViet đang phụ thuộc vào sự truy cập site, Nếu site không có người truy cập thì các tiến trình chạy tự động sẽ không hoạt động. Để khắc phục có thể c..."
+---
+
+Cron NukeViet đang phụ thuộc vào sự truy cập site, Nếu site không có người truy cập thì các tiến trình chạy tự động sẽ không hoạt động. Để khắc phục có thể cấu hình chạy cron dựa vào máy chủ. Ví dụ cữ mỗi phút truy cập vào địa chỉ: domain/index.php?second=cronjobs
+
+Một số tiến trình được lập trình xử lý mất nhiều thời gian, điều này làm ảnh hưởng đến tốc độ truy cập website khj cron đang chạy. Thì các tiến trình này cần tắt đi và sử dụng dựa vào hệ điều hành.
+
+## Ví dụ tiến trình backup dữ liệu trên hệ điều hành CentOS:
+
+Viết file /root/crontab/backup_mysql.sh, chmod để file này có quyền thực thi với nội dung sau:
+
+``` bash
+#!/bin/bash
+
+mkdir -p /root/crontab/backup_mysql/
+
+DATE=`date +%Y-%m-%d`
+rm -f "/root/crontab/backup_mysql/$DATE.sql.gz"
+
+mysqldump --single-transaction  --user=user_name --password=password --databases databases_name| gzip> "/root/crontab/backup_mysql/$DATE.sql.gz"
+```
+
+Sau đó thiết lập crontab cho hệ điều hành để thực thi hàng ngày vào lúc 2h sáng

@@ -1,0 +1,228 @@
+---
+title: "Cấu trúc tệp tin và thư mục của NukeViet"
+description: "Bạn có thể xem đầy đủ cấu trúc tệp tin và thư mục của NukeViet thông qua kho code của NukeViet trên Github"
+---
+
+Bạn có thể xem đầy đủ cấu trúc tệp tin và thư mục của NukeViet thông qua kho code của [NukeViet trên Github](https://github.com/nukeviet/nukeviet)
+
+# Mô tả các file trong thư mục gốc
+
+## index.php
+
+Là file khởi động hệ thống, gọi ra tất cả các tài nguyên NukeViet sử dụng, xác định các module, các template, thống kê số người online, xác định quyền điều hành module.
+
+## .htaccess
+
+Cấu hình Charset (character set) mặc định cho các file HTML, CSS, JS, PHP, HTM, chặn truy cập bên ngoài đến một số file. Thiết lập cho các modules của Apache.
+
+## web.config
+
+Tệp cấu hình dành cho máy chủ web IIS trên windows.
+
+## favicon.ico
+
+Icon của website.
+
+## Các file robots.php, robots.txt
+
+Thiết lập quyền tìm kiếm của các máy chủ tìm kiếm.
+
+## composer.json
+
+Cấu hình cho Composer
+
+## Các file khác
+
+Các file bổ sung nếu có CONTRIBUTING.md, COPYRIGHT.txt, CHANGELOG.txt, README.md, LICENSE.txt: các file dành cho kho code đang phát triển. (Các file này sẽ bị loại bỏ khỏi bộ cài đặt).
+
+# Mô tả các thư mục
+
+## admin
+
+Thư mục này chứa thư mục con (`modules`) và file `index.php`.
+
+Thư mục modules chứa các module sử dụng trong khu vực quản trị website.
+
+## assets
+
+Trong này chứa các file ảnh thumb, trình soạn thảo, javascript, fonts và các file tpl dùng chung. Các thư mục con:
+
+### css
+
+Chứa thư viện fontawesome, các file cấu hình cho RSS, Sitemap.
+
+### editors
+
+Chứa các trình soạn thảo, NukeViet tích hợp sẵn trình soạn thảo **ckeditor**.
+
+### fonts
+
+Chứa bộ font FontAwesome.
+
+### images
+
+Chứa các hình ảnh cơ bản được sử dụng trên toàn hệ thống.
+
+### js
+
+Chứa các file javascript NueViet sử dụng như jquery và các plugin, jquery UI, js của các module trong admin.
+
+### tpl
+
+Chứa các file cấu hình giao diện của việc đóng gói CSDL, RSS, thông báo chặn truy cập quá nhiều.
+
+### Các thư mục khác
+
+Các thư mục khác ngoại trừ những thư mục trên: Là thư mục chứa ảnh thumb của các module. Các thư mục này tự động sinh ra khi các module được cài đặt và có thư mục upload.
+
+## data
+
+Chứa các file dữ liệu từ các module, ví dụ các file dữ liệu quảng cáo (module banners), file config_global.php chứa thông tin cấu hình của site, file metatags.xml lưu cấu hình meta-tag…
+
+Ngoài ra thư mục này cũng có thể chứa nhiều file khác tùy theo mỗi module có hoặc không có lưu file vào. Các thư mục con:
+
+### cache
+
+Là bộ nhớ đệm của hệ thống, khi thực hiện chức năng xóa cache thì các file trong thư mục này sẽ bị xóa. Cache sẽ giúp hệ thống hoạt động nhanh hơn, giảm bớt công việc xử lý của CPU.
+
+### config
+
+Chứa các file cấu hình hệ thống, cấu hình quảng cáo.
+
+### ip
+
+Thư viện IP V4 của các nước.
+
+### ip6
+
+Thư viện IP V6 của các nước.
+
+### logs
+
+Chứa toàn bộ nhật kí hệ thống:
+
+### tmp
+
+Các file tạm. Các file trong thư mục này sẽ được tự động xóa nhờ tiến trình tự động.
+
+## includes
+
+Chứa toàn bộ tài nguyên của bộ nhân NukeViet.
+
+Các thư mục con:
+
+### certificates
+
+Chứa các chứng chỉ sử dụng cho HTTP class trên SSL
+
+### core
+
+Chứa các file xử lý cốt lõi của hệ thống.
+
+### cronjobs
+
+Chứa các file tiến trình tự động của hệ thống.
+
+### fonts
+
+Chứa font cho phần capcha.
+
+### ini
+
+Chứa các file dữ liệu như đơn vị tiền tệ, kí hiệu ngôn ngữ, trình duyệt, hệ điều hành.
+
+### keywords
+
+Chứa các hàm tách từ khóa.
+
+### language
+
+Chứa các file ngôn ngữ. Trong thu mục này các file ngôn ngữ được phân làm 4 loại.
+
+- Ngôn ngữ global: `global.php`, `admin_global.php` lần lượt là ngôn ngữ dùng chung cho toàn bộ khu vực quản trị và khu vực người dùng, nội dung ngôn ngữ được lưu trong biến `$lang_global`.
+- Ngôn ngữ module (các module khu vực quản trị): `admin_ten-module.php`.
+- Ngôn ngữ block: (các block trong thư mục `includes/blocks/`) `block.ten-block.php`
+- Ngôn ngữ cài đặt: `install.php`.
+
+### plugin
+
+Các plugin của hệ thống.
+
+### utf8
+
+Các hàm xử lý mã utf-8.  
+Các file:
+
+Các file:
+
+### mainfile.php
+
+Là file gọi ra tất cả các tài nguyên của hệ thống sử dụng, khởi tạo các hằng, các biến dùng chung. File này được gọi ngay index.php được gọi.
+
+### action_mysql.php
+
+File thiết lập CSDL khi cài đặt ngôn ngữ mới.
+
+### constants.php
+
+Các thiết lập hệ thống. Phần thiết lập này sẽ được hướng dẫn tại mục thiết lập hệ thống.
+
+### countries.php
+
+Chứa các hàm xác định quốc gia.
+
+### field_not_allow.php
+
+Danh sách các giá trị cấm sử dụng để đặt tên cột trong CSDL.
+
+### footer.php, header.php
+
+File thiết lập định dạng xuất ra của website.
+
+### functions.php
+
+Chứa các hàm NukeViet xây dựng sẵn.
+
+### ini.php
+
+Đọc dữ liệu từ file ini, đối chiếu để xuất ra biến \$sys_info
+
+### language.php
+
+Xác định ngôn ngữ data, ngôn ngữ giao diện .
+
+### request_uri.php
+
+Xử lý biến \$\_GET
+
+### rewrite.php, rewrite_index.php, rewrite_language.php
+
+Chứa năng rewrite của NukeViet.
+
+### timezone.php
+
+Thông tin về múi giờ.
+
+### xtemplate.class.php
+
+Class xử lý giao diện.
+
+## install
+
+Phần cài đặt NukeViet.
+
+## modules
+
+Chứa các module khu vực người dùng.
+
+## themes
+
+Chứa các giao diện.
+
+## uploads
+
+Chứa các file upload của các module, mỗi thư mục trong thư mục này tương đương với một module.
+
+## vendor
+
+Chứa các tài nguyên bên thứ ba mà NukeViet sử dụng theo chuẩn [PSR-4](http://www.php-fig.org/psr/psr-4/)

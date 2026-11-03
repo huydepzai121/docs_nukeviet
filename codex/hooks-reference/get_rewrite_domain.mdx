@@ -1,0 +1,40 @@
+---
+title: "get_rewrite_domain"
+description: "Khi rewrite các link nội bộ."
+---
+
+Khi rewrite các link nội bộ.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú |
+|----|:---|:---|:---|
+| 0 | \$op_rewrite_count | int | Số phần tử trong \$op_rewrite |
+| 1 | \$op_rewrite | string\[\] | Mảng language, nv, op tùy số lượng bên trên |
+| 2 | \$rewrite_end | string | Kí tự kết thúc chuỗi rewrite, có thể rỗng nếu đã có sẵn .html hoặc là tag |
+| 3 | \$query_array | string\[\] | Các query_string khác |
+| 4 | \$is_amp | boolean | Dùng & nối chuỗi hay dùng & |
+| 5 | \$is_acp | boolean | Link trong quản trị hay link ngoài site |
+
+Chú ý: Hook này có hai trường hợp, một là không có tham số truyền vào, hai là có tham số như bên trên. Do đó khi viết hook cần chú ý đến kiểm tra tồn tại các biến trước khi sử dụng
+
+### Dữ liệu trả về
+
+Trả về chuỗi rỗng hoặc domain rewrite các link
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_rewrite_domain', $priority, function($vars) {
+    $op_rewrite_count = $vars[0] ?? null;
+    $op_rewrite = $vars[1] ?? null;
+    $rewrite_end = $vars[2] ?? null;
+    $query_array = $vars[3] ?? null;
+    $is_amp = $vars[4] ?? null;
+    $is_acp = $vars[5] ?? null;
+
+    // Thực hiện code hook tại đây...
+
+    return $domain_or_empty;
+});
+```

@@ -1,0 +1,19 @@
+---
+title: "Lập trình lấy, kiểm tra email và xử lý email chuẩn"
+---
+
+``` php
+// Lấy email submit từ form
+$email = $nv_Request->get_title('email', 'post', '');
+
+// Xử lý và kiểm tra email
+$check = nv_check_valid_email($email, true);
+
+// Kiểm tra hợp chuẩn email
+if (!empty($check[0])) {
+    die('Email không đúng chuẩn');
+}
+
+// Lấy lại giá trị email chuẩn
+$email = $check[1]; // Dùng giá trị này để lưu vào CSDL
+```

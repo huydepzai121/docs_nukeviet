@@ -1,0 +1,146 @@
+---
+title: "Các hàm sẵn có"
+description: "Các hàm được xây dựng trong file /assets/is/global.js bao gồm:"
+---
+
+Các hàm được xây dựng trong file /assets/is/global.js bao gồm:
+
+#### String function
+
+- ``` text
+  nv_email_check(field_id)
+  ```
+
+  Nếu email hợp lệ trả về true ngược lại trả về false.
+
+- ``` text
+  nv_num_check(field_id)
+  ```
+
+  Trả về true nếu là số ngược là trả về false.
+
+- ``` text
+  nv_name_check(field_id)
+  ```
+
+  Trả về true nếu chuỗi hợp lệ (bao gồm a-zA-Z0-9-\_) ngược lại trả về false
+
+- ``` text
+  nv_md5_check(field_id)
+  ```
+
+  Kiểm tra chuỗi hợp lệ MD5 và trả về true hoặc false.
+
+- ``` text
+  nv_iChars_check(field_id)
+  ```
+
+  Kiểm tra chuỗi có chứa kí tự đặc biệt không và trả về true hoặc false.
+
+- ``` text
+  nv_iChars_Remove(str)
+  ```
+
+  Xóa bỏ các kí tự đặc biệt trong chuỗi str.
+
+- ``` text
+  formatStringAsUriComponent(str)
+  ```
+
+  Định dạng lại chuỗi qua việc xóa bỏ kí tự đặc biệt, xóa bỏ khoảng trắng liên tiếp hơn hai lần, khoảng trắng đầu và cuối chuỗi.
+
+- ``` text
+  strip_tags(str, allowed_tags)
+  ```
+
+  Lọc mã html.
+
+- ``` text
+  trim(str, charlist)
+  ```
+
+  Xem thêm [trim()](http://php.net/manual/en/function.trim.php).
+
+- ``` text
+  rawurlencode(str)
+  ```
+
+  xem thêm [rawurlencode(string \$str)](http://php.net/manual/en/function.rawurlencode.php)
+
+- ``` text
+  rawurldecode(str)
+  ```
+
+  xem thêm [urldecode(string \$str)](http://www.php.net/manual/en/function.urldecode.php)
+
+#### Cookie function
+
+- ``` text
+  nv_setCookie(name, value, expiredays)
+  ```
+
+  Lưu cookie.
+
+- ``` text
+  nv_getCookie(name)
+  ```
+
+  Lấy cookie.
+
+#### Data function
+
+- ``` text
+  is_array(mixed_var)
+  ```
+
+  Kiểm tra biến mixed_var có phải kiểu array không.
+
+- ``` text
+  is_numeric(mixed_var)
+  ```
+
+  Kiểm tra mixed_var có phải là số hay không.
+
+- ``` text
+  intval(mixed_var, base)
+  ```
+
+  Trả về số nguyên từ mixed_var
+
+- ``` text
+  nv_DigitalClock(div_id)
+  ```
+
+  Xuất đồng hồ vào div_id.
+
+- ``` text
+  nv_show_hidden(div_id, st)
+  ```
+
+  Ẩn hiện div_id.
+
+- ``` text
+  nv_checkAll(oForm, cbName, caName, check_value)
+  ```
+
+- ``` text
+  nv_UncheckAll(oForm, cbName, caName, check_value)
+  ```
+
+- ``` text
+  nv_set_disable_false(sid)
+  ```
+
+- ``` text
+  nv_settimeout_disable(sid, tm)
+  ```
+
+- ``` text
+  nv_randomPassword(plength)
+  ```
+
+- ``` text
+  nv_urldecode_ajax(my_url, containerid)
+  ```
+
+> > Chú ý: field_id trong các hàm trên là ID của input, textarea, select ...

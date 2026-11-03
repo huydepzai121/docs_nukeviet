@@ -1,0 +1,65 @@
+---
+title: "Charset"
+description: "Từ phiên bản MySQL 5.5 trở đi đã hỗ trợ charset utf8mb4, charset này sẽ hỗ trợ lưu trữ đầy đủ các font Unicode."
+---
+
+Từ phiên bản MySQL 5.5 trở đi đã hỗ trợ charset utf8mb4, charset này sẽ hỗ trợ lưu trữ đầy đủ các font Unicode.
+
+NukeViet 4 cũng đã thay đổi hệ thống Cơ sở dữ liệu (CSDL) để làm việc tốt với chaset này. Dưới đây là một số lưu ý khi bạn làm việc với CSDL.
+
+**1. Trường hợp 1:** `UNIQUE KEY alias (alias)`
+
+Ví dụ, có bảng dữ liệu:
+
+``` php
+nv4_vi_news_categories (
+  id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  title varchar(250) NOT NULL,
+  alias varchar(250) NOT NULL,
+  description mediumtext NOT NULL,
+  status tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY alias (alias)
+) ENGINE=MyISAM";
+```
+
+Độ dài của chỗi không được vượt quá **1000 / 4 = 250** ký tự. Nguyên nhân mỗi kỹ tự sẽ sử dụng 4 byte (utf8_general_ci chỉ sử dụng 3 byte ). Do đó, trường hợp này, trường **alias** chỉ được **sử dụng tối đa 250 ký tự.**
+
+**2. Trường hợp 2:** `UNIQUE KEY alias_catid(alias, catid)`
+
+``` php
+nv4_vi_news_rows (
+  id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  catid smallint(5) unsigned NOT NULL,
+  title varchar(249) NOT NULL,
+  alias varchar(249) NOT NULL,
+  description mediumtext NOT NULL,
+  status tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY alias_catid(alias, catid)
+) ENGINE=MyISAM";
+```
+
+Nếu trường **catid** sử dụng **smallint(5)** thì **alias** lúc này được **sử dụng tối đa (1000- 5) /4 = 249.6875 (làm tròn 249) ký tự.** Do đó, alias trong trường hợp này chỉ được sử dung tối đa 249 ký tự.
+
+**3. Trường hợp 3:** `UNIQUE KEY alias1_alias2(alias1, alias2)`
+
+``` php
+nv4_vi_news_rows (
+  id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  catid smallint(5) unsigned NOT NULL,
+  title varchar(200) NOT NULL,
+  alias1 varchar(50) NOT NULL,
+  alias2 varchar(200) NOT NULL,
+  description mediumtext NOT NULL,
+  status tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (id),
+  UNIQUE alias1_alias2(alias1, alias2)
+) ENGINE=MyISAM";
+```
+
+Nếu alias1 sử dụng **varchar(50)** thì **alias2** lúc này được sử dụng tối đa **(1000 - 50\*4) /4 = 200** ký tự. Alias2 trong trường hợp này được sử dụng tối đa 200 ký tự.
+
+Dựa trên những trường hợp này, trong quá trình thiết kế CSDL, nếu bảng có sử dụng các ràng buộc UNIQUE hãy sử dụng những hướng dẫn bên trên để code của bạn họat động tốt với các website NukeViet sử dụng Utf8mb4.
+
+Tham khảo: [https://mathiasbynens.be/notes/mysql-utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4)

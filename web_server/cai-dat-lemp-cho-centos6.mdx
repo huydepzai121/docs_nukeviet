@@ -1,0 +1,337 @@
+---
+title: "Cài đặt LEMP cho VPS để chạy NukeViet 4"
+description: "Bài viết dành cho hệ điều hành CentOS 6.5 trở lên nên bạn cần có một VPS sử dụng CentOS 6.5 và chưa cài bất cứ cái gì vào, sau đó cập nhật những gói update"
+---
+
+## Nạp package cần thiết
+
+Bài viết dành cho hệ điều hành CentOS 6.5 trở lên nên bạn cần có một VPS sử dụng CentOS 6.5 và chưa cài bất cứ cái gì vào, sau đó cập nhật những gói update
+
+``` text
+yum update -y
+```
+
+Do cả NGINX và PHP-FPM đều không có sẵn trong gói Yum mặc định của CentOS nên chúng ta phải nạp một package từ bên ngoài vào. Với package này bạn sẽ cài được NGINX 1.6.2 và PHP/PHP-FPM mới nhất.
+
+Bạn chạy lần lượt 2 lệnh sau:
+
+``` text
+## CentOS 6 ##
+rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+```
+
+Nếu bạn gặp thông báo lỗi File Not Found, có thể phiên bản RPM đã thay đổi. Bạn có thể lấy link phiên bản mới nhất ở trang wiki Fedora EPEL: [https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F)
+
+**CentOS 6.5 Nginx repository**
+
+``` text
+## CentOS 6 ##
+rpm -Uvh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+```
+
+## Cài đặt NGINX và PHP-FPM
+
+Trước khi cài đặt, hãy tiến hành tắt SELinux đi bằng cách mở file /etc/sysconfig/selinux và tìm
+
+SELINUX= rồi sửa thành như dưới đây:
+
+``` text
+SELINUX=disabled
+```
+
+Sửa xong, hãy gõ lệnh reboot để khởi động lại máy chủ và đăng nhập vào lại SSH.
+
+Cài NGINX và PHP cùng các module cần thiết:
+
+``` text
+yum --enablerepo=remi,remi-php56 install nginx php-fpm php-mysql php-common php-mbstring php-mcrypt php-gd -y
+```
+
+Kích hoạt NGINX, PHP và thêm 2 ứng dụng này vào danh sách ứng dụng tự khởi động nếu reboot server (gõ lần lượt các lệnh):
+
+``` text
+service nginx start
+service php-fpm start
+chkconfig php-fpm on
+chkconfig nginx on
+```
+
+Kiểm tra phiên bản NGINX và PHP-FPM:
+
+``` text
+nginx -v
+php-fpm -v
+```
+
+Mặc định CentOS đã chặn cổng 80 nên bạn cần chạy 2 lệnh dưới đây để mở cổng 80 của webserver ra:
+
+``` text
+iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+service iptables save
+service iptables restart
+```
+
+Bây giờ bạn hãy truy cập vào địa chỉ là [http://ip-vps](http://ip-vps) rồi xem nó đã hiện trang Welcome của NGINX chưa nhé.
+
+## Thiết lập lại user và group chạy PHP
+
+Mặc định PHP-FPM sẽ chỉ định user tên là apache và group tên apache để chạy nó, nhưng ở đây chúng ta không sử dụng Apache mà là NGINX nên bạn cần mở file /etc/php-fpm.d/www.conf lên và tìm:
+
+``` text
+user = apache
+; RPM: Keep a group allowed to write in log dir.
+group = apache
+```
+
+Thay thành
+
+``` text
+user = nginx
+; RPM: Keep a group allowed to write in log dir.
+group = nginx
+```
+
+Bây giờ bạn hãy mở file default.conf trong thư mục /etc/nginx/conf.d/ Tìm đoạn
+
+``` text
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+```
+
+Sửa thành
+
+``` text
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.php index.htm;
+    }
+```
+
+Tìm đoạn
+
+``` text
+    #location ~ \.php$ {
+    #    root           html;
+    #    fastcgi_pass   127.0.0.1:9000;
+    #    fastcgi_index  index.php;
+    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    include        fastcgi_params;
+    #}
+```
+
+Sửa thành
+
+``` text
+    location ~ \.php$ {
+        root           /usr/share/nginx/html;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+```
+
+Khởi động lại PHP-FPM
+
+``` text
+service php-fpm restart
+```
+
+## Cài đặt MariaDB
+
+Để cài đặt MariaDB trên CentOS 6.5, bạn cần thêm một repository sau vào hệ thống bằng cách chạy lệnh sau:
+
+``` text
+yum install wget
+wget -O /etc/yum.repos.d/MariaDB.repo http://mariadb.if-not-true-then-false.com/rhel/$(rpm -E %rhel)/$(uname -i)/10
+```
+
+Cài đặt hoặc update MariaDB
+
+``` text
+yum install -y MariaDB MariaDB-server
+```
+
+Khởi động MariaDB và tự động chạy khi boot
+
+``` text
+service mysql start
+chkconfig --levels 235 mysql on
+```
+
+Bắt đầu cài đặt
+
+Chạy lệnh
+
+``` text
+/usr/bin/mysql_secure_installation
+```
+
+Ngay bước đầu tiên bạn sẽ bị hỏi root password, do mới cài đặt nên tất nhiên chưa có password, nhấn Enter để tiếp tục
+
+Output tương tự như sau:
+
+``` text
+NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user.  If you've just installed MariaDB, and
+you haven't set the root password yet, the password will be blank,
+so you should just press enter here.
+
+Enter current password for root (enter for none): 
+OK, successfully used password, moving on...
+
+Setting the root password ensures that nobody can log into the MariaDB
+root user without the proper authorisation.
+
+Set root password? [Y/n] y
+New password: 
+Re-enter new password: 
+Password updated successfully!
+Reloading privilege tables..
+ ... Success!
+
+By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n] y
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n] y
+ ... Success!
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n] y
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n] y
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+```
+
+# Cài đặt NukeViet 4
+
+Chạy lần lượt các lệnh sau để download code mới nhất
+
+``` text
+yum install wget unzip
+cd /usr/share/nginx/html/
+wget https://github.com/nukeviet/nukeviet/archive/develop.zip
+unzip develop.zip 
+mv nukeviet-develop/* ./
+chown -R nginx:nginx ./
+```
+
+Bây giờ bạn hãy truy cập vào địa chỉ là [http://ip-vps/nukeviet](http://ip-vps/nukeviet) rồi thực hiện cài đặt bình thường nhé, đến bước kiểm tra rewite không được cứ bỏ qua nó nhé.
+
+## Cấu hình rewite
+
+Hãy mở file default.conf trong thư mục /etc/nginx/conf.d/ tìm đến đoạn sau (đã sửa lúc trước)
+
+``` text
+    location ~ \.php$ {
+        root           /usr/share/nginx/html;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+```
+
+Thêm lên trên đoạn sau:
+
+``` text
+    if ($request_filename ~ /robots.txt$){
+        rewrite ^(.*)$ /robots.php?action=$http_host break;
+    }   
+
+    rewrite ^/(.*?)sitemap\.xml$ /index.php?nv=SitemapIndex break;
+    rewrite "^/(.*?)sitemap\-([a-z]{2})\.xml$" /index.php?language=$2&nv=SitemapIndex break;
+    rewrite "^/(.*?)sitemap\-([a-z]{2})\.([a-zA-Z0-9-]+)\.xml$" /index.php?language=$2&nv=$3&op=sitemap break;
+
+    if (!-e $request_filename){
+        rewrite (.*)(\/|\.html)$ /index.php;
+        rewrite /(.*)tag/(.*)$ /index.php;
+    }
+    
+    rewrite ^/seek\/q\=([^?]+)$ /index.php?nv=seek&q=$1 break;
+    rewrite ^/search\/q\=([^?]+)$ /index.php?nv=news&op=search&q=$1 break;
+    rewrite ^/([a-zA-Z0-9\-]+)\/search\/q\=([^?]+)$ /index.php?nv=$1&op=search&q=$2 break; 
+    rewrite ^/([a-zA-Z0-9-\/]+)\/([a-zA-Z0-9-]+)$ /$1/$2/ break; 
+    rewrite ^/([a-zA-Z0-9-]+)$ /$1/ break;      
+
+    location ~ ^/admin/([a-z0-9]+)/(.*)$ {
+        deny all;
+    }
+
+    location ~ ^/(config|includes|install|vendor)/(.*)$ {
+        deny all;
+    }
+
+    location ~ ^/data/(cache|ip|ip6|logs)/(.*)$ {
+        deny all;
+    }
+
+    location ~ ^/(files|uploads|themes)/(.*).(php|ini|tpl|php3|php4|php5|phtml|shtml|inc|pl|py|jsp|sh|cgi)$ {
+        deny all;
+    }   
+```
+
+Lưu lại và Khởi động lại PHP-FPM
+
+``` text
+service php-fpm restart
+service nginx restart
+```
+
+Sửa file data/config_global.php của nukeviet
+
+tìm đến dòng
+
+``` text
+$sys_info['supports_rewrite']=false;
+```
+
+Sửa thành
+
+``` text
+$sys_info['supports_rewrite']='rewrite_mode_apache';
+```
+
+Đăng nhập quản trị site, vào menu Cấu hình -\> Cấu hình chung lưu lại.
+
+Ra ngoài site để kiểm tra rewite.
+
+------------------------------------------------------------------------
+
+Bài viết có tham khảo từ:
+
+[http://thachpham.com/hosting-domain/lemp-cho-vps-phan-4-cai-dat-mariadb.html](http://thachpham.com/hosting-domain/lemp-cho-vps-phan-4-cai-dat-mariadb.html)
+
+[http://hocvps.com/huong-dan-cai-dat-lemp-linux-nginx-mariadb-php-tren-centos/](http://hocvps.com/huong-dan-cai-dat-lemp-linux-nginx-mariadb-php-tren-centos/)

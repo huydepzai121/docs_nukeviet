@@ -1,0 +1,163 @@
+---
+title: "Thiết lập file config.php"
+description: "Các thiết lập mặc định nằm trong file includes/constants.php, các thiết lập này được khuyến cáo chỉ nên làm một lần và làm trước khi cài đặt NukeViet."
+---
+
+**Thiết lập các giá trị mặc định**
+
+Các thiết lập mặc định nằm trong file `includes/constants.php`, các thiết lập này được khuyến cáo chỉ nên làm một lần và làm trước khi cài đặt NukeViet.
+
+Nếu thay đổi các thiết lập này sau khi website đã được cài đặt, sau khi thay đổi cần vào khu vực quản trị site phần cấu hình chung để lưu lại.
+
+## Thiết lập file `config.php`
+
+``` php
+define('NV_CONFIG_FILENAME', 'config.php');
+```
+
+Có thể thay config.php bằng bất kì tên nào cũng như đường dẫn đến file đó.  
+Ví dụ:
+
+``` php
+define( "NV_CONFIG_FILENAME", "hh/dfggfd.nuke" );
+```
+
+như vậy file config.php giờ có tên dfggfd.nuke và nằm trong thư mục hh.
+
+## Thay đổi tên thư mục `admin`
+
+Ví dụ:
+
+``` php
+define( "NV_ADMINDIR", "nukemin" );
+```
+
+như vậy thư mục admin bây giờ được hệ thống hiểu có tên `nukemin`.
+
+## Thay đổi thư mục `data`
+
+``` php
+define('NV_DATADIR', 'data/config');
+```
+
+## Thay đổi thư mục chứa file log
+
+``` php
+define('NV_LOGS_DIR', 'data/logs');
+```
+
+## Thay đổi thư mục chứa file tạm
+
+``` php
+define('NV_TEMP_DIR', 'data/tmp');
+```
+
+## Thay đổi thư mục chứa cache
+
+``` php
+define('NV_CACHEDIR', 'data/cache');
+```
+
+## Thay đổi thư mục chứa ip
+
+``` php
+define('NV_IP_DIR', 'data/ip');
+```
+
+## Thay đổi thư mục `assets`
+
+``` php
+define('NV_ASSETS_DIR', 'assets');
+```
+
+## Thay đổi thư mục `Editors`
+
+``` php
+define('NV_EDITORSDIR', NV_ASSETS_DIR . '/editors');
+```
+
+## Thay đổi thư mục upload
+
+``` php
+define('NV_UPLOADS_DIR', 'uploads');
+```
+
+## Thay đổi thư mục banners
+
+``` php
+define('NV_BANNER_DIR', 'banners');
+```
+
+## Tiếp đầu tố của các file tạm
+
+``` php
+define('NV_TEMPNAM_PREFIX', 'nv_');
+```
+
+Lưu ý: tiếp đầu tố có tối đa 3 kí tự.
+
+## Tên file error_log
+
+``` php
+define('NV_ERRORLOGS_FILENAME', 'error_log');
+```
+
+## Đuôi của file log
+
+``` php
+define('NV_LOGS_EXT', 'log');
+```
+
+## Tên thay thế cho biến \$name
+
+``` php
+define('NV_NAME_VARIABLE', 'nv');
+```
+
+## Tên thay thế cho biến \$op
+
+``` php
+define('NV_OP_VARIABLE', 'op');
+```
+
+## Tên thay thế cho biến ngôn ngữ
+
+``` php
+define('NV_LANG_VARIABLE', 'language');
+```
+
+## Mức độ nén trang
+
+``` php
+define('ZLIB_OUTPUT_COMPRESSION_LEVEL', 6);
+```
+
+## Thời gian online của thành viên (giây)
+
+``` php
+define('NV_ONLINE_UPD_TIME', 300);
+```
+
+## Thời gian lưu trữ referer
+
+``` php
+define('NV_REF_LIVE_TIME', 2592000);
+```
+
+## Số ký tự tối thiểu của input tìm kiếm
+
+``` php
+define('NV_MIN_SEARCH_LENGTH', 3);
+```
+
+## Số ký tự tối đa của input tìm kiếm
+
+``` php
+define('NV_MAX_SEARCH_LENGTH', 60);
+```
+
+## Ký tự phân cách trong tiêu đề trang
+
+``` php
+define('NV_TITLEBAR_DEFIS', ' - ');
+```

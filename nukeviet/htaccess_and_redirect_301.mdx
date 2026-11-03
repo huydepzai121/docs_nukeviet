@@ -1,0 +1,149 @@
+---
+title: ".htaccess, redirect 301 - thay đổi tên miền không làm thay đổi traffic và ranking"
+description: "Website của bạn đang sử dụng NukeViet và Bạn có nhu cầu thay đổi tên miền trang web trong khi Website bạn đang có lượng truy cập và rank rất cao mà bạn không..."
+---
+
+## Thêm tên miền cho website sử dụng NukeViet
+
+Website của bạn đang sử dụng NukeViet và Bạn có nhu cầu thay đổi tên miền trang web trong khi Website bạn đang có lượng truy cập và rank rất cao mà bạn không muốn mất nó? NukeViet có cách giải quyết rất đơn giản cho bạn, hãy làm theo bước sau:
+
+1.  Trỏ DNS của domain mới về hosting đang sử dụng. Add domain mới vào hosting để cho chạy song song tên miền với tên miền cũ (Addon Domains).
+2.  Nếu website của bạn sử dụng mã nguồn NukeViet thì bạn chỉ đơn giản vào Admin Control Panel =\> Cấu hình chung, mục tên miền bạn thay tên miền cũ bằng tên miền mới, save lại là xong.
+3.  Sau khi thay đổi tên miền, bạn vào Admin Control Panel của NukeViet =\> Công cụ web =\> Sitemap ping. Sau đó gửi dữ liệu đến máy chủ tìm kiếm để nó tự động cập nhật lại địa chỉ mới.
+4.  Cuối cùng, bạn hãy Sử dụng .htaccess, redirect 301 để chuyển hướng trang web với đoạn code Chuyển tiếp khi thay đổi tên miền cho website
+
+## Sử dụng .htaccess, redirect 301 để chuyển hướng trang web
+
+Trong nhiều trường hợp website của bạn không sử dụng NukeViet hoặc bạn chỉ muốn chuyển hướng một số đường link hoặc thư mục nhất định hay sử dụng cho các mục đích riêng, khi đó bạn nên sử dụng 301 redirect để trỏ những truy vấn từ domain (hoặc URL) cũ về domain (hoặc URL) mới. Với việc sử dụng 301 Redirect ở đây cũng có nghĩa là bạn sẽ thông báo cho google và các search engine khác rằng: website của bạn sẽ di chuyển vĩnh viễn qua sử dụng domain mới. Để làm việc này bạn có thể sử dụng file .htaccess và mod_rewrite (chỉ dùng trên server/hosting linux).
+
+### Chuyển toàn bộ đường link từ website hiện tại về 1 địa chỉ nhất định
+
+Trong file .htaccess bạn thêm vào đoạn code sau:
+
+``` text
+#NukeViet SEO http://nukeviet.vn
+Options +FollowSymLinks
+RewriteEngine on
+RewriteRule (.*) http://domain.com [R=301,L]
+```
+
+Thay domain.com bằng tên miền mới của bạn. Sau đó đặt file .htaccess này ở thư mục gốc của website mà bạn muốn tác động đến nó. Sau khi đưa file .htaccess lên host, bạn cần kiểm tra lại bằng cách truy cập vào domain cũ xem nó có hoạt động đúng ý muốn không.
+
+### Chuyển một URL về một địa chỉ nhất định
+
+``` text
+#NukeViet SEO http://nukeviet.vn
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /
+redirect 301 /old/old.htm http://www.domain.com/new.htm
+```
+
+### Chuyển tiếp khi thay đổi tên miền cho website
+
+``` text
+#NukeViet SEO http://nukeviet.vn
+Options +FollowSymLinks
+RewriteEngine on
+RewriteRule (.*) http://www.newdomain.com/$1 [R=301,L] 
+```
+
+### Chuyển một thư mục sang thư mục mới
+
+``` text
+#NukeViet SEO http://nukeviet.vn
+Options +FollowSymLinks
+RewriteEngine on
+RewriteRule ^tenthumuc(.*)$ /thumucmoi/ [L,R=301]
+```
+
+### Chuyển danh sách các trang web động sang địa chỉ mới
+
+Ví dụ để chuyển tất cả các trang page.php?id=n (với n là giá trị biến) tới một trang web tĩnh có tên trangmoi.htm
+
+``` text
+#NukeViet SEO http://nukeviet.vn
+Options +FollowSymLinks
+RewriteEngine on
+RewriteRule ^page.php?id=(.*)$ /trangmoi.htm [L,R=301]
+
+```
+
+### Chuyển tất cả truy cập về địa chỉ có www.
+
+``` text
+#NukeViet SEO http://nukeviet.vn
+Options +FollowSymlinks
+RewriteEngine on
+rewritecond %{http_host} ^domain.com [nc]
+rewriterule ^(.*)$ http://www.domain.com/$1 [r=301,nc] 
+```
+
+### Không sử dụng www.
+
+``` text
+#NukeViet SEO http://nukeviet.vn
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_HOST} !^domain\.com$ [NC]
+RewriteRule ^(.*)$ http://domain.com/$1 [R=301,L]
+
+```
+
+## Các kiểu chuyển tiếp khác
+
+### Chuyển tiếp truy cập của loại tệp tin nhất định đến một tệp được chỉ định
+
+``` text
+#NukeViet SEO http://nukeviet.vn
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(www\.)?domain.com/.*$ [NC]
+RewriteRule \.(gif|jpg|png)$ http://domain.com/img.jpg [R=302,L]
+```
+
+### Chuyển tiếp với trang HTML báo lỗi 404
+
+Tạo file 404.shtml trên thư mục gốc của website với nội dung như sau:
+
+``` html
+<code html>
+<HEAD>
+<META HTTP-EQUIV="refresh" content="0;URL=http://www.domain.com/page1.htm">
+<TITLE>Page has moved</TITLE>
+</HEAD>
+<body>
+Page has moved to <a href=http://www.domain.com/page1.htm>http://www.domain.com/page1.htm</a>
+</body>
+```
+
+\</code\>
+
+Khi đó tất cả các trang không tìm thấy sẽ được chuyển về địa chỉ được chỉ định thay vì hiển thị trang thông báo lỗi 404.
+
+## Ứng dụng redirect 301 trên các máy chủ khác (ngoài Apache)
+
+### IIS redirect
+
+- Trong phần quản trị dịch vụ internet (internet services manager), nhấn phải chuột chọn tệp tin và thư mục mà bạn muốn áp dụng redirect;
+- Chọn nút “a redirection to a URL”;
+- Chọn trang chuyển tiếp tới;
+- Đánh dấu vào “The exact url entered above” và “A permanent redirection for this resource”;
+- Chọn “Apply”.
+
+### PHP Redirect
+
+``` php
+<?
+Header( "HTTP/1.1 301 Moved Permanently" ); //không có dòng này thì sẽ là dạng Redirect 302 (chuyển tạm thời, người dùng và robot được chuyển hướng, nhưng không truyền giá trị cho trang mới).
+Header( "Location: http://www.vietseo.net" );
+?>
+```
+
+## Nguồn tham khảo
+
+- Cách thay đổi tên miền không làm thay đổi traffic và ranking [http://forum.nukeviet.vn/viewtopic.php?f=117&t=17693](http://forum.nukeviet.vn/viewtopic.php?f=117&t=17693)
+- [http://www.webconfs.com/how-to-redirect-a-webpage.php](http://www.webconfs.com/how-to-redirect-a-webpage.php)
+- \_www.vietseo.net/articles/htaccess/redirect-301/ (web site không còn tồn tại).

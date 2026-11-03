@@ -1,0 +1,12 @@
+---
+title: "Các cảnh báo qua email"
+---
+
+## Cảnh báo chặn truy cập khi không có user agent
+
+> User Error(256): We're sorry. The software you are using to access our website is not allowed. Some examples of this are e-mail harvesting programs and programs that will copy websites to your hard drive. If you feel you have gotten this message in error, please send an e-mail addressed to admin. Your I.P. address has been logged. Thanks.
+
+<u>Giải thích:</u>
+
+- Đây không phải là lỗi.
+- Cảnh báo này xuất hiện khi có truy vấn vào website mà HTTP_USER_AGENT = 'none' giúp bảo vệ website khỏi các phần mềm, các BOT đen.

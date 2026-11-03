@@ -1,0 +1,34 @@
+---
+title: "Những yêu cầu cài đặt cho NukeViet 3.0"
+description: "NukeViet 3.0 cho kết quả là chuẩn xHTML 1.0 và CSS 2.1, đây là định dạng chuẩn mà hầu hết các trình duyệt hiện nay đang theo đuổi. Chính vì vậy các website l..."
+---
+
+## 1. Môi trường máy chủ
+
+**Yêu cầu bắt buộc**
+
+- Hệ điều hành: Linux (Ubuntu, Fedore, CentOS…) hoặc Windows
+- PHP: PHP 5.2 hoặc phiên bản mới nhất (tại thời điểm phát hành phiên bản) và kèm theo các thư viện sau
+  - Hỗ trợ PHP Data Objects (PDO)
+  - PHP hỗ trợ opendir
+  - PHP hỗ trợ thư viện xử lý ảnh GD
+  - PHP hỗ trợ thư viện mã hóa mcrypt
+  - PHP hỗ trợ session
+  - PHP hỗ trợ uploads file
+- MySQL: MySQL 5.02 hoặc phiên bản mới nhất (tại thời điểm phát hành phiên bản)
+
+**Tùy chọn bổ sung**
+
+- Tính năng mở rộng của Máy chủ: Máy chủ Apache cần hỗ trợ mod mod_rewrite, hoặc máy chủ IIS 7.0 hoặc IIS 7.5 cần cài thêm module rewrite
+- Môi trường PHP mở rộng: Các thư viện PHP cần có: file_uploads, session, mbstring, curl, gd2, zlib, soap, sockets, tidy, php_zip.
+
+<u>**Ghi chú:**</u>
+
+- Những yêu cầu trên không có nghĩa là NukeViet 3.0 không làm việc trên các hệ thống khác, điều quan trọng là cần thiết lập môi trường làm việc phù hợp.
+- Với những website sử dụng hosting, NukeViet 3.0 làm việc tốt nhất trên các hosting Linux cài sẵn Apache 2.2, PHP 5, MySQL 5, DirectAdmin hoặc Cpanel.
+
+## 2. Máy tính người truy cập
+
+NukeViet 3.0 cho kết quả là chuẩn xHTML 1.0 và CSS 2.1, đây là định dạng chuẩn mà hầu hết các trình duyệt hiện nay đang theo đuổi. Chính vì vậy các website làm trên nền NukeViet 3.0 có thể truy cập tốt trên các phiên bản mới nhất của trình duyệt FireFox, Internet Explorer, Google Chrome, Opera...
+
+Trên thực tế NukeViet 3.0 đã được kiểm nghiệm trên FireFox 3.x, Internet Explorer 7 và 8, Google Chrome 4 và 5, Opera 10.x... Máy tính người truy cập chỉ cần cài một trong các trình duyệt này là có thể tương tác với NukeViet thông qua internet hoặc intranet.

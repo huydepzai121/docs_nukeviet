@@ -1,0 +1,28 @@
+---
+title: "content_correct_before_save"
+description: "Xử lý dữ liệu trước khi lưu vào CSDL."
+---
+
+Xử lý dữ liệu trước khi lưu vào CSDL.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú |
+|-----|:---------|:-------------|:--------|
+| 0   | \$array  | array        |         |
+
+### Dữ liệu trả về
+
+Biến `$array`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'content_correct_before_save', $priority, function($vars) {
+    $array = $vars[0];
+
+    // Thực hiện code hook tại đây...
+
+    return $array;
+});
+```

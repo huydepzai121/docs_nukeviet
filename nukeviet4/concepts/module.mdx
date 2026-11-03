@@ -1,0 +1,27 @@
+---
+title: "Khái niệm module trong hệ thống NukeViet"
+description: "Có thể hình dung như thế này: Nếu coi NukeViet là một tổng công ty hoạt động theo mô hình công ty mẹ - công ty con thì các module chính là các công ty con, c..."
+---
+
+**Module** (đọc là Mô-đun) đôi khi còn được gọi chung (cùng với theme, block, cronjob...) là Addons hay Plugins (tính năng tăng cường cho hệ thống). Chúng đều là những phần mở rộng của hệ thống NukeViet. Mỗi module sẽ đảm nhiệm một chức năng riêng cho hệ thống. Tùy chức năng và nhiệm vụ của module mà nó có thể phục vụ hệ thống chạy các tác vụ nền hoặc chỉ tương tác bên ngoài với người sử dụng (tương ứng với việc can thiệp sâu hoặc không sâu vào hệ thống).
+
+Có thể hình dung như thế này: Nếu coi NukeViet là một tổng công ty hoạt động theo mô hình công ty mẹ - công ty con thì các module chính là các công ty con, chúng có thể có chức năng và nhiệm vụ khác nhau, có khả năng hoạt động tương đối độc lập nhưng đều chịu sự chỉ đạo của công ty mẹ.
+
+Hệ thống NukeViet mặc định đã có sẵn một số module, ngoài ra người sử dụng có thể cài thêm các module mới về từ website [http://nukeviet.vn](http://nukeviet.vn) để cài lên hệ thống hoặc gỡ bỏ nó khỏi hệ thống.
+
+Ở NukeViet 4, hầu hết các thành phần của module (trừ [giao diện](/nukeviet4/concepts/theme) của module) được đặt trong thư mục `modules` (trong thư mục gốc của NukeViet). [^1]
+
+Các module được cài bằng cách vật lý (cài thêm code lên hệ thống) được gọi là module thường, nếu các module này cho phép thì hệ thống có thể "nhân bản" nó lên thành nhiều module khác có chức năng giống nó. Các [module](/nukeviet4/concepts/module) được nhân bản lên theo hình thức đó gọi là module ảo.
+
+# Module ảo
+
+Module ảo là module được nhân bản từ một [module](/nukeviet4/concepts/module) bất kỳ của hệ thống NukeViet (nếu module đó cho phép tạo module ảo).
+
+**<u>Lưu ý</u>**: Module ảo là khái niệm chỉ có kể từ phiên bản NukeViet 3.0 (khi NukeViet hỗ trợ công nghệ đa nhân module - là cơ chế một nhân module có thể quản lý nhiều cơ sở dữ liệu khác nhau). Công nghệ này cho phép người sử dụng có thể khởi tạo hàng ngàn module một cách tự động mà không cần động đến một dòng code. Các module được sinh ra từ công nghệ này gọi là module ảo.
+
+# Liên quan
+
+- [Lập trình Modules cho NukeViet 4.x](/programming4/module)
+- [Quản lý modules](/nukeviet4/admin/modules/modules)
+
+[^1]: Ở phiên bản NukeViet 1 và 2, phần điều hành module (nếu có) được đặt trong thư mục `admin/modules/`

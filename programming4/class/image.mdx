@@ -1,0 +1,158 @@
+---
+title: "Hướng dẫn chi tiết cách sử dụng class Image để xử lý ảnh"
+description: "Class image là lớp có chứa các chức năng xử lý ảnh trên hệ thống như: Chỉnh kích thước, cắt ảnh, thêm logo, tối ưu dung lượng ảnh..."
+---
+
+Class image là lớp có chứa các chức năng xử lý ảnh trên hệ thống như: Chỉnh kích thước, cắt ảnh, thêm logo, tối ưu dung lượng ảnh...
+
+## Chuẩn bị
+
+1.  Cài đặt NukeViet 4.4.02 (link tải [NukeViet 4.4.02](https://github.com/nukeviet/nukeviet/releases/download/4.4.02/nukeviet4.4.02setup.zip)) hoặc tương đương.
+2.  Cài đặt module mẫu samples ([nv4_module_samples.zip](/images/programming4/class/nv4_module_samples.zip)) để lập trình
+3.  Dùng class upload ([Xem hướng dẫn](/programming4/class/upload)), chức năng quản lý file hoặc copy trực tiếp ảnh này ![](/images/programming4/class/nukeviet.png) vào thư mục uploads
+
+## Hướng dẫn lập trình
+
+Trong file `modules/samples/admin/main.php` bên dưới đoạn
+
+``` php
+//------------------------------
+// Viết code xử lý chung vào đây
+//------------------------------
+```
+
+Ta tiến hành lập trình xử lý ảnh:
+
+Khởi tạo class Image bằng lệnh
+
+``` php
+$image = new NukeViet\Files\Image(NV_UPLOADS_REAL_DIR . '/nukeviet.png', NV_MAX_WIDTH, NV_MAX_HEIGHT);
+```
+
+Trong đó:
+
+- Tham số thứ nhất là đường dẫn tuyệt đối đến ảnh, trong ví dụ này ảnh là nukeviet.png trong thư mục uploads
+- Tham số thứ 2, 3 là chiều rộng tối đa và chiều cao tối đa được phép xử lý. Có thể không giới hạn bằng cách bỏ hai tham số này
+
+Sau đó sử dụng theo quy luật sau
+
+``` php
+$image->[Phương thức 1/Chức năng 1]
+$image->[Phương thức 2/Chức năng 2 ...]
+$image->save(NV_UPLOADS_REAL_DIR, $newname, $quality);
+$image->close();
+
+$info = $image->create_Image_info;
+```
+
+Mô tả:
+
+- Đầu tiên gọi ra chức năng xử lý, có thể gọi nhiều lần, các chức năng này được mô tả bên dưới
+- Sau khi xử lý các chức năng gọi phương thức lưu `$image->save` để lưu ảnh, tham số truyền vào gồm
+  - Thư mục lưu ảnh
+  - Tên ảnh mới, nếu không chỉ ra hệ thống tự động lưu ảnh mới với dạng \[tên-ảnh-cũ_rộng_cao\].\[loại-file\]
+  - Chất lượng ảnh mới, nếu không chỉ ra hệ thống lưu với chất lượng 100%. Giá trị truyền vào từ 1 =\> 100
+- Cuối cùng kiểm tra `$image->create_Image_info` để lấy kết quả lưu ảnh mới
+
+### Các chức năng xử lý ảnh
+
+#### Chỉnh kích thước theo %
+
+``` php
+$image->resizePercent(100);
+```
+
+Tham số tuyền vào là số nguyên, nhỏ nhất = 1.
+
+#### Cắt ảnh từ giữa
+
+``` php
+$image->cropFromCenter(100, 100);
+```
+
+Tham số tuyền vào là kích thước rộng, cao của ảnh mới.
+
+#### Cắt ảnh từ bên trái
+
+``` php
+$image->cropFromLeft(50, 50, 200, 200);
+```
+
+Tham số thứ 1, 2 cho biết khoảng cách từ bên trái và bên trên sẽ bắt đầu cắt ảnh. Tham số thứ 3, 4 cho biết kích thước rộng, cao cần cắt lấy
+
+#### Cắt ảnh từ bên trên
+
+``` php
+$image->cropFromTop(200, 200);
+```
+
+Hai tham số truyền vào cho biết kích thước ảnh cần cắt. Hướng cắt từ trái, bên trên. Thương thức cắt ảnh này giống với `cropFromLeft` với tham số 1,2 bằng 0
+
+#### Chỉnh kích thước theo hai phương
+
+``` php
+$image->resizeXY(200, 200);
+```
+
+Hai tham số truyền vào là kích thước tối đa cần resize theo phương rộng, cao. Ảnh được resize có tỉ lệ đúng với tỉ lệ của ảnh gốc.
+
+#### Tạo bóng đổ
+
+``` php
+$image->reflection();
+```
+
+Chức năng này tạo ảnh mới có chiều cao gấp rưỡi ảnh gốc, phần cao của ảnh thêm vào có dạng bóng đổ xuống mờ dần.
+
+#### Xoay ảnh
+
+``` php
+$image->rotate(-45);
+```
+
+Tham số tuyền vào giá trị dương hoặc âm từ 0 đến 360 độ. Nếu dương ảnh xoay cùng chiều kim đồng hồ và ngược lại giá trị âm ảnh xuay ngược chiều kim đồng hồ.
+
+#### Chèn logo vào ảnh
+
+``` php
+$config = [
+    'w' => 113,
+    'h' => 32,
+    'x' => 30,
+    'y' => 30
+];
+$image->addlogo(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/images/logo_small.png', 'right', 'bottom', $config);
+```
+
+Trong đó biến `$config` có nghĩa như sau:
+
+- w =\> Kích thước chiều rộng logo
+- h =\> Kích thước chiều cao logo
+- x =\> Khoảng cách logo tính từ bên trái của ảnh
+- y =\> Khoảng cách logo tính từ bên trên của ảnh
+
+`$config` có thể chỉ ra hoặc không chỉ ra.
+
+Các tham số phương `addlogo` có ý nghĩa như sau:
+
+- Tham số thứ nhất là đường dẫn tuyệt đối đến logo
+- Tham số thứ 2 là 1 trong 3 giá trị left, center, right. Nếu không chỉ ra `$config['w']` và `$config['h']` thì giá trị này sẽ chỉ định logo nằm bên trái cách lề 10px nằm giữa hoặc nằm bên phải cách lề 10px
+- Tham số thứ 3 là 1 trong 3 giá trị top, middle, bottom. Nếu không chỉ ra `$config['w']` và `$config['h']` thì giá trị này sẽ chỉ định logo nằm bên trên cách lề 10px nằm giữa hoặc nằm bên dưới cách lề 10px
+- Tham số thứ 4 là biến `$config` bên trên.
+
+#### Chèn chữ vào ảnh
+
+``` php
+$image->addstring('NukeViet CMS', 'right', 'bottom', NV_ROOTDIR . '/includes/fonts/Pixelation.ttf', 36);
+```
+
+Trong đó:
+
+- Tham số thứ nhất là nội dung chữ cần chèn
+- Tham số thứ 2, 3 cho biết phương của chữ, tương tự như chức năng `addlogo` bên trên.
+- Tham số thứ 4 là đường dẫn tuyệt đối đến font chữ cần chèn
+- Tham số thứ 5 là kích thước của chữ đơn vị pt
+
+## Code mẫu
+
+Tải module chứa code mẫu của bài hướng dẫn tại đây [nv4_module_samples_image.zip](/images/programming4/class/nv4_module_samples_image.zip)

@@ -1,0 +1,168 @@
+---
+title: "Hướng dẫn lập trình validate bằng trình validate mặc định của giao diện trong NukeViet 5"
+description: "Nếu form của bạn muốn thống nhất cách validate bằng bootstrap 5, js có sẵn trong giao diện thì làm theo hướng dẫn này."
+---
+
+Nếu form của bạn muốn thống nhất cách validate bằng bootstrap 5, js có sẵn trong giao diện thì làm theo hướng dẫn này.
+
+> Lưu ý: Validate chỉ khả dụng nếu bạn sử dụng theme default hoặc theme được xây dựng bằng cách [copy theme default](/programming5/theme/copy-from-deault-theme) còn giao diện đang dùng không có trình validator mặc định sẽ không dùng được.
+
+## Bước 1: Khai báo cho form
+
+Trong thẻ form, hãy thêm thuộc tính `data-precheck="nv_precheck_form"` và `novalidate`. Ví dụ
+
+``` html
+<form method="post" role="form" action="..." data-precheck="nv_precheck_form" novalidate>
+....
+</form>
+```
+
+Ngoài ra cần đảm bảo các thẻ HTML được viết theo đúng cấu trúc ở đây [https://getbootstrap.com/docs/5.3/forms/validation/](https://getbootstrap.com/docs/5.3/forms/validation/)
+
+Sau khi thêm như trên, form khi submit sẽ được validate trước khi gửi đi. Tuy nhiên, để validate được tiếp theo bạn phải định nghĩa ra các ô nhập liệu bắt buộc và nguyên tắc validate cho từng ô.
+
+## Bước 2: Khai báo các ô có validate
+
+Bổ sung thêm vào từng ô có validate các thuộc tính như sau:
+
+### Kiểu validate data-valid
+
+Ví dụ
+
+``` html
+<input type="text" data-valid>
+```
+
+Có thể đặt giá trị loại valid ví dụ `data-valid="email"`. Nếu không chỉ rõ hệ thống sẽ sử dụng thuộc tính type của input, và cuối cùng để mặc định là text.
+
+Hệ thống hỗ trợ các kiểu và nguyên tắc validate như sau
+
+- text: Kiểm tra giá trị value của ô input
+- email: Kiểm tra value và value đó có hợp lệ là email hay không
+- radio, checkbox: Kiểm tra số ô được checked
+
+### Cho phép nhập rỗng data-allowed-empty
+
+Áp dụng với kiểu email, text. Khi không nhập thì vẫn xem là hợp lệ
+
+### Số ký tự tối thiểu và tối đa
+
+minlength và maxlength. Áp dụng cho kiểu email, text, phone, tel... (các kiểu nhập chuỗi). Khi nhập chuỗi có số ký tự trong khoảng này thì không lỗi, ngoài khoảng đó thì lỗi
+
+### Số ô chọn tối thiểu và tối đa
+
+data-min và data-max. Áp dụng cho kiểu checkbox, radio. Khi chọn số ô trong khoảng này thì không lỗi, ngoài khoảng đó thì lỗi
+
+### Message lỗi
+
+Hệ thống xác định thông báo lỗi theo các thứ tự sau, đến cái nào có định nghĩa thì dừng
+
+1.  Thuộc tính data-error-mess của ô input
+2.  Tìm kiếm phần tử html tiếp theo của ô input nếu có class .invalid-feedback hoặc .invalid-tooltip thì tiếp tục lấy data-error-mess của phần tử đó nếu không có data-error-mess thì lấy text của nó.
+3.  Message lỗi hệ thống tự tạo trên các nguyên tắc valid đã chỉ định
+
+### Kiểu hiển thị lỗi
+
+`data-error-type="tooltip"` hoặc `data-error-type="feedback"`. Với tooltip thì thông báo lỗi ở dạng tooltip. Với feedback thì thông báo lỗi là một dòng nằm dưới input
+
+## Nút reset form
+
+Nút type="reset" của HTML thuần nó sẽ không reset được trạng thái invalid feedback/tooltip, trình soạn thảo trong form do đó cần bổ sung thuộc tính `data-toggle="nv-reset-form"` vào nút reset hoặc sử dụng nút reset riêng dạng
+
+``` html
+<button type="button" class="btn btn-outline-secondary" data-toggle="nv-reset-form">{$LANG->getGlobal('reset')}</button>
+```
+
+Với nút này, sau khi click hệ thống sẽ thực hiện
+
+- Reset form thông thường
+- Làm mới captcha
+- Làm rỗng các trình soạn thảo trong form nếu có
+- Bỏ trạng thái validate lỗi
+
+Nếu bạn có các thao tác reset riêng nữa, hãy bổ sung `data-reset-extend="commReset"` vào thẻ form chứa nút reset. Với commReset là tên của hàm thực hiện thao tác reset. Đối số truyền vào là `$(form)`
+
+Ví dụ form có nút reset và hàm reset bổ sung
+
+``` html
+<form method="post" role="form" action="..." data-reset-extend="commReset">
+    ....
+    <button type="button" class="btn btn-outline-secondary" data-toggle="nv-reset-form">{$LANG->getGlobal('reset')}</button>
+</form>
+```
+
+Ví dụ viết hàm reset bổ sung
+
+``` javascript
+// Hàm thiết lập lại form comment
+function commReset(form) {
+    $("[name=pid]", form).val(0);
+
+    const eleWarnings = document.getElementById('commentWarnings');
+    if (eleWarnings) {
+        const collapse = bootstrap.Collapse.getOrCreateInstance(eleWarnings, {
+            toggle: false
+        });
+        collapse.hide();
+    }
+}
+```
+
+## Cấu trúc validate mẫu
+
+### Kiểu text, email, tel, phone
+
+``` html
+<div class="mb-3">
+    <label for="element_name" class="form-label">{$LANG->getGlobal('name')}:</label>
+    <input type="text" data-valid name="name" id="element_name" value="" class="form-control" placeholder="{$LANG->getModule('comment_name')}" autocomplete="name">
+</div>
+```
+
+Lưu ý nếu data-error-type là tooltip thì tại .mb-3 cần thêm class position-relative
+
+### Kiểu checkbox single/ radio
+
+``` html
+<div class="form-check mb-0">
+    <input type="checkbox|radio" data-valid data-error-type="feedback" class="form-check-input" id="data_permission_confirm" name="data_permission_confirm" value="1" data-error="{$LANG->getGlobal('data_warning_error')}">
+    <label for="data_permission_confirm" class="form-check-label">{$LANG->getGlobal('data_warning_content')}</label>
+    <div class="invalid-feedback">{$LANG->getGlobal('data_warning_error')}.</div>
+</div>
+```
+
+Lưu ý nếu data-error-type là tooltip thì tại .form-check cần thêm class position-relative
+
+### Kiểu trình soạn thảo
+
+> Hiện tại test hỗ trợ với CKEditor5 Classic
+
+``` html
+<div class="position-relative">
+    <div data-valid="editor" data-name="bodytext" data-error-mess="...">
+        {$EDITOR_ELEMENT}
+    </div>
+</div>
+```
+
+Trong đó \$EDITOR_ELEMENT được lấy từ phần khởi tạo trình soạn thảo dạng
+
+``` php
+if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
+    $row['bodytext'] = nv_aleditor('bodytext', '100%', '400px', $row['bodytext'], '', NV_UPLOADS_DIR . '/' . $module_upload, NV_UPLOADS_DIR . '/' . $module_upload);
+} else {
+    $row['bodytext'] = '<textarea class="form-control" name="bodytext" id="bodytext" rows="15">' . $row['bodytext'] . '</textarea>';
+}
+```
+
+Lưu ý: Giá trị bodytext trong data-name bên trên chính là tham số đầu tiên `'bodytext'` trong hàm nv_aleditor
+
+Bên trên là ví dụ nếu tạo trình soạn thảo bằng hàm nv_aleditor trong php. Nếu bạn tạo trình soạn thảo trực tiếp bằng js thì cấu trúc HTML dạng như sau
+
+``` html
+<div class="position-relative">
+    <div data-valid="editor" data-name="content" data-error-mess="{$LANG->getModule('comment_content_error')}" class="nv-ckeditor5classic" id="outer_commentcontent">
+        <textarea class="form-control" name="content" id="commentcontent" rows="5"></textarea>
+    </div>
+</div>
+```

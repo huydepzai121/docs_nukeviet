@@ -1,0 +1,82 @@
+---
+title: "Hướng dẫn lập trình tính năng block tùy chỉnh của module"
+description: "Block tùy chỉnh của module là tính năng giúp module tạo ra các vị trí để đặt block một cách độc lập mà không phụ thuộc vào giao diện sử dụng."
+---
+
+Block tùy chỉnh của module là tính năng giúp module tạo ra các vị trí để đặt block một cách độc lập mà không phụ thuộc vào giao diện sử dụng.
+
+Trước đây các vị trí block được định nghĩa tại tệp config.ini của giao diện, module không thể bổ sung các vị trí một cách tự động mà phải thông qua việc chỉnh sửa thủ công tệp config.ini của các giao diện đang sử dụng.
+
+Tính năng này có kể từ phiên bản NukeViet 4.5.07.
+
+## Quy trình
+
+1.  Sử dụng hàm nv_register_block để đăng kí vị trí block tùy chỉnh. Sau khi dùng hàm này cần gọi `$nv_Cache->delMod('themes')` để cập nhật lại cache
+2.  Sau khi sử dụng hàm trên tiến hành sửa các tệp tpl của module thêm vào `[CUSTOM_MODULE_TAG]` với MODULE là viết hoa biến `$module_data` của module. TAG là viết hoa tên tag mà bạn đã đăng kí. Bạn có thể sử dụng hàm nv_tag2pos_block để lấy đầy đủ giá trị đó cho mỗi tag. Sửa xong bạn bật kéo thả block lên sẽ thấy chỗ để thêm block vào đó.
+3.  Nếu muốn xóa đi một vị trí đã đăng kí hãy dùng hàm nv_unregister_block
+4.  Nếu muốn xóa toàn bộ vị trí đã đăng kí hãy dùng hàm nv_purge_blocks
+
+**Mẹo:**
+
+Ngoài việc sử dụng hàm nv_register_block để đăng kí vị trí block tùy chỉnh bạn có thể chạy SQL để ghi trực tiếp vào CSDL để tạo các khối block tùy chỉnh
+
+``` sql
+INSERT INTO `nv4_vi_modblocks` (`module_name`, `tag`, `ini_tag`, `title`) VALUES ('users', 'SSO_LOGO', '[CUSTOM_USERS_SSO_LOGO]', 'Logo SSO');
+```
+
+Sau khi chạy SQL cần dọn dẹp hệ thống để ghi nhận. Chú ý bạn có thể chạy SQL để đăng kí vị trí block tùy chỉnh nhưng không được xóa thủ công nó trong CSDL. Điều này sẽ sinh dữ liệu thừa
+
+Cách dùng mỗi hàm như sau:
+
+## Hàm: nv_tag2pos_block
+
+**Mục tiêu:** Lấy ra chuỗi `position` của giao diện dựa trên `tag` tùy chỉnh và tên module.
+
+**Tham số đầu vào:**
+
+- `string $tag` – Tên tag tùy chỉnh để tạo vị trí block.
+- `string $module` – (Tùy chọn) Tên module. Nếu không truyền sẽ dùng module hiện tại (`$module_name`).
+
+**Kết quả trả về:**
+
+- `string` – Chuỗi định danh vị trí block, dạng `[CUSTOM_MODULEDATA_TAG]`.
+
+## Hàm: nv_register_block
+
+**Mục tiêu:** Đăng ký một vị trí block tùy chỉnh mới để sử dụng trong module.
+
+**Tham số đầu vào:**
+
+- `string $tag` – Tên tag cho vị trí block. Chỉ chấp nhận chữ cái, số, dấu gạch dưới. Không được bắt đầu hay kết thúc bằng dấu gạch dưới.
+- `string $name` – (Tùy chọn) Tiêu đề hiển thị của block. Mặc định sẽ dùng `$tag`.
+- `string $module` – (Tùy chọn) Tên module sử dụng block. Mặc định là module hiện tại.
+
+**Kết quả trả về:**
+
+- `bool` – Trả về `true` nếu đăng ký thành công, `false` nếu thất bại hoặc không hợp lệ.
+
+## Hàm: nv_unregister_block
+
+**Mục tiêu:** Hủy đăng ký một hoặc toàn bộ block tùy chỉnh đã được đăng ký cho một module.
+
+**Tham số đầu vào:**
+
+- `string $tag` – Tên tag cần hủy. Bắt buộc nếu `$all = false`.
+- `string $module` – (Tùy chọn) Tên module. Mặc định là module hiện tại.
+- `bool $all` – Nếu là `true`, sẽ xóa toàn bộ block đã đăng ký trong module.
+
+**Kết quả trả về:**
+
+- `bool` – Trả về `true` nếu xóa thành công, `false` nếu thất bại hoặc không tìm thấy.
+
+## Hàm: nv_purge_blocks
+
+**Mục tiêu:** Xóa toàn bộ các vị trí block tùy chỉnh đã đăng ký cho một module.
+
+**Tham số đầu vào:**
+
+- `string $module` – (Tùy chọn) Tên module. Mặc định là module hiện tại.
+
+**Kết quả trả về:**
+
+- `bool` – Trả về `true` nếu xóa thành công, `false` nếu thất bại.

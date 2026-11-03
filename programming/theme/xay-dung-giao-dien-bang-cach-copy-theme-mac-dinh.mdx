@@ -1,0 +1,58 @@
+---
+title: "Xây dựng giao diện bằng cách copy theme mặc định"
+description: "Copy Giao diện mặc định thành giao diện ví dụ đặt tên là abc"
+---
+
+## 1) Copy Giao diện
+
+Copy Giao diện mặc định thành giao diện ví dụ đặt tên là abc
+
+## 2) Xóa các file đã được lấy từ giao diện mặc định
+
+nếu không có nó sẽ lấy từ giao diện mặc định, nên cần xóa nó đi:
+
+``` text
+/themes/abc/system/dump.tpl
+/themes/abc/css/font-awesome.css
+/themes/abc/css/font-awesome.min.css
+/themes/abc/fonts/fontawesome-webfont.*
+/themes/abc/fonts/FontAwesome.otf
+/themes/abc/fonts/roboto-400.woff
+/themes/abc/fonts/roboto-700.woff
+```
+
+## 3) Thay đổi hình minh họa của giao diện
+
+/themes/abc/default.jpg
+
+ảnh này có kích thước chiều rộng là 300px, chiều cao từ 150 - 200px
+
+## 4) Giao diện của các Module
+
+Nếu module nào không chỉnh sửa, cần xóa nó đi, bởi nếu không khi giao diện default chỉnh sửa sẽ phải đi sửa tất cả các giao diện này, và sinh ra rất nhiều rác trong code.
+
+Để tránh việc thừa, Nên xóa hết giao diện của module, khi chỉnh sửa cho module nào thì mới copy từ giao diện mặc định sang.
+
+## 5) Layout của giao diện
+
+Kiểm tra lại các layout,
+
+``` text
+/themes/abc/layout/layout.***.tpl
+```
+
+Cái nào làm thì dữ lại, Cái nào ko làm thì phải xóa đi để tránh người dùng cấu hình vào nó lỗi
+
+Sau đó sửa lại file /themes/abc/config.ini
+
+Sửa dòng
+
+``` text
+<layoutdefault>left-body-right</layoutdefault>
+```
+
+Thay **left-body-right** bằng layout mặc định cho giao diện, ví dụ thay thành body
+
+``` text
+<layoutdefault>body</layoutdefault>
+```

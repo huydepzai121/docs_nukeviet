@@ -1,0 +1,416 @@
+---
+title: "Cấu trúc của một gói nâng cấp module"
+description: "Kể từ phiên bản NukeViet 3.4.01, chức năng nâng cấp dành cho hệ thống và cho module hoàn toàn tự động được đưa vào sử dụng. Để làm việc với chức năng mới này..."
+---
+
+Kể từ phiên bản NukeViet 3.4.01, chức năng nâng cấp dành cho hệ thống và cho module hoàn toàn tự động được đưa vào sử dụng. Để làm việc với chức năng mới này các nhà phát triển module cần chú ý.
+
+
+Gói nâng cấp module và gói nâng cấp nhân NukeViet là hoàn toàn tương tự nhau, được đặt trong thư mục install, gồm có:
+
+- File update_data.php: File này là file khai báo các thông tin về gói nâng cấp, kiểu nâng cấp, nâng cấp module hoặc hệ thống, tác giả, website hỗ trợ, ... và quan trọng hơn hết là chứa code nâng cấp CSDL.
+- File hướng dẫn khác: Có thể có hoặc không có, gồm 1 hoặc nhiều file html (nếu có nhiều ngôn ngữ), tên chúng được đặt theo ngôn ngữ ví dụ: update_docs_vi.html, update_docs_en.html. Nội dung của chúng chứ các đoạn hướng dẫn riêng, các ghi chú, ... tùy theo mục đích của người lập trình.
+- Thư mục update: Có thể có hoặc không, là thư mục chứa các file thay đổi của module, của hệ thống so với phiên bản trước. Chú ý: Trong thư mục này đặt các file và thư mục theo đúng cấu trúc của hệ thống, tức là thư mục đó được xem như thư mục gốc của NukeViet.
+
+*Ví dụ về gói nâng cấp (tính theo đường dẫn từ thư mục gốc)*
+
+- install/update_data.php
+- install/update_docs_vi.html
+- install/update_docs_en.html
+- install/update_docs_fr.html
+- install/update/index.php
+- install/update/CJzip.php
+- install/update/modules/news/theme.php
+
+Khi xây dựng gói nâng cấp cần tuân thủ đúng chuẩn này.
+
+# Cấu hình gói nâng cấp và nâng cấp CSDL
+
+## Ví dụ
+
+Để thực hiên hai công việc này ta thao tác với file update_data.php. Cấu trúc của file update_data.php như sau:
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET-MUSIC
+ * @Author Phan Tan Dung (phantandung92@gmail.com)
+ * @Copyright (C) 2011 Freeware
+ * @Createdate 29-03-2012 03:29
+ */
+
+if( ! defined( 'NV_IS_UPDATE' ) ) die( 'Stop!!!' );
+ 
+$nv_update_config = array();
+
+$nv_update_config['type'] = 1; // Kieu nang cap 1: Update; 2: Upgrade
+$nv_update_config['packageID'] = 'NVUDMUSIC3401'; // ID goi cap nhat
+$nv_update_config['formodule'] = "music"; // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
+
+// Thong tin phien ban, tac gia, ho tro
+$nv_update_config['release_date'] = 1333929600;
+$nv_update_config['author'] = "Phan Tan Dung (phantandung92@gmail.com)";
+$nv_update_config['support_website'] = "http://nukeviet.vn/phpbb/viewforum.php?f=118";
+$nv_update_config['to_version'] = "3.5.01";
+$nv_update_config['allow_old_version'] = array( "3.0.01", "3.1.00", "3.2.00", "3.3.00", "3.3.01", "3.4.01" );
+$nv_update_config['update_auto_type'] = 1; // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
+
+$nv_update_config['lang'] = array();
+$nv_update_config['lang']['vi'] = array();
+$nv_update_config['lang']['en'] = array();
+
+// Tiếng Việt
+$nv_update_config['lang']['vi']['nv_up_author'] = 'Cập nhật nhạc sĩ cho bảng bài hát, video';
+
+$nv_update_config['lang']['vi']['nv_up_version'] = 'Cập nhật phiên bản';
+
+// English
+$nv_update_config['lang']['en']['nv_up_author'] = 'Update author for song, clip table';
+
+$nv_update_config['lang']['en']['nv_up_version'] = 'Updated version';
+
+// Require level: 0: Khong bat buoc hoan thanh; 1: Canh bao khi that bai; 2: Bat buoc hoan thanh neu khong se dung nang cap.
+// r: Revision neu la nang cap site, phien ban neu la nang cap module
+
+$nv_update_config['tasklist'] = array();
+$nv_update_config['tasklist'][] = array( 'r' => '3.4.01', 'rq' => 2, 'l' => 'nv_up_author', 'f' => 'nv_up_author' );
+
+$nv_update_config['tasklist'][] = array( 'r' => '3.5.01', 'rq' => 2, 'l' => 'nv_up_version', 'f' => 'nv_up_version' );
+
+// Danh sach cac function
+/*
+Chuan hoa tra ve:
+array(
+    'status' =>
+    'complete' => 
+    'next' =>
+    'link' =>
+    'lang' =>
+    'message' =>
+);
+
+status: Trang thai tien trinh dang chay
+- 0: That bai
+- 1: Thanh cong
+
+complete: Trang thai hoan thanh tat ca tien trinh
+- 0: Chua hoan thanh tien trinh nay
+- 1: Da hoan thanh tien trinh nay
+
+next:
+- 0: Tiep tuc ham nay voi "link"
+- 1: Chuyen sang ham tiep theo
+
+link:
+- NO
+- Url to next loading
+
+lang:
+- ALL: Tat ca ngon ngu
+- NO: Khong co ngon ngu loi
+- LangKey: Ngon ngu bi loi vi,en,fr ...
+
+message:
+- Any message
+
+Duoc ho tro boi bien $nv_update_baseurl de load lai nhieu lan mot function
+Kieu cap nhat module duoc ho tro boi bien $old_module_version
+*/
+
+$array_lang_music_update = array();
+// Lay danh sach ngon ngu
+$result = $db->sql_query( "SELECT `lang` FROM `" . $db_config['prefix'] . "_setup_language` WHERE `setup`=1" );
+while( list( $_tmp ) = $db->sql_fetchrow( $result ) )
+{
+    $array_lang_music_update[$_tmp] = array( "lang" => $_tmp, "mod" => array() );
+    
+    // Get all module of music
+    $result1 = $db->sql_query( "SELECT `title`, `module_data` FROM `" . $db_config['prefix'] . "_" . $_tmp . "_modules` WHERE `module_file`='music'" );
+    while( list( $_modt, $_modd ) = $db->sql_fetchrow( $result1 ) )
+    {
+        $array_lang_music_update[$_tmp]['mod'][] = array( "module_title" => $_modt, "module_data" => $_modd );
+    }
+}
+
+function nv_up_author()
+{
+    global $nv_update_baseurl, $db, $db_config, $old_module_version, $array_lang_music_update;
+    $return = array( 'status' => 1, 'complete' => 1, 'next' => 1, 'link' => 'NO', 'lang' => 'NO', 'message' => '', );
+    
+    $array_author = array();
+    
+    // Lấy tất cả các nhạc sĩ
+    foreach( $array_lang_music_update as $lang => $array_mod )
+    {
+        foreach( $array_mod['mod'] as $module_info )
+        {
+            $table = $db_config['prefix'] . "_" . $lang . "_" . $module_info['module_data'] . "_author";
+            $sql = "SELECT * FROM `" . $table . "`";
+            $check = $db->sql_query($sql);
+            
+            while( $row = $db->sql_fetchrow( $check ) )
+            {
+                $array_author[$lang][$module_info['module_data']][$row['ten']] = ( int ) $row['id'];
+            }
+        }
+    }
+    $db->sql_freeresult();
+
+    // Cập nhật nhạc sĩ cho bảng bài hát, video
+    foreach( $array_lang_music_update as $lang => $array_mod )
+    {
+        foreach( $array_mod['mod'] as $module_info )
+        {
+            $table = $db_config['prefix'] . "_" . $lang . "_" . $module_info['module_data'] . "";
+
+            $array_author[$lang][$module_info['module_data']]['na'] = 0;
+            
+            foreach( $array_author[$lang][$module_info['module_data']] as $alias => $id )
+            {
+                $db->sql_query( "UPDATE `" . $table . "` SET `nhacsi`='" . $id . "' WHERE `nhacsi`='" . $alias . "'" );
+                $db->sql_query( "UPDATE `" . $table . "_video` SET `nhacsi`='" . $id . "' WHERE `nhacsi`='" . $alias . "'" );
+            }
+        }
+    }
+    $db->sql_freeresult();
+    
+    return $return;
+}
+
+function nv_up_version()
+{
+    global $nv_update_baseurl, $db, $db_config, $old_module_version, $array_lang_music_update;
+    $return = array( 'status' => 1, 'complete' => 1, 'next' => 1, 'link' => 'NO', 'lang' => 'NO', 'message' => '', );
+
+    // Cap nhat lai revision va version cua module
+    foreach( $array_lang_music_update as $lang => $array_mod )
+    {
+        foreach( $array_mod['mod'] as $module_info )
+        {
+            $table = $db_config['prefix'] . "_" . $lang . "_" . $module_info['module_data'] . "_setting";
+            $db->sql_query( "UPDATE `" . $table . "` SET `value`=331 WHERE `key`='revision'" );             
+            $db->sql_query( "UPDATE `" . $table . "` SET `char`='3.5.01' WHERE `key`='version'" );              
+        }
+    }
+    
+    $mod_version = "3.5.01 1333929600";
+    $db->sql_query( "UPDATE `" . $db_config['prefix'] . "_setup_modules` SET `mod_version`='" . $mod_version . "', `author`='PHAN TAN DUNG (phantandung92@gmail.com)' WHERE `module_file`='music'" );
+    
+    nv_delete_all_cache();
+    
+    return $return;
+}
+
+?>
+```
+
+## Cấu hình gói nâng cấp
+
+Trong ví dụ trên thì việc cấu hình gói nâng cấp được khai báo trong đoạn
+
+``` php
+$nv_update_config['type'] = 1; // Kieu nang cap 1: Update; 2: Upgrade
+$nv_update_config['packageID'] = 'NVUDMUSIC3401'; // ID goi cap nhat
+$nv_update_config['formodule'] = "music"; // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
+
+// Thong tin phien ban, tac gia, ho tro
+$nv_update_config['release_date'] = 1333929600;
+$nv_update_config['author'] = "Phan Tan Dung (phantandung92@gmail.com)";
+$nv_update_config['support_website'] = "http://nukeviet.vn/phpbb/viewforum.php?f=118";
+$nv_update_config['to_version'] = "3.5.01";
+$nv_update_config['allow_old_version'] = array( "3.0.01", "3.1.00", "3.2.00", "3.3.00", "3.3.01", "3.4.01" );
+$nv_update_config['update_auto_type'] = 1; // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
+
+$nv_update_config['lang'] = array();
+$nv_update_config['lang']['vi'] = array();
+$nv_update_config['lang']['en'] = array();
+```
+
+Trong đó
+
+``` php
+$nv_update_config['type'] = 1;
+```
+
+Là kiểu nâng cấp, 1 là Update 2 là Upgrade, việc khai báo thông số này không có mục đích gì ngoài việc thay đổi ngôn ngữ thông báo.
+
+``` php
+$nv_update_config['packageID']
+```
+
+Là ID gói nâng cấp, được viết hoa tất cả, được đặt theo chuẩn NVU\[A-Z\]\[0-9\]\{4\} ví dụ NVUMUSIC3400, NVU3501, ....
+
+``` php
+$nv_update_config['formodule'] = "music";
+```
+
+Giá trị bằng tên module (không ảo) sẽ nâng cấp (hay tên thư mục chứa module đó).
+
+``` php
+$nv_update_config['release_date'] = 1333929600;
+```
+
+Là thời gian phát hành gói nâng cấp/cập nhật module, giá trị này là Unix timestamp lấy theo hàm [time()](http://php.net/manual/en/function.time.php) của php.
+
+``` php
+$nv_update_config['author'] = "Phan Tan Dung (phantandung92@gmail.com)";
+$nv_update_config['support_website'] = "http://nukeviet.vn/phpbb/viewforum.php?f=118";
+$nv_update_config['to_version'] = "3.5.01";
+$nv_update_config['allow_old_version'] = array( "3.0.01", "3.1.00", "3.2.00", "3.3.00", "3.3.01", "3.4.01" );
+$nv_update_config['update_auto_type'] = 1; // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
+```
+
+Là đoạn khai báo lần lượt thông tin tác giả, website hỗ trợ, phiên bản nâng cấp đến (được đặt đúng [quy cách đặt tên phiên bản module](/programming/module)), các phiên bản hỗ trợ nâng cấp, kiểu nâng cấp.
+
+- Đối với kiểu nâng cấp bằng tay, thay vì các file nâng cấp, các code thay đổi được đặt trong thư mục install/update thì chúng được đặt luôn ngang hàng với thư mục gốc. Kiểu nâng cấp này áp dụng chỉ áp dụng cho việc nâng cấp hệ thống NukeViet trong một số trường hợp cần thiết, việc nâng cấp module không nên và không cần dùng kiểu nâng cấp này.
+- Đối với kiểu nâng cấp nửa tự động, hệ thống sẽ thực hiên nâng cấp CSDL và người quản trị phải thực hiện di chuyển bằng tay các file trong thư mục install/update ra ngoài thư mục gốc.
+- Đối với nâng cấp tự động thì việc nâng cấp CSDL và việc di chuyển code là hoàn toàn tự động.
+
+## Ngôn ngữ
+
+Để khai báo thêm cho ngôn ngữ khi nâng cấp, ta tiến hành khai báo qua đoạn
+
+``` php
+$nv_update_config['lang'] = array();
+$nv_update_config['lang']['vi'] = array();
+$nv_update_config['lang']['en'] = array();
+
+// Tiếng Việt
+$nv_update_config['lang']['vi']['nv_up_author'] = 'Cập nhật nhạc sĩ cho bảng bài hát, video';
+
+$nv_update_config['lang']['vi']['nv_up_version'] = 'Cập nhật phiên bản';
+
+// English
+$nv_update_config['lang']['en']['nv_up_author'] = 'Update author for song, clip table';
+
+$nv_update_config['lang']['en']['nv_up_version'] = 'Updated version';
+```
+
+Trong ví dụ trên thì gói nâng cấp hỗ trợ hai ngôn ngữ tiếng việt và tiếng anh.
+
+## Nâng cấp CSDL
+
+Việc nâng cấp CSDL được thư hiện thông qua danh sách các hàm, hệ thống sẽ lần lượt gọi các hàm đó theo cấu hình. Đầu tiên ta khai báo danh sách các hàm sẽ thự hiện:
+
+``` php
+$nv_update_config['tasklist'] = array();
+$nv_update_config['tasklist'][] = array( 'r' => '3.4.01', 'rq' => 2, 'l' => 'nv_up_author', 'f' => 'nv_up_author' );
+$nv_update_config['tasklist'][] = array( 'r' => '3.5.01', 'rq' => 2, 'l' => 'nv_up_version', 'f' => 'nv_up_version' );
+```
+
+Trong đó:
+
+- Phần tử r mang giá trị là phiên bản thấp nhất của module mà gói nâng cấp sẽ bỏ qua không thực hiện. Có nghĩa rằng nếu module hiện tại có phiên bản bằng giá trị này hoặc lớn hơn thì hệ thống không thực hiện hàm đó.
+- Phần tử rq là cấu hình bắt buộc thành công hoặc không bắt buộc.
+  - Bằng 0: Không bắt buộc hoàn thành.
+  - Bằng 1: Sẽ cảnh báo quản trị nếu thất bại.
+  - Bằng 2: Sẽ dừng việc nâng cấp và báo lỗi nếu thất bại.
+- Phần tử l là langkey, là các khóa ngôn ngữ thể hiện tên công việc.
+- Phần tử f là tên hàm sẽ thực hiện công việc đó.
+
+Tiếp theo ta viết các hàm thực hiện công việc đó. Ví dụ
+
+``` php
+$array_lang_music_update = array();
+// Lay danh sach ngon ngu
+$result = $db->sql_query( "SELECT `lang` FROM `" . $db_config['prefix'] . "_setup_language` WHERE `setup`=1" );
+while( list( $_tmp ) = $db->sql_fetchrow( $result ) )
+{
+    $array_lang_music_update[$_tmp] = array( "lang" => $_tmp, "mod" => array() );
+    
+    // Get all module of music
+    $result1 = $db->sql_query( "SELECT `title`, `module_data` FROM `" . $db_config['prefix'] . "_" . $_tmp . "_modules` WHERE `module_file`='music'" );
+    while( list( $_modt, $_modd ) = $db->sql_fetchrow( $result1 ) )
+    {
+        $array_lang_music_update[$_tmp]['mod'][] = array( "module_title" => $_modt, "module_data" => $_modd );
+    }
+}
+
+function nv_up_author()
+{
+    global $nv_update_baseurl, $db, $db_config, $old_module_version, $array_lang_music_update;
+    $return = array( 'status' => 1, 'complete' => 1, 'next' => 1, 'link' => 'NO', 'lang' => 'NO', 'message' => '', );
+    
+    $array_author = array();
+    
+    // Lấy tất cả các nhạc sĩ
+    foreach( $array_lang_music_update as $lang => $array_mod )
+    {
+        foreach( $array_mod['mod'] as $module_info )
+        {
+            $table = $db_config['prefix'] . "_" . $lang . "_" . $module_info['module_data'] . "_author";
+            $sql = "SELECT * FROM `" . $table . "`";
+            $check = $db->sql_query($sql);
+            
+            while( $row = $db->sql_fetchrow( $check ) )
+            {
+                $array_author[$lang][$module_info['module_data']][$row['ten']] = ( int ) $row['id'];
+            }
+        }
+    }
+    $db->sql_freeresult();
+
+    // Cập nhật nhạc sĩ cho bảng bài hát, video
+    foreach( $array_lang_music_update as $lang => $array_mod )
+    {
+        foreach( $array_mod['mod'] as $module_info )
+        {
+            $table = $db_config['prefix'] . "_" . $lang . "_" . $module_info['module_data'] . "";
+
+            $array_author[$lang][$module_info['module_data']]['na'] = 0;
+            
+            foreach( $array_author[$lang][$module_info['module_data']] as $alias => $id )
+            {
+                $db->sql_query( "UPDATE `" . $table . "` SET `nhacsi`='" . $id . "' WHERE `nhacsi`='" . $alias . "'" );
+                $db->sql_query( "UPDATE `" . $table . "_video` SET `nhacsi`='" . $id . "' WHERE `nhacsi`='" . $alias . "'" );
+            }
+        }
+    }
+    $db->sql_freeresult();
+    
+    return $return;
+}
+```
+
+Chú ý:
+
+- Chức năng nâng cấp của hệ thống sẽ sử dụng được tất cả các tài nguyên của NukeViet như các [hàm](/programming/function), [class](/programming/class), [các biến dùng chung](/programming/variables), [các hằng](/programming/other_constants)
+- Được sử dụng biến \$nv_update_baseurl mang giá trị
+  ``` php
+  NV_BASE_SITEURL . 'install/update.php?step=2&substep=3&load=' . $func
+  ```
+
+  . Biến này có tác dụng là đường dẫn giúp load lại nhiều lần một hàm nào đó mà hàm đó thực hiện nhiều việc, phải chạy lại nhiều lần (sẽ được hướng dẫn bên dưới).
+- Được sử dụng biến \$old_module_version mang giá trị là phiên bản hiện tại của module đang được cập nhật.
+
+### Viết hàm nâng cấp
+
+Việc viết các hàm nâng cấp là do mỗi nhà lập trình mà có các cách viết, nội dung và mục đích, tuy nhiên tất cả đều phải trả về một giá trị quy chuẩn, giá trị trả về là một bảng 1 chiều như sau:
+
+``` php
+$return = array( 'status' => 1, 'complete' => 1, 'next' => 1, 'link' => 'NO', 'lang' => 'NO', 'message' => '', );
+```
+
+Trong đó
+
+- status (0 hoặc 1, true hoặc false tương ứng thành công hoặc thất bại) là trạng thái trả về của lần chạy đó.
+- complete hoàn thành hoặc không hoàn thành (0 hoặc 1 true hoặc false) complete khác status ở chỗ complete đánh dấu cho cả hàm (công việc) còn status chỉ đánh dấu cho lần chạy đó.
+- next nếu là 0 (hay false) thì hệ thống kết thúc hàm đó, nếu là 1 (hoặc true) thì hệ thống sẽ tiếp tục chạy tiếp đường dẫn link.
+- link đường dẫn sẽ chạy nếu next là 1 (hoặc true)
+- lang là các ngôn ngữ xảy ra lỗi khi thực hiện ví dụ vi,en,fr, nếu không có để NO, nếu tất cả ngôn ngữ lỗi để ALL.
+- message bất kì thông tin gì trả về nếu không có hãy để trống.
+
+# Nâng cấp các file
+
+Để nâng cấp các file có 3 cách:
+
+1.  Đặt các file thay đổi của module ngang hàng với thư mục gốc của website.
+2.  Đặt các file thay đổi của module vào thư mục update của gói nâng cấp và cấu hình kiểu nâng cấp là tự động.
+3.  Đặt các file thay đổi của module vào thư mục update của gói nâng cấp và cấu hình kiểu nâng cấp là nửa tự động.
+
+Tùy theo từng tình huống mà các nhà phát triển chọn cách đặt cho phù hợp
+
+# Gói nâng cấp mẫu
+
+Tham khảo gói nâng cấp module music lên phiên bản 3.4.01 của tác giả Phan Tấn Dũng (phantandung92@gmail.com) tại: [http://code.google.com/p/nukeviet-music/downloads/detail?name=Update_Module_Music_3.3.01_To_3.4.01.zip](http://code.google.com/p/nukeviet-music/downloads/detail?name=Update_Module_Music_3.3.01_To_3.4.01.zip)

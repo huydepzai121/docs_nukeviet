@@ -1,0 +1,366 @@
+---
+title: "Viết Blocks cho NukeViet 3.x"
+description: "- Block global của module: File xử lý chính và file cấu hình ini được đặt chung vào một thư mục. File cấu hình ini có tên giống với tên block."
+---
+
+## Tổng quan về block: quy ước và cách đặt tên
+
+- Các block module được đặt trong thư mục blocks của mỗi module. Tên block quy ước chỉ được bao gồm chữ cái, chữ số, dấu gạch ngang và dấu gạch dưới.
+- Block module được bắt đầu bằng “module.”. Ví dụ: module.block_topdownload.php, module.block_lastestdownload.php. Block module chỉ được dùng trong module đó.
+- Block global: Có hai vị trí đặt block global: trong thư mục blocks của module và thư mục incdules/blocks/. Block global bao gồm ba thành phần File xử lý chính của block, file ini cấu hình và file ngôn ngữ block, tuy nhiên tùy vào điều kiện, block global cũng có thể chỉ gồm một file xử lý chính.
+
+\*\* - Block global của module\*\*: File xử lý chính và file cấu hình ini được đặt chung vào một thư mục. File cấu hình ini có tên giống với tên block.
+
+Ví dụ: Block global.block_blocknews.php thì file ini sẽ là global.block_blocknews.ini. File ngôn ngữ được đặt vào thư mục language của module. Tên file ngôn ngữ bắt đầu bằng block. tiếp đến là tên block\_ và ngôn ngữ.
+
+Ví dụ với block global.block_blocknews.php và ngôn ngữ tiếng Việt thì ta có file ngôn ngữ block.global.block_blocknews_vi.php.
+
+\*\* - Block global trong thư mục include\*\*: File xử ký và file ini cũng được đặt chung một thư mục còn file ngôn ngữ được đặt tại thư mục /language/ngon-ngu/block.ten-block.php
+
+Ví dụ với block global.html.php thì ta có file ngôn ngữ: `block.global.html.php`
+
+## Nâng cấp Block của NukeViet 2.0 sử dụng cho NukeViet 3.x
+
+Nói chung, các block của NukeViet 2.0 mà không đọc vào database thì có thể sử dụng chung cho NukeViet 3.x chỉ với một chút sửa đổi. Cụ thể như sau: Ví dụ block block-thoitiet_HN_HP_HCM.php của NukeViet 2.0 như sau:
+
+``` php
+<?php
+
+if( ( ! defined( 'NV_SYSTEM' ) ) and ( ! defined( 'NV_ADMIN' ) ) )
+{
+    Header( "Location: ../index.php" );
+    exit;
+}
+$content = "<!-- http://xaydungcauduong.net  -->";
+$content .= "<p>Hà Nội<br><img alt=\"Thời tiết thủ đô Hà Nội\" border=\"0\" ";
+$content .= "src=\"http://banners.wunderground.com/banner/gizmotimetemp_both/language/english/global/stations/48820.gif\" height=41 width=127></p>";
+$content .= "";
+$content .= "<p>Hải Phòng<br><IMG height=41 alt=\"Thời tiết Bạch Long Vĩ, Hải Phòng\" ";
+$content .= "src=\"http://banners.wunderground.com/banner/gizmotimetemp_both/language/english/global/stations/48839.gif\" width=127></p>";
+$content .= "";
+$content .= "<p>TP.HCM<br><img alt=\"Thời tiết TP. Hồ Chí Minh\" border=\"0\" ";
+$content .= "src=\"http://banners.wunderground.com/banner/gizmotimetemp_both/language/english/global/stations/48900.gif\" height=41 width=127></p>";
+$content .= "";
+$content .= "<!-- code by  http://xaydungcauduong.net  -->";
+
+?>
+```
+
+Nâng cấp lên NukeViet 3.x chỉ cần xóa đi đoạn
+
+``` php
+if( ( ! defined( 'NV_SYSTEM' ) ) and ( ! defined( 'NV_ADMIN' ) ) )
+{
+    Header( "Location: ../index.php" );
+    exit;
+}
+```
+
+Và thay vào đó đoạn
+
+``` php
+if ( ! defined( 'NV_SYSTEM' ) ) die( 'Stop!!!' );
+```
+
+Được đoạn code
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 3.0
+ * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Copyright (C) 2010 VINADES., JSC. All rights reserved
+ * @Createdate 3/25/2010 18:6
+ */
+if( ! defined( 'NV_SYSTEM' ) ) die( 'Stop!!!' );
+
+$content = "<!-- http://xaydungcauduong.net  -->";
+$content .= "<p>Hà Nội<br><img alt=\"Thời tiết thủ đô Hà Nội\" border=\"0\" ";
+$content .= "src=\"http://banners.wunderground.com/banner/gizmotimetemp_both/language/english/global/stations/48820.gif\" height=41 width=127></p>";
+$content .= "";
+$content .= "<p>Hải Phòng<br><IMG height=41 alt=\"Thời tiết Bạch Long Vĩ, Hải Phòng\" ";
+$content .= "src=\"http://banners.wunderground.com/banner/gizmotimetemp_both/language/english/global/stations/48839.gif\" width=127></p>";
+$content .= "";
+$content .= "<p>TP.HCM<br><img alt=\"Thời tiết TP. Hồ Chí Minh\" border=\"0\" ";
+$content .= "src=\"http://banners.wunderground.com/banner/gizmotimetemp_both/language/english/global/stations/48900.gif\" height=41 width=127></p>";
+$content .= "";
+$content .= "<!-- code by  http://xaydungcauduong.net  -->";
+
+?>
+```
+
+Sau đó lưu lại file này với tên global.thoitiet_hn_hp_hcm.php và đặt nó tại \includes\blocks\\
+
+Cuối cùng tôi chỉ việc vào Admin Control Panel của NukeViet 3.x, tạo block mới kiểu file và trỏ tới block này.
+
+Chú ý:
+
+- Block có ảnh hưởng trực tiếp đến giao diện site. NukeViet 3 sử dụng chuẩn xHTML 1.0 và CSS 1.1 vì vậy bạn cần kiểm tra để hợp chuẩn bằng cách click vào nút valid xHTML và CSS có ở theme mặc định, tránh vì một vài block mà phá vỡ chuẩn mực giao diện của site.
+- Vì NukeViet 3.x có hỗ trợ rewrite nên nếu trong block sử dụng các tệp tin từ website hoặc có link là đường dẫn tương đối thì phải chèn vào đầu mỗi đường dẫn tương đối đoạn code:
+  ``` text
+  {NV_BASE_SITEURL}
+  ```
+
+  \{NV_BASE_SITEURL\} sẽ chỉ ra địa chỉ đường dẫn một cách chính xác khi bạn phải duyệt qua URL ảo do rewrite tạo ra. Lưu ý là đằng sau \{NV_BASE_SITEURL\} không có gạch chéo nào cả, ví dụ cài NukeViet 3 tại thư mục gốc của tên miền [http://nukeviet.vn](http://nukeviet.vn), khi muốn chỉ đến trang chủ website (file index.php) tôi sẽ phải ghi địa chỉ link như sau:
+  ``` text
+  {NV_BASE_SITEURL}index.php
+  ```
+- NukeViet 3.1 trở đi cho phép sử dụng file cấu hình bổ sung cho block cũng như tách ngôn ngữ cho block, xem hướng dẫn bên dưới để biết chi tiết cách sử dụng.
+
+## Viết block module
+
+Tạo một file mới cho block module, đặt vào thư mục blocks của module cần tạo block.
+
+Để sử dụng các biến chung của hệ thống cần dùng lệnh global.
+
+Ví dụ:
+
+``` php
+global $module_name, $lang_module, $module_data;
+```
+
+Block module sẽ dùng được các tài nguyên của module đó, do đó có thể sửa dụng Xtemplate, truy vấn CSDL…. Cho block.
+
+Tất cả nội dung của block được hiển thị cần phải lưu vào biến \$content.
+
+Một block hoàn chỉnh sẽ có dạng:
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 3.0
+ * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Copyright (C) 2010 VINADES., JSC. All rights reserved
+ * @Createdate 3/9/2010 23:25
+ */
+
+if ( ! defined( 'NV_IS_MOD_DOWNLOAD' ) ) die( 'Stop!!!' );
+global $module_name, $lang_module, $module_data, $nv_Request, $list_cats, $module_file;
+
+$xtpl = new XTemplate( "block_lastestdownload.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file );
+$xtpl->assign( 'LANG', $lang_module );
+$query = "SELECT catid, title, alias, uploadtime FROM `" . NV_PREFIXLANG . "_" . $module_data . "` WHERE `status`=1 ORDER BY uploadtime DESC LIMIT 5";
+$result = $db->sql_query( $query );
+while ( $row = $db->sql_fetchrow( $result ) )
+{
+    $catalias = $list_cats[$row['catid']]['alias'];
+    $row['link'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $catalias . '/' . $row['alias'];
+    $row['updatetime'] = date( 'd.m.Y h:i', $row['uploadtime'] );
+    $xtpl->assign( 'loop', $row );
+    $xtpl->parse( 'main.loop' );
+}
+
+$xtpl->parse( 'main' );
+$content = $xtpl->text( 'main' );
+
+?>
+```
+
+## Viết block global
+
+Trước khi viết block blobal cần xác định đặt block ở đâu? Trong module hay trong thư mục `includes/blocks`.
+
+Tiếp theo cần xác định block có phần cấu hình hoặc ngôn ngữ block không?
+
+Nếu block có phần cấu hình cần tạo thêm file ini, file này có dạng:
+
+``` xml
+<?xml version="1.0" encoding="utf-8"?>
+<block>
+<info>
+<name>Block RSS</name>
+<author>VinaDes.,Jsc</author>
+<website>http://vinades.vn</website>
+<description></description>
+</info>
+<config>
+<blockid>1</blockid>
+<numrow>5</numrow>
+<type>1</type>
+</config>
+    <datafunction>nv_block_config_news_blocks</datafunction>
+<submitfunction>nv_block_config_news_blocks_submit</submitfunction>
+</block>
+```
+
+Trong đó cần quan tâm đến
+
+``` text
+<config>
+<blockid>1</blockid>
+<numrow>5</numrow>
+<type>1</type>
+</config>
+```
+
+Phần này là các biến để thiết lập block.
+
+\<datafunction\>nv_block_config_news_blocks\</datafunction\> Đây là tên function sẽ được gọi để hiển thị phần cấu hình của block khi thực hiện thao tác thêm hoặc sửa block.
+
+\<submitfunction\>nv_block_config_news_blocks_submit\</submitfunction\> Là tên function xử lý dữ liệu cấu hình block khi lưu block.
+
+Nếu block có ngôn ngữ riêng cần tạo thêm file ngôn ngữ có dạng:
+
+``` php
+<?php
+
+/**
+* @Project NUKEVIET 3.0
+* @Author VINADES.,JSC (contact@vinades.vn)
+* @Copyright (C) 2010 VINADES.,JSC. All rights reserved
+* @Language Tiếng Việt
+* @Createdate Jul 06, 2011, 04:38:01 PM
+*/
+
+ if (!defined( 'NV_MAINFILE' )) {
+ die('Stop!!!');
+}
+
+$lang_translator['author'] ="VINADES.,JSC (contact@vinades.vn)";
+$lang_translator['createdate'] ="22/06/2010, 09:22";
+$lang_translator['copyright'] ="@Copyright (C) 2010 VINADES.,JSC. All rights reserved";
+$lang_translator['info'] ="";
+$lang_translator['langtype'] ="lang_block";
+
+$lang_block['blockid'] = "Nhóm tin liên quan";
+$lang_block['numrow'] = "Số bài hiển thị";
+$lang_block['type'] = "Cách thức hiển thị";
+
+?>
+```
+
+Trong đó biến \$lang_translator không nên chỉnh sửa, biến \$lang_block gồm nội dung của ngôn ngữ block.
+
+Sau khi tạo thêm các thành phần trên, ta tiến hành viết nội dung chính của block.
+
+Tạo file block và đặt vào vị trí thích hợp.
+
+Vì block có thể dùng nhiều lần trên một trang do đó cần kiểm tra xem một block đã được dùng chưa? Việc kiểm tra sẽ tránh tình trạng lặp đi lặp lại các phần trong block.
+
+Ví dụ:
+
+``` php
+if ( ! nv_function_exists( 'nv_news_blocks' ) )
+{
+    function nv_news_blocks( $block_config )
+  {
+
+  }
+}
+```
+
+Nội dung của block cần đặt trong một function, theo ví dụ trên đó là function nv_news_blocks.
+
+Vì nội dung được đặt trong function nên để sử dụng các biến dùng chung cũng cần gọi biến global.
+
+Nếu block có cấu hình, thêm tiếp hai function cấu hình block.
+
+Ví dụ:
+
+``` php
+function nv_block_config_news_blocks ( $module, $data_block, $lang_block )
+    {
+        global $db, $language_array, $site_mods;
+        $html = "";
+        $html .= "<tr>";
+        $html .= "  <td>" . $lang_block['blockid'] . "</td>";
+        $html .= "  <td><select name=\"config_blockid\">\n";
+        $sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $site_mods[$module]['module_data'] . "_block_cat` ORDER BY `weight` ASC";
+        $list = nv_db_cache( $sql, 'catid', $module );
+        foreach ( $list as $l )
+        {
+            $sel = ( $data_block['blockid'] == $l['bid'] ) ? ' selected' : '';
+            $html .= "<option value=\"" . $l['bid'] . "\" " . $sel . ">" . $l['title'] . "</option>\n";
+        }
+        $html .= "  </select></td>\n";
+        $html .= "</tr>";
+        $html .= "<tr>";
+        $html .= "  <td>" . $lang_block['numrow'] . "</td>";
+        $html .= "  <td><input type=\"text\" name=\"config_numrow\" size=\"5\" value=\"" . $data_block['numrow'] . "\"/></td>";
+        $html .= "</tr>";
+        return $html;
+    }
+
+    function nv_block_config_news_blocks_submit ( $module, $lang_block )
+    {
+        global $nv_Request;
+        $return = array();
+        $return['error'] = array();
+        $return['config'] = array();
+        $return['config']['blockid'] = $nv_Request->get_int( 'config_blockid', 'post', 0 );
+        $return['config']['numrow'] = $nv_Request->get_int( 'config_numrow', 'post', 0 );
+        return $return;
+    }
+```
+
+Tiếp theo thêm function chính (nội dung block)
+
+Ví dụ:
+
+``` php
+function nv_news_blocks ( $block_config )
+    {
+        global $module_array_cat, $module_info, $lang_module, $site_mods;
+        $module = $block_config['module'];
+        $sql = "SELECT t1.id, t1.listcatid, t1.title, t1.alias, t1.homeimgthumb, t1.homeimgalt FROM `" . NV_PREFIXLANG . "_" . $site_mods[$module]['module_data'] . "_rows` as t1 INNER JOIN `" . NV_PREFIXLANG . "_" . $site_mods[$module]['module_data'] . "_block` AS t2 ON t1.id = t2.id WHERE t2.bid= " . $block_config['blockid'] . " AND t1.status= 1 AND t1.inhome='1' and  t1.publtime < " . NV_CURRENTTIME . " AND (t1.exptime=0 OR t1.exptime >" . NV_CURRENTTIME . ") ORDER BY t2.weight ASC LIMIT 0 , " . $block_config['numrow'];
+        $list = nv_db_cache( $sql, 'id', $module );
+        $html = "";
+        $i = 1;
+        if ( ! empty( $list ) )
+        {
+            if ( file_exists( NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/news/block_blocknews.tpl" ) )
+            {
+                $block_theme = $module_info['template'];
+            }
+            else
+            {
+                $block_theme = "default";
+            }
+            $xtpl = new XTemplate( "block_blocknews.tpl", NV_ROOTDIR . "/themes/" . $block_theme . "/modules/news" );
+            foreach ( $list as $l )
+            {
+                $arr_catid = explode( ',', $l['listcatid'] );
+                $link = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module . "&amp;" . NV_OP_VARIABLE . "=" . $module_array_cat[$arr_catid[0]]['alias'] . "/" . $l['alias'] . "-" . $l['id'];
+                $l['link'] = $link;
+                $l['thumb'] = "";
+                if ( ! empty( $l['homeimgthumb'] ) )
+                {
+                    $array_img = array();
+                    $array_img = explode( "|", $l['homeimgthumb'] );
+                    if ( $array_img[0] != "" and file_exists( NV_ROOTDIR . '/' . NV_FILES_DIR . '/' . $module . '/' . $array_img[0] ) )
+                    {
+                        $imgurl = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module . '/' . $array_img[0];
+                        $l['thumb'] = $imgurl;
+                    }
+                }
+                $xtpl->assign( 'ROW', $l );
+                if ( ! empty( $l['thumb'] ) ) $xtpl->parse( 'main.loop.img' );
+                $bg = ( $i % 2 == 0 ) ? "bg" : "";
+                $xtpl->assign( 'bg', $bg );
+                $i ++;
+                $xtpl->parse( 'main.loop' );
+            }
+            $xtpl->assign( 'HTML_CONTENT', $html );
+            $xtpl->parse( 'main' );
+            return $xtpl->text( 'main' );
+        }
+    }
+```
+
+Lưu ý:
+
+- Đối với block global cần chú ý biến \$block_config đây là biến chứa cấu hình của block, tên module chứa block, tên block.
+
+``` php
+array (
+  'blockid' => 2,
+  'numrow' => 5,
+  'bid' => '120',
+  'module' => 'news',
+  'block_name' => 'global.block_blocknews',
+)
+```
+
+- Cần chú ý đến biến `$module_name, $module_data, $module_file`. Vì block global được dùng trên toàn bộ site, đó mỗi module giá trị các biến trên sẽ thay đổi. Cần thay `$module_name` bằng `$block_config[‘module’], $site_mods[$block_config[‘module’]][‘module_data’], $site_mods[$block_config[‘module’]][‘module_file’]`.

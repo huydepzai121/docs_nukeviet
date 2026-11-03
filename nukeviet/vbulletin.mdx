@@ -1,0 +1,52 @@
+---
+title: "Hướng dẫn tích hợp diễn đàn vBulletin"
+description: "Bước 1) Cài đặt NukeViet 3 bản mới nhất."
+---
+
+Bước 1) Cài đặt NukeViet 3 bản mới nhất.
+
+Bước 2) Chuyển thư mục của diễn đàn vào trong thư mục của nukeviet. (Diễn đàn và portal phải cùng 1 cơ sở dữ liệu)
+
+Bước 3) Mở file includes/constants.php của NukeViet khai báo lại thông số  
+//Thu muc chua dien dan define( "DIR_FORUM", "forum" );  
+
+  
+Bước 4) Download file nukeviet.zip ([http://nukeviet.vn/phpbb/download/file.php?id=5950](http://nukeviet.vn/phpbb/download/file.php?id=5950)) về giải nén và copy thư mục NukeViet vào thư mục chứa forum, Khi đó phải tồn tại các file sau:  
+  
+forum/nukeviet/changepass.php  
+forum/nukeviet/editinfo.php  
+forum/nukeviet/is_user.php  
+forum/nukeviet/login.php  
+forum/nukeviet/logout.php  
+forum/nukeviet/lostpass.php  
+forum/nukeviet/register.php  
+  
+(thư mục chứa forum phải ngang hàng với file index.php và mainfile.php của NukeViet 3)  
+  
+
+Bước 5) Mở file data/config_global.php của NukeViet tìm và copy thông số cookie_prefix, ghi nhớ lại thông số này để sửa lại Tên cookie của diễn đàn vbb  
+  
+Bước 6) mở file forum/includes/config.php  
+sửa giá trị: \$config\['Misc'\]\['cookieprefix'\] = bằng giá trị của cookie_prefix của NukeViet và thêm dấu gạch dưới.  
+ví dụ \$global_config\['cookie_prefix'\] = "nv3c_Dz3ld"; của nukeviet  
+thì: \$config\['Misc'\]\['cookieprefix'\] = "nv3c_Dz3ld\_";  
+  
+Bước 7) Đăng nhập vào khu vực quản trị của diễn đàn vbb, vào phần Cookies and HTTP Header Options để thiết lập lại các thông số:  
+  
+Path to Save Cookies =Thư mục lưu cookies (Xem tại phần http:*sitename.com/admin/index.php?nv=siteinfo&op=main)  
+Cookie Domain = Domain lưu cookies (Xem tại phần http:*sitename.com/admin/index.php?nv=siteinfo&op=main)  
+Lưu lại các thông số này.  
+
+  
+Bước 8) Đăng nhập vào quản trị site NukeViet kích hoạt tính năng Sử dụng thành viên của Diễn đàn (Trong phần Cấu hình của module thành viên)  
+
+  
+Bước 9) Truy cập vào phpmyadmin backup lại các bảng nv3_users, nv3_authors,  
+Emty bảng nv3_users, Tìm userid của thành viên nào đó trong diễn đàn mà bạn muốn trở thành quản trị tối cao của nukeviet.  
+Mở bảng nv3_authors sửa lại dòng có admin_id= 1 thành admin_id = (userid của thành viên diễn đàn tìm được ở trên).  
+  
+Bước 10) Đăng nhập vào khu vực quản trị của NukeViet 3 phần quản lý module cài module forum để cài module này,kích hoạt nó để có thể hiển thị link trên menu ngang của site.  
+  
+Đóng tất cả các sửa số sau đó chạy lại trình duyệt bạn thử login ngoài site với bất kỳ thành viên nào hoặc vơi thành viên quản trị tối cao trong admin.  
+  
+Ghi chú: Các thành viên khác muốn thêm vào ban quản trị site của nukviet cần đăng nhập 1 lần trên portal của nukeviet.

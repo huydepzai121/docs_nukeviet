@@ -1,0 +1,115 @@
+---
+title: "Cài XAMPP trên Ubuntu / Fedora / RHCE / CentOS"
+description: "Một phiên bản dành cho các hệ thống Linux (Ubuntu, SuSE, RedHat, Debian, Fedora ...)"
+---
+
+Một phiên bản dành cho các hệ thống Linux ([Ubuntu](/nukeviet/setup/localhost_ubuntu), SuSE, RedHat, Debian, Fedora ...)
+
+XAMPP là một công cụ mã nguồn mở, rất dễ dàng để cài đặt và quản lý nó trong hệ thống của bạn. Phân phối Apache chứa MySQL, PHP và Perl.
+
+Chúng ta có thể dễ dàng cài đặt xampp trên [Ubuntu](/nukeviet/setup/localhost_ubuntu), Fedora, CentOS, và các hệ điều hành Linux
+
+## Cài Xampp
+
+Tải phiên bản Xampp mới nhất và cài đặt nó.
+
+Bạn có thể tìm thấy phiên bản Xampp mới nhất tại đây: [https://www.apachefriends.org/download.html](https://www.apachefriends.org/download.html)
+
+Giả sử muốn tản Xampp 5.6.8 / PHP 5.6.8 (64 bit), bạn sẽ tìm thấy link tải này: [https://www.apachefriends.org/xampp-files/5.6.8/xampp-linux-x64-5.6.8-0-installer.run](https://www.apachefriends.org/xampp-files/5.6.8/xampp-linux-x64-5.6.8-0-installer.run)
+
+Từ cửa sổ dòng lệnh, nhập lệnh sau để tải về:
+
+``` text
+cd /opt
+wget https://www.apachefriends.org/xampp-files/5.6.8/xampp-linux-x64-5.6.8-0-installer.run
+```
+
+Chmod tệp vừa tải để đưọc phép chạy nó và cài đặt phần mềm này:
+
+``` text
+chmod +x  xampp-linux-1.8.3-4-installer.run
+./xampp-linux-1.8.3-4-installer.run
+```
+
+Hoàn tất việc cài đặt thông qua hộp thoại cài đặt phần mềm.
+
+## Sử dụng
+
+### Các lệnh khởi chạy Xampp hoặc dừng dịch vụ
+
+``` text
+/opt/lampp/lampp start
+/opt/lampp/lampp restart
+/opt/lampp/lampp stop
+/opt/lampp/lampp status
+```
+
+### Chạy Xampp cùng với hệ điều hành
+
+#### Cách 1
+
+Mở file rc.local
+
+``` text
+sudo gedit /etc/rc.local
+```
+
+Thêm dòng
+
+``` text
+/opt/lampp/lampp start
+```
+
+#### Cách 2
+
+Chkconfig để khởi động dịch vụ lampp trong khi khởi động hệ điều hành. Tạo một link mềm /opt/lampp/lampp /etc/init.d/lampp bằng cách chạy lệnh:
+
+``` text
+ln -s /opt/lampp/lampp /etc/init.d/lampp
+```
+
+Sau đó chạy lệnh sau:
+
+``` text
+service lampp start
+```
+
+hoặc
+
+``` text
+/etc/init.d/lampp start
+```
+
+Màn hình sẽ hiển thị
+
+``` text
+Starting XAMPP for Linux 1.8.2-4...
+XAMPP: Starting Apache...ok.
+XAMPP: Starting MySQL...ok.
+XAMPP: Starting ProFTPD...ok.
+```
+
+lampp sẽ đưọc thêm vào trong chkconfig ddể dịch vụ đưọc khởi động cùng với hệ thống
+
+Chạy lệnh
+
+``` text
+chkconfig --levels 235 lampp on
+```
+
+Để kiểm tra chkconfig
+
+``` text
+chkconfig --list | grep lampp
+```
+
+Màn hình hiển thị
+
+``` text
+lampp           0:off   1:off   2:off   3:on    4:off   5:on    6:off
+```
+
+## Tham khảo
+
+- [http://thelinuxfaq.com/92-how-to-install-xampp-in-ubuntu-fedora-rhce-centos](http://thelinuxfaq.com/92-how-to-install-xampp-in-ubuntu-fedora-rhce-centos)
+- [http://thelinuxfaq.com/79-xampp-start-on-boot-in-linux](http://thelinuxfaq.com/79-xampp-start-on-boot-in-linux)

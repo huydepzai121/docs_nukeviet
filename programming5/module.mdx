@@ -1,0 +1,636 @@
+---
+title: "Lập trình Modules cho NukeViet 5.x"
+description: "Các module của NukeViet được đặt trong thư mục modules/. Tên mỗi module bao gồm chữ cái, chữ số và dấu gạch ngang. Cấu trúc cơ bản của một module bao gồm các..."
+---
+
+## Tổng quan về Module của NukeViet
+
+Các module của NukeViet được đặt trong thư mục `modules/`. Tên mỗi module bao gồm chữ cái, chữ số và dấu gạch ngang. Cấu trúc cơ bản của một module bao gồm các file và thư mục:
+
+- admin
+- admin/main.php
+- admin.functions.php
+- admin.menu.php
+- action_mysql.php
+- action_oci.php
+- blocks
+- funcs
+- funcs/main.php
+- funcs/rss.php
+- funcs/search.php
+- comment.php
+- notification.php
+- functions.php
+- global.functions.php
+- language
+- language/admin_ngonngu.php (ví dụ ngôn ngữ tiếng viêt : admin_vi.php)
+- langguage/ngonngu.php (ví dụ ngôn ngữ tiếng viêt : vi.php)
+- menu.php
+- rssdata.php
+- search.php
+- siteinfo.php
+- theme.php
+- version.php
+
+Chức năng của các file như sau:
+
+- File version.php: file này có chức năng khai báo tiêu đề module, các funcs có block, tác giả module, thông tin phiên bản, cấu trúc thư mục trong thư mục uploads.
+- File admin.functions.php: File này thường chứa các function, hằng dùng trong admin
+- File admin.menu.php: File này thường chứa biến submenu của module và allow_func của module
+- File function.php: File này thường chứa các function, hằng dùng cho ngoài site
+- File global.function.php: File này thường chứa các function, hằng dùng cho ngoài site
+- Admin/main.php: File này sẽ thể hiện nội dung của module phần admin
+- Funcs/main.php: FIle này sẽ thể hiện nội dung (trang chính) của module bên ngoài site.
+- File action_mysql.php chứa các lệnh cài đặt CSDL ban đầu cho module. Áp dụng cho CSDL là mysql
+- File action_oci.php chứa các lệnh cài đặt CSDL ban đầu cho module. Áp dụng cho các CSDL khác
+- File theme.php chứa các hàm xử lý giao diện của khu vực ngoài site
+- File siteinfo.php chứa thông tin module trong admin
+- File comment.php file này không bắt buộc có, nếu có nó dùng để cập nhật lại số comment của đối tượng được bình luận khi module có dùng chức năng bình luận của hệ thống.
+- File notification.php file này không bắt buộc có, nếu có nó dùng để xác định tiêu đề và đường dẫn liên kết của chức năng thông báo trong admin.
+
+Thứ tự khởi động một module như sau: Khi module được chạy thì tùy theo admin hay ngoài site mà file `admin.functions.php` hay `file function.php` được chạy trước sau đó là các file trong thư mục admin hay funcs được chạy tiếp theo mặc định sẽ là `file main.php`.
+
+Ta thường thấy url trang web nukeviet (chưa bật rewrite) có dạng
+
+``` text
+http://yourdomain/index.php?lang=vi&nv=qlhs&op=main
+```
+
+Trong đó `lang` chính là ngôn ngữ của site, `nv` là module đang chạy, `op` chính là funcs đang chạy (ở đây là main). Giá trị `op` này chính là tên của funcs trong thư mục funcs hay admin. Nếu trên url mà khuyết phần `op=` có nghĩa funcs `main.php` đang được chạy.
+
+## Danh sách các Biến hằng số trong module
+
+- NV_ADMIN : trạng thái admin đăng nhập
+- NV_MAINFILE : khai báo file module là file của hệ thống Nukeviet
+- NV_SYSTEM : file của hệ thống
+- NV_IS_FILE_MODULES : file của module
+- NV_START_TIME: Thời gian bắt đầu phiên làm việc.
+- NV_ROOTDIR: Thư mục gốc website ví dụ: D:/Web/www/nukeviet
+- NV_IS_USER_FORUM: Có giá trị true nếu site có tích hợp diễn đàn.
+- NV_IS_USERS: Có phải là thành viên không.
+- NV_IS_SPADMIN: Có phải là admin tối cao hoặc người điều hành chung không.
+- NV_IS_GODADMIN: Có phải là admin tối cao không.
+- NV_ALLOW_FILES_TYPE: Các kiểu file được tải lên.
+- NV_ALLOW_UPLOAD_FILES: Cho phép tải file lên.
+- NV_LANG_DATA: Ngôn ngữ data.
+- NV_LANG_INTERFACE: Ngôn ngữ giao diện.
+- [Xem Thêm](/programming4/other_constants)
+
+## Quy tắc đặt tên phiên bản module
+
+Quy tắc đặt tên phiên bản module tương tự quy tắc đặt tên phiên bản chính của NukeViet (nhưng không liên quan đến phiên bản NukeViet đang có). Theo quy tắc này, phiên bản của module có dạng: X.Y.ZZ
+
+Trong đó:
+
+- X: Chuỗi phiên bản chính, 1 chữ số; sẽ tăng khi có sự thay đổi lớn trong module mà theo đó hệ thống mới có thể khác 1 phần hay hoàn toàn hệ thống cũ.
+- Y: Chuỗi phiên bản phụ, 1 chữ số; sẽ tăng khi có sự thay đổi module mà không làm mất tính tương thích trong cùng phiên bản chính.
+- ZZ: Chuỗi phiên bản cấu tạo. Đánh dấu sự khác nhau trong cùng 1 phiên bản của module, 2 chữ số; sẽ tăng khi có đóng gói nhằm các mục đích phát hành, thử nghiệm...
+
+Ví dụ:
+
+| Sai quy tắc | =\> |          Đúng quy tắc          |
+|:-----------:|:---:|:------------------------------:|
+|    1.0.1    | =\> |             1.0.01             |
+|     1.0     | =\> |       1.0.00 hoặc 0.1.00       |
+|      1      | =\> | 1.0.00 hoặc 0.1.00 hoặc 0.0.01 |
+
+## Viết module đơn giản
+
+Để viết một module đơn giản việc đầu tiên là tạo thư mục trong thư mục modules/ sau đó tiếp tục tạo các file và thư mục bên trong như sau:
+
+- admin.functions.php
+- admin.menu.php
+- version.php
+- funcs
+- funcs/main.php
+- admin
+- admin/main.php
+- functions.php
+
+### version.php
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_ADMIN') or !defined('NV_MAINFILE'))
+    die('Stop!!!');
+
+$module_version = array(
+    'name' => 'QLHS', // Tieu de module
+    'modfuncs' => 'main,viewcat,topic,groups,detail,search,content,tag,rss', // Cac function co block
+    'change_alias' => 'topic,groups,content,rss',
+    'submenu' => 'content,rss,search',
+    'is_sysmod' => 0, // 1:0 => Co phai la module he thong hay khong
+    'virtual' => 1, // 1:0 => Co cho phep ao hao module hay khong
+    'version' => '4.0.00', // Phien ban cua modle
+    'date' => 'Wed, 8 Oct 2014 00:00:00 GMT', // Ngay phat hanh phien ban
+    'author' => 'Webvang.vn (hoang.nguyen@webvang.vn)', // Tac gia
+    'note' => '', // Ghi chu
+    'uploads_dir' => array(
+        $module_name,
+        $module_name . '/source',
+        $module_name . '/temp_pic',
+        $module_name . '/topics'
+    ),
+    'files_dir' => array($module_name . '/topics')
+);
+
+```
+
+Trong đó:
+
+- Name: Tiêu đề của module.
+- Modfuncs: Các funcs được sử dụng
+- is_sysmod: Có phải module hệ thống hay không.
+- Virtual: Cho phép ảo hóa hay không.
+- Version: Phiên bản của module.
+- Date: Ngày xuất bản module.
+- Author: Tác giả module.
+- uploads_dir: Các thư mục tải lên của module.
+
+### admin.functions.php
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_ADMIN') or !defined('NV_MAINFILE') or !defined('NV_IS_MODADMIN'))
+    die('Stop!!!');
+
+define('NV_IS_QLHS_ADMIN', true);
+
+```
+
+Trong đó cần chú ý đến : define('NV_IS_QLHS_ADMIN', true) : Khai báo biến hằng xác nhận file func của module trong admin.
+
+### admin.menu.php
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_ADMIN'))
+    die('Stop!!!');
+
+$submenu['tags'] = $lang_module['tags'];
+$submenu['groups'] = $lang_module['block'];
+$submenu['topics'] = $lang_module['topics'];
+$submenu['sources'] = $lang_module['sources'];
+$submenu['setting'] = $lang_module['setting'];
+$allow_func[] = 'topicsnews';
+$allow_func[] = 'topics';
+$allow_func[] = 'topicdelnews';
+$allow_func[] = 'addtotopics';
+$allow_func[] = 'change_topic';
+$allow_func[] = 'list_topic';
+$allow_func[] = 'del_topic';
+$allow_func[] = 'sources';
+$allow_func[] = 'change_source';
+$allow_func[] = 'list_source';
+$allow_func[] = 'del_source';
+$allow_func[] = 'block';
+$allow_func[] = 'groups';
+$allow_func[] = 'del_block_cat';
+$allow_func[] = 'list_block_cat';
+$allow_func[] = 'chang_block_cat';
+$allow_func[] = 'change_block';
+$allow_func[] = 'list_block';
+$allow_func[] = 'tags';
+$allow_func[] = 'setting';
+$allow_func[] = 'tools';
+
+```
+
+\$submenu : là danh sách các menu con của module
+
+\$allow_func : xác nhận các file func của module được phép hoạt động
+
+### functions.php
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_SYSTEM'))
+    die('Stop!!!');
+
+define('NV_IS_MOD_QLHS', true);
+
+```
+
+File này thường chứa các hàm sử dụng bên ngoài site, nếu module không có dùng các hàm, có thể để trống file này (như trên), tuy nhiên không được xóa nó.
+
+Thư mục language chứa các file ngôn ngữ. Các file ngôn ngữ trong admin có dạng admin_ngon-ngu.php, các file ngôn ngữ ngoài site có dạng ngon-ngu.php.
+
+### Cấu trúc cơ bản của file ngôn ngữ:
+
+#### admin_ngon-ngu.php
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_ADMIN') or !defined('NV_MAINFILE'))
+    die('Stop!!!');
+
+$lang_translator['author'] = 'webvang.vn (hoang.nguyen@webvang.vn)';
+$lang_translator['createdate'] = '08/10/2014, 15:22';
+$lang_translator['copyright'] = '@Copyright (C) 2014 J&A.,JSC. All rights reserved';
+$lang_translator['info'] = '';
+$lang_translator['langtype'] = 'lang_module';
+
+$lang_module['main'] = 'Quản lý học sinh;
+
+```
+
+#### ngon-ngu.php
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_MAINFILE'))
+    die('Stop!!!');
+
+$lang_translator['author'] = 'J&A.,JSC (hoang.nguyen@webvang.vn)';
+$lang_translator['createdate'] = '08/10/2014, 15:22';
+$lang_translator['copyright'] = '@Copyright (C) 2010 J&A.,JSC. All rights reserved';
+$lang_translator['info'] = '';
+$lang_translator['langtype'] = 'lang_module';
+
+$lang_module['nocatpage'] = 'Error:No topic';
+
+```
+
+Biến `$lang_module` là biến lưu ngôn ngữ của module.
+
+Thư mục js gồm hai file user.js và admin.js. File user.js chứa các câu lệnh javascript (nếu có) ngoài site, admin.js chứa javascript (nếu có) trong admin.
+
+### main.php
+
+Lưu ý: Để xuất nội dung của module và kết thúc ta thực hiện thao tác:
+
+- Đối với admin:
+
+``` php
+include (NV_ROOTDIR . "/includes/header.php");
+echo nv_admin_theme($contents);
+include (NV_ROOTDIR . "/includes/footer.php");
+```
+
+biến \$contents là toàn bộ nội dung hiển thị của module.
+
+- Đối với khu vực site:
+
+``` php
+include (NV_ROOTDIR . "/includes/header.php");
+echo nv_site_theme($contents);
+include (NV_ROOTDIR . "/includes/footer.php");
+```
+
+biến `$contents` là toàn bộ nội dung hiển thị của module.
+
+## Viết module nâng cao
+
+- Để hợp chuẩn với hệ thống, một module cần phải đảm bảo các yêu cầu sau:
+  - Sử dụng Xtemplate, điều này đồng nghĩa với việc tách biệt hoàn toàn giữa PHP và HTML, các file PHP không được chứa mã HTML.
+  - Các funcs ngoài site cần chuyển toàn bộ các đoạn mã xử lý việc hiển thị nội dung module vào một function trong file theme.php trong thư mục chứa module (ngang hàng với file version.php), điều này sẽ giúp cho việc thay đổi cấu trúc giao diện cho mỗi theme một cách dễ dàng.
+
+### Tạo CSDL ban đầu của module
+
+thêm file action_mysql.php ngang hàng với file version.php của module
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+if (!defined('NV_IS_FILE_MODULES'))
+    die('Stop!!!');
+
+$sql_drop_module = array();
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_quessions";
+
+$sql_create_module = $sql_drop_module;
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_quessions (
+id MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+title VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+quession MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+anwser MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+)ENGINE=MyISAM  DEFAULT CHARSET=utf8";
+
+```
+
+Cần chú ý đến biến `$sql_drop_module` và `$sql_create_module`. Biến `$sql_drop_module` sẽ được dùng khi xóa một module và biến `$sql_create_module` sẽ được dùng khi cài lại module và thiết lập module mới.
+
+Lưu ý : trong file action_mysql.php, khi thiết kế CSDL tránh các khóa này của mysql:
+
+``` php
+add, all, alter, analyze, and, as, asc, before, between, bigint, binary, both, by, call, cascade, case, change, 
+
+char, character, check, collate, column, comment, condition, constraint, continue, convert, create, cross, 
+
+current_user, cursor, database, databases, date, day_hour, day_minute, day_second, dec, decimal, declare, 
+
+default, delayed, delete, desc, describe, distinct, distinctrow, drop, dual, else, elseif, enclosed, escaped, 
+
+exists, exit, explain, false, fetch, file, float4, float8, for, force, foreign, from, fulltext, get, grant, 
+
+group, having, high_priority, hour_minute, hour_second, identified, if, ignore, ignore_server_ids, in, index, 
+
+infile, inner, insert, int1, int2, int3, int4, int8, integer, interval, into, is, iterate, join, key, keys, 
+
+kill, leading, leave, left, level, like, limit, lines, load, lock, long, loop, low_priority, master_bind, 
+
+master_heartbeat_period, master_ssl_verify_server_cert, match, middleint, minute_second, mod, mode, modify, 
+
+natural, no_write_to_binlog, not, null, number, numeric, on, optimize, option, optionally, or, order, outer, 
+
+outfile, partition, precision, primary, privileges, procedure, public, purge, read, real, references, release, 
+
+rename, repeat, replace, require, resignal, restrict, return, revoke, right, rlike, rows, schema, schemas, 
+
+select, separator, session, set, share, show, signal, spatial, sql_after_gtids, sql_before_gtids, 
+
+sql_big_result, sql_calc_found_rows, sql_small_result, sqlstate, ssl, start, starting, straight_join, table, 
+
+terminated, then, to, trailing, trigger, true, undo, union, unique, unlock, unsigned, update, usage, use, user, 
+
+using, values, varcharacter, varying, view, when, where, while, with, write, year_month, zerofill
+
+```
+
+### Giao diện trong Admin
+
+Để tách html và php ra thì cần khai báo file html (\*.tpl) trong thư mục themes/' . \$global_config\['module_theme'\] . '/modules/' . \$module_file
+
+vd: func admin/main.php
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_IS_FILE_ADMIN'))
+    die('Stop!!!');
+$xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+$xtpl->assign('LANG', $lang_module);
+$xtpl->assign('GLANG', $lang_global);
+
+$xtpl->parse('main');
+$contents = $xtpl->text('main');
+
+include (NV_ROOTDIR . "/includes/header.php");
+echo nv_admin_theme($contents);
+include (NV_ROOTDIR . "/includes/footer.php");
+
+```
+
+- NV_ROOTDIR: thư mục gốc chứa mã nguồn nukeviet
+- \$global_config\['module_theme'\]: giao diện của admin đang sử dụng
+- \$module_file: tên module
+- \$xtpl: [xem chi tiết biến giao diện Nukeviet](/programming/class)
+
+Trong file func sử dụng file main.tpl, để sử dụng template này thì trong thư mục themes/' . \$global_config\['module_theme'\] . '/modules/' . \$module_file tạo file main.tpl
+
+``` php
+<!-- BEGIN: main -->
+
+<!-- END: main -->
+
+```
+
+### Giao diện đối với khu vực ngoài site
+
+Để tách html và php ra thì cần khai báo file html (\*.tpl) trong thư mục themes/' . \$global_config\['module_theme'\] . '/modules/' . \$module_file
+
+vd: func func/main.php
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_IS_MOD_QLHS'))
+    die('Stop!!!');
+
+$contents = nv_page_main_list($array_data1, $array_data2, . . . );
+
+include (NV_ROOTDIR . "/includes/header.php");
+echo nv_admin_theme($contents);
+include (NV_ROOTDIR . "/includes/footer.php");
+
+```
+
+- NV_ROOTDIR: thư mục gốc chứa mã nguồn nukeviet
+- nv_page_main_list(): Hàm giao diện do người dùng định nghĩa trong file theme.php( nằm cùng cấp với version.php)
+
+``` php
+<?php
+
+/**
+ * @Project Module Nukeviet 4.x
+ * @Author Webvang.vn (hoang.nguyen@webvang.vn)
+ * @copyright 2014 J&A.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @createdate 08/10/2014 09:47
+ */
+
+if (!defined('NV_IS_MOD_QLHS'))
+    die('Stop!!!');
+
+function nv_page_main_list($array_data1, $array_data2, . . . . )
+{
+    global $module_file, $lang_module, $lang_global, $module_info, $meta_property, $my_head, $client_info, $page_config, $module_name;
+
+    $template = (file_exists(NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file . '/main.tpl')) ? $module_info['template'] : 'default';
+
+    $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $template . '/modules/' . $module_file);
+    $xtpl->assign('LANG', $lang_module);
+    $xtpl->assign('GLANG', $lang_global);
+
+    $xtpl->parse('main');
+    return $xtpl->text('main');
+}
+
+```
+
+- NV_ROOTDIR: thư mục gốc chứa mã nguồn nukeviet
+- nv_page_main_list(): Hàm giao diện do người dùng định nghĩa trong file theme.php( nằm cùng cấp với version.php)
+- \$array_data1, \$array_data2, ... là các tham số truyền vào function php để xử lý giao diện.
+- \$module_info\['template'\]: tên giao diện module sử dụng ngoài site
+- \$module_file: Tên module
+- \$xtpl: biến class xử lý giao diện
+- \$xtpl-\>assign( 'LANG', \$lang_module ): gán giá trị biến php vào biến giao diện, để sử dụng trong file template \*.tpl
+- return \$xtpl-\>text( 'main' ): Trả kết quả về cho biến đã gọi ngoài function, trong ví dụ này là trả về \$contents trong file func/main.php
+
+Trong file func sử dụng file main.tpl, để sử dụng template này thì trong thư mục themes/' . \$template . '/modules/' . \$module_file tạo file main.tpl
+
+``` php
+<!-- BEGIN: main -->
+
+<!-- END: main -->
+
+```
+
+### Nếu module có chức năng RSS
+
+Xem [Hướng dẫn chức năng RSS của module](/programming4/module/rss)
+
+### Nếu module có chức năng tìm kiếm
+
+- Thêm file `search.php` vào thư mục funcs. File này được viết tương tự các funcs khác.
+- Thêm file search.php vào thư mục gốc của module. File này sẽ được gọi ra khi module search làm việc. Cần xử lý để file này trả về một mảng:
+
+``` php
+$result_array[] = array( //
+    'link' => $link, //
+    'title' => BoldKeywordInStr($tilte, $key, $logic), //
+    'content' => BoldKeywordInStr($content, $key, $logic) //
+);
+```
+
+Là các kết quả tìm kiếm.
+
+Cần chú ý biến `$module_info` trong file này không được sử dụng, thay vào đó cần dùng biến `$m_values`.
+
+### Để hiển thị thông tin về module
+
+Để hiển thị thông tin về module ngay tại khu vực quản trị website, thêm file siteinfo.php vào thư mục gốc của module. Để lấy ngôn ngữ admin của module:
+
+``` php
+$lang_siteinfo = nv_get_lang_module($mod);
+```
+
+Cần đảm bảo file này xuất ra biến `$siteinfo`. Ví dụ:
+
+``` php
+$siteinfo[] = array('key' => $lang_siteinfo['siteinfo_expired'], 'value' => $number);
+```
+
+### Xuất thông tin cho module menu
+
+Xem [Hướng dẫn xuất thông tin cho module menu](/programming4/module/menu)
+
+### Module hỗ trợ notification
+
+Xem [Hướng dẫn notification cho module](/programming4/module/notification)
+
+### Module hỗ trợ sitemap
+
+Xem [Hướng dẫn tạo sitemap cho module](/programming4/module/sitemap)
+
+### Có kết nối với chức năng comment của hệ thống
+
+Xem [Hướng dẫn lập trình chức năng comment của hệ thống cho module](/programming4/module/comment)
+
+### Module có sử dụng email template và cách gửi email bằng template
+
+Xem [Hướng dẫn lập trình emailtemplates](/programming4/module/emailtemplates)
+
+### Tính năng vị trí block tùy chỉnh
+
+Xem [Hướng dẫn lập trình tính năng block tùy chỉnh của module](/programming4/module/modblocks)
+
+## Các chức năng cần có, cách lập trình và kiểm tra của 1 function hiển thị trong module
+
+Xem [Các chức năng cần có, cách lập trình và kiểm tra của 1 function hiển thị trong module](/programming4/module/funcs-required)
+
+## Lấy giá trị của biến khi submit form
+
+- [Xem chi tiết](/programming4/module/submit_form_nukeviet)
+
+## Gán giá trị php vào template
+
+### Trường hợp biến php là 1 giá trị cụ thể.
+
+``` php
+$lang_global = 'hoang.nguyen@webvang.vn';
+$xtpl->assign('GLANG', $lang_global);
+```
+
+vd : này là gán biến \$lang_global của php vào template (\*.tpl), trong file tpl muốn in giá trị biến \$lang_global ta chỉ cần gọi \{GLANG\}
+
+### Trường hợp biến php là 1 giá trị mảng.
+
+``` php
+$lang_global = array();
+$lang_global['main'] = 'trang chính';
+$lang_global['submain'] = 'trang phụ';
+$xtpl->assign('GLANG', $lang_global);
+```
+
+Ví dụ này là gán biến \$lang_global của php vào template (\*.tpl), trong file tpl muốn in giá trị mãng con(main) trong biến mảng \$lang_global ta chỉ cần gọi \{GLANG.main\}
+
+## Mở trình quản lí tệp tin để chọn tệp tin
+
+[Xem chi tiết](/programming5/module/file-manager)
+
+## Hướng dẫn đổi tên module NukeViet 4
+
+Hướng dẫn đổi tên module NukeViet 4, Hướng dẫn thêm chức năng trong quản trị và ngoài site cho module Xem chi tiết tại: [https://www.youtube.com/watch?v=f2IScB_nEH0](https://www.youtube.com/watch?v=f2IScB_nEH0)
+
+## Xem thêm
+
+- [Khái niệm module trong hệ thống NukeViet](/nukeviet4/concepts/module)
+- [Quản lý modules](/nukeviet4/admin/modules/modules)

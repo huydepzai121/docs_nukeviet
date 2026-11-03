@@ -1,0 +1,34 @@
+---
+title: "get_global_admin_theme"
+description: "Sau khi xác định giao diện chung trong admin. Dùng để đổi giao diện theo ý thích"
+---
+
+Sau khi xác định giao diện chung trong admin. Dùng để đổi giao diện theo ý thích
+
+### Tham số
+
+| STT | Tên biến      | Kiểu dữ liệu | Ghi chú |
+|-----|:--------------|:-------------|:--------|
+| 0   | \$admin_theme | string       |         |
+| 1   | \$module_name | string       |         |
+| 2   | \$module_info | string       |         |
+| 3   | \$op          | string       |         |
+
+### Dữ liệu trả về
+
+Biến `$admin_theme`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_global_admin_theme', $priority, function($vars) {
+    $admin_theme = $vars[0];
+    $module_name = $vars[1];
+    $module_info = $vars[2];
+    $op = $vars[3];
+
+    // Thực hiện code hook tại đây...
+
+    return $admin_theme;
+});
+```

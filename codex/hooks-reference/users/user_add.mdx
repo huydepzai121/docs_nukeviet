@@ -1,0 +1,28 @@
+---
+title: "user_add"
+description: "Bất cứ khi nào có một thành viên mới: Thành viên đăng ký thành công, admin tạo tài khoản thành viên, thành viên đăng nhập qua OpenID tự động tạo tài khoản, t..."
+---
+
+Bất cứ khi nào có một thành viên mới: Thành viên đăng ký thành công, admin tạo tài khoản thành viên, thành viên đăng nhập qua OpenID tự động tạo tài khoản, thành viên kích hoạt tài khoản thành công, admin kích hoạt tài khoản cho thành viên.
+
+### Tham số
+
+| STT | Tên biến    | Kiểu dữ liệu | Ghi chú |
+|-----|:------------|:-------------|:--------|
+| 0   | \$userid    | Integer      |         |
+| 1   | \$user_data | Array        |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'user_add', $priority, function($vars) {
+    $userid = $vars[0];
+    $user_data = $vars[1];
+
+    // Thực hiện code hook tại đây...
+});
+```

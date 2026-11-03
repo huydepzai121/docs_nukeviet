@@ -1,0 +1,287 @@
+---
+title: "Tính năng chung hệ thống"
+---
+
+| STT | Khu Vực | Chức năng | Tính năng | Mô tả |
+|:---|:---|:---|:---|----|
+| 1 | Thông tin |  |  |  |
+| 1.1 |  | Cấu hình site |  |  |
+| 1.1.1 |  |  | Cấu hình site | Thông tin về site(Domain,Đường dẫn,cookies,múi giờ,...) |
+| 1.1.2 |  |  | Cấu hình máy chủ | Thông tin về máy chủ(Phiên bản NV,PHP,DB,...) |
+| 1.2 |  | Cấu hình PHP |  |  |
+| 1.3 |  | Tiện ích mở rộng |  | Thông tin về các tiện ích mở rộng của PHP |
+| 1.4 |  | Các biến môi trường |  |  |
+| 1.5 |  | Các biến tiền định |  |  |
+| 1.6 |  | Nhật ký hệ thống | Tìm kiếm, xóa các hoạt động |  |
+| 2 | Cấu hình |  |  |  |
+| 2.1 |  | Cấu hình site |  |  |
+| 2.1.1 |  |  | Tên gọi của site | Đổi tên gọi của site |
+| 2.1.2 |  |  | Mô tả site | Đổi mô tả site |
+| 2.1.3 |  |  | Từ khóa cho máy chủ tìm kiếm | Thay đổi từ khóa chính |
+| 2.1.4 |  |  | Tên file logo của site | Đổi logo chính |
+| 2.1.5 |  |  | Tên file banner của site | Đổi banner |
+| 2.1.6 |  |  | Tên file favicon của site | Đổi favicon |
+| 2.1.7 |  |  | Giao diện mặc định | Đổi giao diện mặc định |
+| 2.1.8 |  |  | Giao diện mặc định cho mobile | Đổi giao diện mặc định cho mobile |
+| 2.1.9 |  |  | Module mặc định trên trang chủ | Đổi module mặc định. Module này sẽ không thể xóa trong phần quản lý module. |
+| 2.1.10 |  |  | Cho phép chuyển đổi giao diện mobile, desktop | Đánh dấu là cho phép người sử dùng chuyển đổi giữa giao diện desktop và mobile |
+| 2.1.11 |  |  | Nội dung thông báo site ngưng hoạt động | Nội dung này sẽ hiển thị nếu site ngưng hoạt động. |
+| 2.2 |  | Cấu hình chung |  |  |
+| 2.2.1 |  |  | Chế độ đóng cửa site | Đổi chế độ đóng cửa site |
+| 2.2.2 |  |  | Email của site | Đổi địa chỉ email của site |
+| 2.2.3 |  |  | Giao diện người quản trị | Đổi giao diện người quản trị |
+| 2.2.4 |  |  | Kiểu hiển thị ngày tháng năm | Đổi kiểu hiển thị ngày tháng năm |
+| 2.2.5 |  |  | Kiểu hiện thỉ giờ phút | Đổi kiểu hiển thị giờ phút |
+| 2.2.6 |  |  | Chế độ sử dụng SSL | Đổi chế độ sử dụng SSL |
+| 2.2.7 |  |  | Kích hoạt chức năng đa ngôn ngữ | Đánh dấu là bật chế độ đa ngôn ngữ |
+| 2.2.8 |  |  | Loại bỏ ký tự ngôn ngữ trên url | Đánh dấu là loại bỏ các ký tự ngôn ngữ trên url |
+| 2.2.9 |  |  | Loại bỏ tên module trên url | Loại bỏ tên module đang chọn trên url |
+| 2.2.10 |  |  | Múi giờ của site | Đổi múi giờ của site |
+| 2.2.11 |  |  | Bật chế độ gzip | Đánh dấu là bật chế đô gzip |
+| 2.2.12 |  |  | Các domain chạy site | Đổi các domain chạy site (các domain cách nhau bởi dấu phẩy) |
+| 2.2.13 |  |  | Hosting CDN cho javascript,css |  |
+| 2.2.14 |  |  | Ghi lại lỗi của hệ thống | Đánh dấu là cho phép ghi lại lỗi của hệ thống |
+| 2.2.15 |  |  | Email nhận thông báo lỗi | Đổi email nhận thông báo lỗi |
+| 2.2.16 |  |  | Google search Engine |  |
+| 2.2.17 |  |  | Hiển thị thông báo khi có hoạt động mới | Đánh dấu là cho phép hiển thị thông báo khi có hoạt động mới |
+| 2.2.18 |  |  | Tự động xóa thông báo sau thời gian | Đổi thời gian tự động xóa, để 0 nếu không muốn xóa tự động |
+| 2.3 |  | Ngôn ngữ |  |  |
+| 2.3.1 |  |  | Ngôn ngữ dữ liệu | Cài đặt, hiển thị, xóa ngôn ngữ data(khi kích hoạt chức năng đa ngôn ngữ) |
+| 2.3.2 |  |  | Ngôn ngữ giao diện |  |
+| 2.3.3 |  |  | Kiểm tra ngôn ngữ |  |
+| 2.3.4 |  |  | Cấu hình | Đọc dữ liệu dowload, xóa file ngôn ngữ |
+| 2.4 |  | Cấu hình SMTP |  |  |
+| 2.5 |  | Thiết lập an ninh |  |  |
+| 2.5.1 |  |  | Kích hoạt tính năng chống flood |  |
+| 2.5.2 |  |  | Số request tối đa trong 1 phút | Đổi số request tối đa trong 1 phút |
+| 2.5.3 |  |  | Số request tối đa trong 5 phút | Đổi số request tối đa trong 5 phút |
+| 2.5.4 |  |  | Kiểm tra và chặn các máy tính nếu agent không có |  |
+| 2.5.5 |  |  | Kiểm tra và chặn các máy tính dùng proxy |  |
+| 2.5.6 |  |  | Kích hoạt tiện ích kiểm tra và chuyển hướng các REFERER bên ngoài đến máy chủ |  |
+| 2.5.7 |  |  | Chống IFRAME |  |
+| 2.5.8 |  |  | Mã HTML được chấp nhận trong hệ thống | Đổi các mã html được chấp nhận trong hệ thống |
+| 2.5.9 |  |  | Cấu hình hiển thị captcha | Đổi điểu kiện hiển thị captcha |
+| 2.5.10 |  |  | Loại captcha | Đổi loại captcha hiển thị |
+| 2.5.11 |  |  | Số ký tự captcha | Đổi số ký tự captcha |
+| 2.5.12 |  |  | Kích thước của captcha | Đổi kích thước captcha |
+| 2.5.13 |  |  | Thêm địa chỉ IP cấm | Thêm địa chỉ IP, Mask IP, khu vực, thời gian bắt đầu và kết thúc,... |
+| 2.6 |  | Thiết lập Plugin |  |  |
+| 2.7 |  | Tiến trình tự động |  | Kích hoạt, xóa, đình chỉ, sửa các tiến trình tự động |
+| 2.8 |  | Cấu hình FTP |  |  |
+| 2.9 |  | Cấu hình cookie session |  |  |
+| 2.9.1 |  |  | Tiền tố cookie | Đổi tiền tố của cookie |
+| 2.9.2 |  |  | Tiền tố session | Đổi tiền tố của session |
+| 2.9.3 |  |  | Thời gian tồn tại của cookie | Đổi thời gian tồn tại của cookie |
+| 2.9.4 |  |  | Thời gian tồn tại của session | Đổi thời gian tồn tại của session |
+| 2.9.5 |  |  | cookie secure |  |
+| 2.9.6 |  |  | cokkie httponly |  |
+| 3 | CSDL |  |  | Thông tin chung về CSDL |
+| 3.1 |  | Sao lưu dữ liệu |  |  |
+| 3.2 |  | Cấu hình |  |  |
+| 3.2.1 |  |  | Kích hoạt tiện ích lưu CSDL | Đánh dấu là cho phép tiện ích lưu CSDL hoạt động |
+| 3.2.2 |  |  | Định dạng lưu CSDL | Đổi định dạng lưu CSDL |
+| 3.2.3 |  |  | Lặp lại công việc sau | Đổi thời gian lặp lại công việc |
+| 3.2.4 |  |  | Thời gian lưu file backup CSDL | Đổi thời gian lưu file backup |
+| 4 | Công cụ web |  |  |  |
+| 4.1 |  | Cấu hình thống kê |  |  |
+| 4.1.1 |  |  | Múi giờ dùng khi thống kê truy cập | Đổi múi giờ dùng khi thống kê truy cập |
+| 4.1.2 |  |  | Kích hoạt tiện ích đếm số người online | Đánh dấu là cho phép tiện ích đếm số người online hoạt động |
+| 4.1.3 |  |  | Kích hoạt tiện ích thống kê | Đánh dấu là cho phép tiện ích thống kê hoạt động |
+| 4.1.4 |  |  | ID tài khoản Google Analytics | Đổi ID tài khoản Google Analytics |
+| 4.2 |  | Dọn dẹp hệ thống |  |  |
+| 4.2.1 |  |  | Nội dung | Dọn dẹp toàn bộ(cache, file tạm, thông báo lỗi, ip logs) |
+| 4.2.2 |  |  | Làm sạch cache |  |
+| 4.2.3 |  |  | Xóa các file tạm |  |
+| 4.2.4 |  |  | Xóa các thông báo lỗi |  |
+| 4.2.5 |  |  | Xóa ip logs |  |
+| 4.3 |  | Kiểm tra phiên bản |  | Thông tin phiên bản đang sử dụng và các ứng dụng |
+| 4.4 |  | Cấu hình kiểm tra phiên bản |  |  |
+| 4.4.1 |  |  | Bật tính năng kiểm tra phiên bản tự động | Đánh dấu là cho phép tính năng kiểm tra phiên bản tự động làm việc |
+| 4.4.2 |  |  | Thời gian kiểm tra lại phiên bản sau | Đổi thời gian kiểm tra lại phiên bản |
+| 5 | Công cụ SEO |  |  |  |
+| 5.1 |  | Chuẩn đoán site |  |  |
+| 5.2 |  | Sitemap Ping |  |  |
+| 5.3 |  | Xác thực Google+ |  |  |
+| 5.4 |  | Cấu hình tag "title" |  |  |
+| 5.5 |  | Cấu hình Mega-Tags |  |  |
+| 5.6 |  | Cấu hình dịch vụ PING |  |  |
+| 5.7 |  | Cấu hình file robots.txt |  |  |
+| 6 | Quản lý Modules |  |  | Sửa, xóa, cài lại các modules đang hoạt động |
+| 6.1 |  | Thiết Lập module mới |  | Thiết lập module mới thêm vào |
+| 6.2 |  | Thêm module ảo |  |  |
+| 7 | Quản lý giao diện |  |  |  |
+| 7.1 |  | Thiết lập giao diện |  | Đổi các giá trị cho các đối tượng trong giao diện |
+| 7.2 |  | Thiết lập layout |  | Thiết lập layout cho các modules |
+| 7.3 |  | Quản lý block |  | Thêm, xóa, sửa các block |
+| 7.4 |  | Sao chép block |  | Sao chép block từ theme này sang theme khác |
+| 7.5 |  | Đóng gói theme module |  | Đóng gói theme module thành 1 bộ dữ liệu |
+| 8 | Mở rộng |  |  |  |
+| 8.1 |  | Quản lý ứng dụng |  | Thêm, xóa, đóng gói các ứng dụng |
+| 8.2 |  | Ứng dụng mới nhất |  | Danh sách các ứng dụng mới |
+| 8.3 |  | Ứng dụng phổ biến nhất |  | Danh sách các ứng dụng hay được dùng |
+| 8.4 |  | Ứng dụng khuyên dùng |  | Danh sách các ứng dụng khuyên nên được dùng |
+| 8.5 |  | Ứng dụng đã tải |  | Danh sách các ứng dụng đã tải về |
+| 8.6 |  | Ứng dụng đã đánh dấu |  | Danh sách các ứng dụng đã đánh dấu |
+| 9 | Quản lý file |  |  |  |
+| 9.1 |  | Cấu hình ảnh thumbnail |  | Đổi kích thước chất lượng thumbnail của hình ảnh |
+| 9.2 |  | Cấu hình chèn hình logo |  |  |
+| 9.2.1 |  |  | Tự động chèn logo vào ảnh của các modules | Đánh dấu các modules cho phép tự động chèn logo vào ảnh của modules |
+| 9.2.2 |  |  | Logo khi thêm vào hình ảnh |  |
+| 9.2.3 |  |  | Nếu chiều rộng ảnh \<= 150px | Đổi chiều rộng của logo theo % của ảnh khi chiều rộng của ảnh \<= 150px |
+| 9.2.4 |  |  | Nếu chiều rộng ảnh \>150px,\<350px | Đổi chiều rộng của logo theo % của ảnh khi chiều rộng của ảnh \>150px,\<350px |
+| 9.2.5 |  |  | Nếu chiều rộng ảnh \>350px | Đổi kích thước tối đa của logo theo % của ảnh |
+| 9.2.6 |  |  | Vị trí của logo | Đổi vị trí của logo |
+| 9.3 |  | Cấu hình upload |  |  |
+| 9.3.1 |  |  | Kích thước tối đa của file tải lên | Đổi kích thước tối đa của file tải lên |
+| 9.3.2 |  |  | Tự động resize ảnh nếu kích thước lớn hơn kích thước tối đa | Đánh dấu là cho p hép tự đống resize ảnh khi khích thước lớn hơn kích thước tối đa |
+| 9.3.3 |  |  | Dung lượng tối đa của file tải lên | Đổi dung lượng tối đa của file tải lên |
+| 9.3.4 |  |  | Kiểu kiểm tra file tải lên | Đổi kiểu kiểm tra file tải lên |
+| 9.3.5 |  |  | Bắt buộc nhập chú thích cho file khi tải lên | Đánh dấu là bắt bược phải nhập chú thích |
+| 9.3.6 |  |  | Tự xác định mô tả từ tên ảnh |  |
+| 9.3.7 |  |  | Loại file cho phép |  |
+| 9.3.8 |  |  | Phần mở rộng bị cấm |  |
+| 9.3.9 |  |  | Loại mime bị cấm |  |
+
+# Tính năng modules
+
+| STT | Khu Vực | Chức năng | Tính năng | Mô tả |
+|:---|:---|:---|:---|----|
+| 1 | Module Users |  |  |  |
+| 1.1 | Khu vực quản trị |  |  |  |
+| 1.1.1 |  | Quản lý người dùng |  |  |
+| 1.1.1.1 |  |  | Tìm kiếm người dùng | Tìm kiếm theo ID, Tài khoản, Tên, Email |
+| 1.1.1.2 |  |  | Sửa | Sửa mọi thông tin của người sử dụng bao gồm cả mật khẩu |
+| 1.1.1.3 |  |  | Xóa | Xóa người dùng |
+| 1.1.1.4 |  |  | Kích hoạt và ngưng kích hoạt tài khoản |  |
+| 1.1.2 |  | Thêm người dùng mới |  | Thêm người dùng trực tiếp (không cần qua kích hoạt) |
+| 1.1.3 |  | Tài khoản đợi kích hoạt |  |  |
+| 1.1.4 |  | Quản lý nhóm người dùng |  |  |
+| 1.1.5 |  | Câu hỏi bảo mật |  |  |
+| 1.1.6 |  | Nội quy site |  |  |
+| 1.1.7 |  | Cấu hình module |  |  |
+| 1.2 | Bên ngoài site |  |  |  |
+| 1.2.1 |  | Đăng ký |  |  |
+|  |  | Xin lại link kích hoạt |  |  |
+| 1.2.2 |  | Đăng nhập |  |  |
+| 1.2.2.1 |  |  | Sửa thông tin |  |
+|  |  |  | Đổi mật khẩu |  |
+|  |  |  | Câu hỏi bảo mật |  |
+|  |  |  | Quản lý openid | Thêm và xóa OpenID mà website hỗ trợ. |
+|  |  |  | Thoát | Đăng xuất khỏi hệ thống |
+| 1.2.3 |  | Quên mật khẩu |  |  |
+| 2 | Module About |  |  |  |
+| 2.1 | Khu vực quản trị |  |  |  |
+| 2.1.1 |  | Thêm bài mới |  |  |
+| 2.1.1.1 |  |  | Sửa |  |
+| 2.1.1.2 |  |  | Xóa |  |
+| 2.1.1.2 |  |  | Kích hoạt trạng thái | Cho phép bài viết hiển thị ngoài site |
+| 2.1.2 |  | Cấu hình module |  |  |
+| 2.2 | Bên ngoài site |  |  |  |
+| 2.2.1 |  | Xem bài viết |  |  |
+| 2.2.1.1 |  |  | Bình luận bài viết |  |
+| 2.2.1.2 |  |  | Đánh giá bài viết |  |
+| 2.2.1.3 |  |  | Thích và chia sẻ bài viết |  |
+| 3 | Module News |  |  |  |
+| 3.1 | Khu vực quản trị |  |  |  |
+| 3.1.1 |  | Thêm bài viết |  |  |
+| 3.1.1.1 |  |  | Thêm |  |
+| 3.1.1.2 |  |  | Sửa |  |
+| 3.1.1.3 |  |  | Xóa |  |
+| 3.1.2 |  | Quản lý chuyên mục |  |  |
+| 3.1.2.1 |  |  | Hiể thị ngoài trang chủ | Cho phép hiển thị chuyên mục ra ngoài trang chủ |
+| 3.1.2.2 |  |  | Số liên kết | Cho phép điểu chỉnh số bài viết cùng chuyên mục hiển thị |
+| 3.1.2.2 |  |  | New | Cho phép hiển thị bao bài mới nhất |
+| 3.1.2.3 |  |  | Cách thể hiện chuyên mục | Hiển thị chuyên mục theo ý muốn |
+| 3.1.3 |  | Quản lý Tags |  |  |
+| 3.1.3.1 |  |  | Tìm kiếm Tags |  |
+| 3.1.4 |  | Các nhóm tin |  |  |
+| 3.1.4.1 |  |  | Chọn mặc định khi tạo bài viết | Cho phép bài viết mới nhất thuộc nhóm nào |
+| 3.1.5 |  | Theo dòng sự kiện |  |  |
+| 3.1.6 |  | Nguồn tin |  |  |
+| 3.1.7 |  | Phân quyền quản lý |  |  |
+| 3.1.8 |  | Cấu hình module |  |  |
+| 3.2 | Bên ngoài site |  |  |  |
+| 3.2.1 |  | Xem bài viết |  |  |
+| 3.2.1.1 |  |  | Bình luận bài viết |  |
+| 3.2.1.2 |  |  | Đánh giá bài viết |  |
+| 3.2.1.3 |  |  | Thích và chia sẻ bài viết |  |
+| 3.2.2 |  | Xem các bài viết khác trong 1 chuyên mục |  |  |
+| 4 | Module contact |  |  |  |
+| 4.1 | Khu vực quản trị |  |  |  |
+| 4.1.1 |  | Các bộ phận |  |  |
+| 4.1.2.1 |  |  | Thêm |  |
+| 4.1.2.2 |  |  | Sửa |  |
+| 4.1.2.3 |  |  | Xóa |  |
+| 4.1.2.4 |  |  | Trạng thái | Cho phép bộ phận đó nhận phản hồi của khách hàng |
+| 4.1.2 |  | Danh sách liên hệ |  |  |
+| 4.1.3 |  | Nội dung thông báo |  | Hiển thị thông báo ngoài site Liên hệ |
+| 5 | Module statistics |  |  |  |
+| 5.1 | Khu vực quản trị |  |  |  |
+| 5.1.1. |  | Máy chủ tìm kiếm |  |  |
+| 5.1.2 |  | Trình duyệt |  | Thống kê trình duyệt nào truy cập nhiều |
+| 5.1.3 |  | Quốc gia |  | Thống kê quốc gia truy cập nhiều |
+| 5.1.4 |  | Hệ điều hành |  | Thống kê hệ điều hành nào truy cập |
+| 5.1.5 |  | Đường dẫn đến site |  | Thống kê đường dẫn liên kết nào truy cập nhiều |
+| 5.2 | Bên ngoài site |  |  |  |
+| 5.2.1 |  | Hiển thị thống kê theo năm, tháng, ngày, giờ, quốc gia, |  |  |
+| 6 | Module voting |  |  |  |
+| 6.1 | Khu vực quản trị |  |  |  |
+| 6.1.1 |  | Thêm thăm dò |  |  |
+| 6.1.1.1 |  |  | Thêm |  |
+| 6.1.1.2 |  |  | Sửa |  |
+| 6.1.1.3 |  |  | Xóa |  |
+| 6.1.1.4 |  |  | Chọn kết quả thăm dò |  |
+| 6.2 | Bên ngoài site |  |  |  |
+| 6.2.1 |  | Chọn câu trả lời cho câu hỏi thăm dò |  |  |
+| 7 | Module banner |  |  |  |
+| 7.1 | Khu vực quản trị |  |  |  |
+| 7.1.1 |  | Khách hàng |  | Hiển thị danh sách khách hàng |
+| 7.1.2 |  | Thêm khách hàng |  |  |
+| 7.1.3 |  | Khối quảng cáo |  |  |
+| 7.1.3.1 |  |  | Chi tiết | Hiển thị thông tin chi tiết khối quảng cáo |
+| 7.1.3.2 |  |  | Hiệu lực | Cho phép hiển thị hay không bên ngoài trang chủ |
+| 7.1.3.3 |  |  | Thêm quảng cáo |  |
+| 7.1.3.4 |  |  | Sửa |  |
+| 7.1.3.5 |  |  | Xóa |  |
+| 7.1.4 |  | Thêm khối |  |  |
+| 7.1.5 |  | Quảng cáo |  | Danh sách quảng cáo |
+| 7.1.6 |  | Thêm quảng cáo |  |  |
+| 7.2 | Bên ngoài site |  |  |  |
+| 7.2.1 |  | Hiển thị ảnh banner |  |  |
+| 8 | Module menu |  |  |  |
+| 8.1 | Khu vực quản trị |  |  |  |
+| 8.1.1 |  | Thêm khối menu |  |  |
+| 8.1.1.1 |  |  | Sửa |  |
+| 8.1.1.2 |  |  | Xóa |  |
+| 8.2 | Bên ngoài site |  |  |  |
+| 8.2.1 |  | HIển thị khối menu |  | Có thể tự do hiển thị các khối menu tùy ý |
+| 9 | Module feeds |  |  |  |
+| 9.1 | Khu vực quản trị |  |  |  |
+| 9.1.1 |  | Thêm nội dung thông báo |  |  |
+| 9.2 | Bên ngoài site |  |  |  |
+| 9.2.1 |  | HIển thị sitemaps điều hướng |  |  |
+| 10 | Module page |  |  |  |
+| 10.1 | Khu vực quản trị |  |  |  |
+| 10.1.1 |  | Thêm bài mới |  |  |
+| 10.1.1.1 |  |  | Sửa |  |
+| 10.1.1.2 |  |  | Xóa |  |
+| 10.1.1.3 |  |  | Kích hoạt trạng thái | Cho phép bài viết hiển thị ngoài site |
+| 10.1.2 |  | Cấu hình module |  |  |
+| 10.2 | Bên ngoài site |  |  |  |
+| 10.2.1 |  | Xem bài viết |  |  |
+| 10.2.1.1 |  |  | Bình luận bài viết |  |
+| 10.2.1.2 |  |  | Đánh giá bài viết |  |
+| 10.2.1.3 |  |  | Thích và chia sẻ bài viết |  |
+| 11 | Module comment |  |  |  |
+| 11.1 | Khu vực quản trị |  |  |  |
+| 11.1.1 |  | Hiển thị danh sách bình luận |  |  |
+| 11.1.1.1 |  |  | Tìm kiếm bình luận | Tìm kiếm bình luận theo từ khóa, theo chuyên mục, tìm kiếm theo ngày |
+| 11.1.2 |  | Cấu hình bình luận |  |  |
+| 12 | Module freecontent |  |  |  |
+| 12.1 | Khu vực quản trị |  |  |  |
+| 12.1.1 |  | Hiển thị danh sách sản phẩm |  |  |
+| 12.1.1.1 |  |  | Thêm sản phẩm |  |
+| 12.1.1.2 |  |  | Sửa |  |
+| 12.1.1.3 |  |  | Xóa |  |
+| 12.2 | Bên ngoài site |  |  |  |
+| 12.2.1 |  | Hiển thị block danh sách sản phẩm |  |  |

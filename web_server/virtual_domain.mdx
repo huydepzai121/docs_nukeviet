@@ -1,0 +1,66 @@
+---
+title: "Tạo domain ảo trên localhost"
+description: "Thông thường để truy cập trên localhost, chúng ta cần truy cập thông qua địa chỉ http://localhost/ hoặc http://127.0.0.1/. Đường dẫn đầy đủ để truy cập NukeV..."
+---
+
+Thông thường để truy cập trên [localhost](/nukeviet/concepts/localhost), chúng ta cần truy cập thông qua địa chỉ [http://localhost/](http://localhost/) hoặc [http://127.0.0.1/](http://127.0.0.1/). Đường dẫn đầy đủ để truy cập NukeViet được cài trên localhost thông thường phải là [http://localhost/nukeviet/](http://localhost/nukeviet/). Chúng ta có thể biến nó thành domain như thật thông qua phương pháp tạo domain ảo (thông qua việc tạo hosting ảo - virtualhost).
+
+## Cách tạo virtualhost cho server với VertrigoServ và AppServ
+
+Hướng dẫn này được thực hiện trên server Apache (tạo bởi phần mềm VertrigoServ hoặc AppServ) cài trên hệ điều hành Windows XP, với các phần mềm khác hoặc hệ điều hành khác bạn cần tìm file tương tự (có thể nằm ở vị trí khác).
+
+**Bước 1:** Mở file: `C:\WINDOWS\system32\drivers\etc\hosts` bằng chương trình UltraEdit-32 hoặc Notepad++), Bạn thêm đoạn sau vào cuối:
+
+``` text
+127.0.0.2  mysite.com
+127.0.0.2  www.mysite.com
+
+127.0.0.3  myforum.com
+127.0.0.3  www.myforum.com
+```
+
+**Bước 2**: Tùy theo thư mục cài đặt mà các bạn tìm và sửa file httpd.conf như bên dưới (Ví dụ mình cài vào ổ đĩa E thì file cần sửa là: `E:\VertrigoServ\Apache\conf\httpd.conf`)
+
+Thêm vào cuối file này đoạn sau:
+
+``` text
+  <VirtualHost 127.0.0.2>
+  ServerAdmin webmaster@mysite.com
+  ServerName mysite.com
+  DocumentRoot "E:/VertrigoServ/www/mysite.com"
+  ScriptAlias /cgi/ "E:/VertrigoServ/www/mysite.com/cgi/"
+  ErrorLog E:/VertrigoServ/www/mysite.com/cgi/error.log
+  CustomLog E:/VertrigoServ/www/mysite.com/cgi/access.log common
+  </VirtualHost>
+
+  <VirtualHost 127.0.0.3>
+  ServerAdmin webmaster@myforum.com
+  ServerName myforum.com
+  DocumentRoot "E:/VertrigoServ/www/myforum.com"
+  ScriptAlias /cgi/ "E:/VertrigoServ/www/myforum.com/cgi/"
+  ErrorLog E:/VertrigoServ/www/myforum.com/cgi/error.log
+  CustomLog E:/VertrigoServ/www/myforum.com/cgi/access.log common
+  </VirtualHost>
+```
+
+**Bước 3**: Tạo thư mục đặt site ảo  
+Trong thư mục E:/VertrigoServ/www bạn tạo các thư mục mysite.com, myforum.com và bên trong mỗi thu mục này cần tạo thêm thư mục cgi để cho hệ thống ghi lại các file log ứng với mỗi site.
+
+**Bước 4**: Khởi động lại máy tính.
+
+**Bước 5**: Sử dụng domain ảo:
+
+- Cho chạy VertrigoServ
+- Bạn có thể cài đặt NukeViet, .... vào các thư mục tương ứng mysite.com, myforum.com. Ví dụ với mysite.com bạn có thể vào bằng 1 trong 4 link sau:
+  - [http://mysite.com](http://mysite.com)
+  - [http://www.mysite.com](http://www.mysite.com)
+  - [http://localhost/mysite.com](http://localhost/mysite.com)
+  - [http://127.0.0.2/mysite.com](http://127.0.0.2/mysite.com)
+
+## Tham khảo
+
+- [Tạo virtualhost cho server với VertrigoServ và AppServ](http://nukeviet.vn/phpbb/viewtopic.php?f=35&t=189)
+- [Tự tạo domain ảo](http://nukeviet.vn/phpbb/viewtopic.php?f=35&t=499#p2750)
+- [Có thể đổi tên localhost thành tên khác theo ý mình đc ko?](http://nukeviet.vn/phpbb/viewtopic.php?f=47&t=5880)
+- [Cho website chạy trên LAN máy chủ là windown server 2000?](http://nukeviet.vn/phpbb/viewtopic.php?f=35&t=1580)
+- [Tạo domain ảo trên localhost](http://nukeviet.vn/phpbb/viewtopic.php?f=35&t=3788&p=21384#p24522)

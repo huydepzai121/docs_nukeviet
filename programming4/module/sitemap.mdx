@@ -1,0 +1,89 @@
+---
+title: "Hướng dẫn tạo sitemap cho module"
+description: "Để hỗ trợ sitemap, module cần tồn tại file modules/module-name/sitemap.php"
+---
+
+Để hỗ trợ sitemap, module cần tồn tại file `modules/module-name/sitemap.php`
+
+Mục đích chính của sitemap.php là đưa các bài viết (hoặc nội dung cần thiết) vào mảng `$url` sau đó gọi qua hàm `nv_xmlSitemap_generate($url)`.
+
+Do số row truy vấn vào CSDL lớn nên tốt nhất nội dung cần được cache sử dụng `$nv_Cache`.
+
+Ví dụ hoàn chỉnh
+
+``` php
+<?php
+
+/**
+ * @Project EVENTS 4.X
+ * @Author PHAN TAN DUNG (phantandung92@gmail.com)
+ * @Copyright (C) 2016 PHAN TAN DUNG. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate Sun, 12 Jun 2016 05:02:54 GMT
+ */
+
+if (!defined('NV_MOD_EVENTS'))
+    die('Stop!!!');
+
+$url = array();
+$cacheFile = NV_LANG_DATA . '_sitemap_' . NV_CACHE_PREFIX . '.cache';
+$cacheTTL = 7200;
+
+if (($cache = $nv_Cache->getItem($module_name, $cacheFile, $cacheTTL)) != false) {
+    $url = unserialize($cache);
+} else {
+    $db->sqlreset()->select('id, addtime, alias')->from(NV_PREFIXLANG . '_' . $module_data . '_rows')->where('status=1')->order('addtime DESC')->limit(1000);
+    $result = $db->query($db->sql());
+
+    $url = array();
+
+    while (list($id, $publtime, $alias) = $result->fetch(3)) {
+        $url[] = array('link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $alias . $global_config['rewrite_exturl'], 'publtime' => $publtime);
+    }
+
+    $cache = serialize($url);
+    $nv_Cache->setItem($module_name, $cacheFile, $cache, $cacheTTL);
+}
+
+nv_xmlSitemap_generate($url);
+die();
+
+```
+
+> Lưu ý: Hướng dẫn này dành cho NukeViet 4.1 về sau, đối với NukeViet 4 trước 4.1 xem hướng dẫn [Hướng dẫn tạo sitemap cho module áp dụng đối với NukeViet trước 4.1.00](/programming4/module/sitemap41)
+
+## Chia sitemap con
+
+> Chức năng này có từ NukeViet 4.3.04
+
+Để phân chia sitemap con dùng đoạn code
+
+``` php
+if (empty($array_op[1])) {
+    $url = [
+        NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '/tender',
+        NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '/prequalification',
+        NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '/result',
+        NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '/plans'
+    ];
+    nv_xmlSitemapCat_generate($url);
+}
+```
+
+Khi đó trong sitemap, căn cứ vào biến `$array_op[1]` để xác định sitemap con.
+
+## Hiển thị sitemap con trên sitemapindex
+
+> Chức năng này có tể từ NukeViet 4.3.06
+
+Để hiển thị các site map con của module tại sitemapindex chỉ cần tạo file theo quy luật
+
+``` text
+modules/ten-module/funcs/sitemap.plans.php
+modules/ten-module/funcs/sitemap.result.php
+modules/ten-module/funcs/sitemap.prequalification.php
+modules/ten-module/funcs/sitemap.xxxx.php
+....
+```
+
+Code xử lý cho sitemap của module vẫn là `sitemap.php`

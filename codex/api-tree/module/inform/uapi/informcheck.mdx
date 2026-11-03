@@ -1,0 +1,25 @@
+---
+title: "Hướng dẫn sử dụng API InformCheck"
+description: "API dùng để kiểm tra thông báo đẩy mới"
+---
+
+## Tác dụng
+
+API dùng để kiểm tra thông báo đẩy mới
+
+### Tham số có thể truyền vào:
+
+### Request Parameters
+
+| Tham số | Kiểu dữ liệu | Tính bắt buộc | Mô tả |
+|----|----|----|:---|
+| groups | string | Không bắt buộc | Danh sách ID của các nhóm nhận thông báo (phân cách bởi dấu phẩy) |
+
+### Dữ liệu trả về:
+
+| Thuộc tính | Kiểu dữ liệu | Mô tả                                   |
+|------------|--------------|:----------------------------------------|
+| status     | string       | Trạng thái luôn là thành công (success) |
+| code       | int          | Mã lỗi (luôn là 0000)                   |
+| message    | string       | Thông báo lỗi (Rỗng)                    |
+| count      | int          | Số lượng thông báo mới                  |

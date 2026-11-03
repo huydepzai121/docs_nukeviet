@@ -1,0 +1,50 @@
+---
+title: "Thay đổi từ PHP 8.1 lên 8.2 và cách sửa code ở PHP 8.1 tương thích PHP 8.2"
+description: "Tạo một thuộc tính động cho một class sẽ gây ra lỗi cảnh báo. Ví dụ"
+---
+
+## Các điểm mới
+
+> Tại đây chỉ liệt kê những cái đáng kể, có khả năng sử dụng trong NukeViet tương lai. Toàn văn những điểm mới bạn có thể tìm đọc:  
+> - [Các tính năng mới](https://www.php.net/manual/en/migration82.new-features.php)  
+> - [Hàm mới](https://www.php.net/manual/en/migration82.new-functions.php)  
+> - [Hằng mới](https://www.php.net/manual/en/migration82.constants.php)
+
+> Phiên bản này hầu như không có nhiều chú ý
+
+## Kiểm tra và sửa các module của NukeViet bằng tay
+
+> Tài liệu này chỉ liệt kê những thay đổi cần làm gặp phải trong NukeViet, không liệt kê toàn bộ. Ai có gặp trường hợp nào ngoài tài liệu này thì bổ sung thêm vào nhé.
+
+### Thay đổi khi sử dụng class
+
+Tạo một thuộc tính động cho một class sẽ gây ra lỗi cảnh báo. Ví dụ
+
+``` php
+class User
+{
+    public $name;
+}
+
+$user = new User();
+$user->last_name = 'Doe'; // Lỗi cảnh báo Deprecated khi thuộc tính last_name chưa được định nghĩa.
+```
+
+**Hướng dẫn**
+
+Dùng regex sau để tìm kiếm ra những chỗ dùng như thế `\$(?!this)[a-zA-Z_][a-zA-Z0-9_]*\s*-\s*>[\r\n\s\t]*[a-zA-Z_][a-zA-Z0-9_]*[\r\n\s\t]*\=[\r\n\s\t]*[\$a-zA-Z0-9\'\"]`. Nếu dùng Eclipse giữ Ctrl và di chuột qua các thuộc tính đó, nếu có liên kết là ok. Không có liên kết tức là thuộc tính đó không tồn tại.
+
+**Nên làm**
+
+Khai báo nó trong class trước khi sử dụng.
+
+**Cách khác**
+
+Thêm `#[\AllowDynamicProperties]` vào class đó ví dụ
+
+``` php
+#[\AllowDynamicProperties]
+class User
+```
+
+Nói chung cái này ít gặp trong NukeViet, bạn đọc tham khảo để biết thêm

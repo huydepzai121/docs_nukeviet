@@ -1,0 +1,81 @@
+---
+title: "Thiết lập một số chức năng bảo mật"
+description: "NukeViet mặc định đã kích hoạt sẵn chức năng chống flood cho website, tuy nhiên người quản trị có thể bật, tắt hoặc thay đổi cách thức chống flood riêng cho ..."
+---
+
+## Chống flood (chống lụt dữ liệu)
+
+NukeViet mặc định đã kích hoạt sẵn chức năng chống flood cho website, tuy nhiên người quản trị có thể bật, tắt hoặc thay đổi cách thức chống flood riêng cho website của mình. Để bật hoặc tắt chức năng chống flood truy cập khu vực Quản trị =\> Cấu hình =\> Thiết lập an ninh:
+
+![Chống flood](/images/nukeviet4/advanced_setting/chong_floot.png)
+
+Tại ô **Kích hoạt tính năng chống flood** chọn hoặc bỏ chọn để bật hoặc tắt chức năng. Tại ô **Số requests tối đa trong 1 phút** và **Số requests tối đa trong 5 phút** thay đổi giá trị khác nếu muốn
+
+Cuối cùng nhấp nút **Lưu cấu hình** để hoàn tất
+
+## Kiểm tra và chặn các máy tính dùng proxy
+
+> Lưu ý: Tính năng này đã được loại bỏ kể từ NukeViet 4.6.01
+
+NukeViet mặc định không kích hoạt chức năng kiểm tra các máy tính dùng proxy, để kích hoạt chức năng này, hãy đăng nhập quản trị web sau đó đến phần Cấu hình =\> Thiết lập an ninh chọn chức năng kiểm tra và chặn các máy tính dùng proxy là nhẹ, vừa hoặc tuyệt đối. ![Hình 3. Chức năng kiểm tra và chặn các máy tính dùng proxy.](/images/nukeviet4/advanced_setting/chan_proxy.png)
+
+**Lưu ý:** Nếu không đăng nhập được khu vực quản trị sau khi kích hoạt chức năng này, mở file `data/config/config_global.php` tìm đến dòng `$global_config['proxy_blocker'] =` sau đó chỉnh lại thành
+
+``` php
+$global_config['proxy_blocker'] = 0;
+```
+
+Sau đó vào khu vực quản trị và thiết lập lại chức năng này.
+
+## Kiểm tra và chuyển hướng các REFERER bên ngoài đến trang chủ
+
+NukeViet mặc định không kích hoạt chức năng này, để kích hoạt, vào khu vực quản trị phần Cấu hình =\> Thiết lập an ninh, tại dòng Kích hoạt tiện ích kiểm tra và chuyển hướng các REFERER bên ngoài đến trang chủ đánh dấu vào ô kiểm sau đó lưu lại. ![Hình 4. Kiểm tra và chuyển hướng các REFERER bên ngoài đến trang chủ.](/images/nukeviet4/advanced_setting/chuyen_huong_refere.png)
+
+## Sao lưu CSDL
+
+Việc sao lưu CSDL thường xuyên sẽ giúp hạn chế việc mất mát dữ liệu nếu website xảy ra sự cố. Để kích hoạt chức năng này, đăng nhập admin sau đó vào phần CSDL =\> cấu hình sau đó đánh dấu vào ô Kích hoạt tiện ích lưu CSDL, chọn định dạng cho file lưu CSDL và số file tối đa lưu CSDL, ấn “Thực thi” để lưu lại cấu hình. ![Hình 5. Sao lưu CSDL.](/images/nukeviet4/advanced_setting/sao_luu_csdl.png)
+
+Để tải về CSDL đã sao lưu, vào admin phần CSDL =\> Data backup sau đó chọn file cần tải và ấn “Tải về”. Lưu ý: Các file backup CSDL được lưu tại thư mục `data/logs/dump_backup`.
+
+## Kiểm tra an ninh khu vực admin
+
+Admin là khu vực cực kì quan trọng đối với website, do đó cần bảo vệ chặt chẽ khu vực này. NukeViet cung cấp hai công cụ giúp bảo vệ khu vực admin: Kiểm tra tường lửa truy cập admin và kiểm tra IP truy cập admin.
+
+Để bật chức năng tường lửa cho khu vực admin hãy đăng nhập quản trị site, vào khu vực quản trị =\> Tài khoản =\> Quản trị =\> Cấu hình, đánh dấu chọn tại ô “Kiểm tra tường lửa cho khu vực admin” và ấn “Lưu thay đổi”. ![Hình 6. Kiểm tra tường lửu cho khu vực admin.](/images/nukeviet4/advanced_setting/tuong_lua_admin.png)
+
+**Lưu ý:** Nếu sau khi bật chức năng này tài khoản quản trị tối cao bị chặn, hãy mở file `config_global.php` tìm đến dòng
+
+``` php
+$global_config['admfirewall'] = 1;
+```
+
+và sửa lại thành
+
+``` php
+$global_config['admfirewall'] = 0;
+```
+
+sau đó cấu hình lại chức năng này.
+
+Để bật chức năng kiểm tra IP khi truy cập vào khu vực admin, hãy đăng nhập quản trị site, vào khu vực quản trị =\> Tài khoản =\> Quản trị =\> cấu hình, đánh dấu chọn tại ô “Kiểm tra IP khi truy cập khu vực admin”, ấn “Lưu thay đổi”. ![Hình 7. Kiểm tra IP khi truy cập khu vực admin.](/images/nukeviet4/advanced_setting/kiem_tra_ip_admin.png)
+
+Sau khi bật chức năng “Kiểm tra IP khi truy cập khu vực admin” hãy nhập những IP được phép truy cập vào khu vực admin để hoàn tất. ![Hình 8. Quản lý IP truy cập khu vực admin.](/images/nukeviet4/advanced_setting/nhap_ip_kiem_tra.png)
+
+`Lưu ý:` Nếu sau khi kích hoạt chức năng này, do vô tình đánh sai IP, tài khoản quản trị tối cao bị chặn truy cập có thể khắc phục bằng cách mở file `config_global.php` tìm đến dòng
+
+``` php
+$global_config['block_admin_ip'] = 1;
+```
+
+và sửa lại thành
+
+``` php
+$global_config['block_admin_ip'] = 0;
+```
+
+sau đó hãy đăng nhập quản trị và thiết lập lại chức năng này.
+
+## Xem thêm
+
+- [Hướng dẫn Bảo mật hệ thống NukeViet](/nukeviet4/security)
+- [Chống lại một cuộc tấn công từ chối dịch vụ](/nukeviet4/anti_ddos)

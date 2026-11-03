@@ -1,0 +1,572 @@
+---
+title: "Cấu trúc của một gói nâng cấp module"
+description: "Kể từ phiên bản NukeViet 3.4.01, chức năng nâng cấp dành cho hệ thống và cho module hoàn toàn tự động được đưa vào sử dụng. Để làm việc với chức năng mới này..."
+---
+
+Kể từ phiên bản NukeViet 3.4.01, chức năng nâng cấp dành cho hệ thống và cho module hoàn toàn tự động được đưa vào sử dụng. Để làm việc với chức năng mới này các nhà phát triển module cần chú ý các vấn đề sau:
+
+
+Gói nâng cấp module và gói nâng cấp nhân NukeViet là hoàn toàn tương tự nhau, được đặt trong thư mục install, gồm có:
+
+- File update_data.php: File này là file khai báo các thông tin về gói nâng cấp, kiểu nâng cấp, nâng cấp module hoặc hệ thống, tác giả, website hỗ trợ, ... và quan trọng hơn hết là chứa code nâng cấp CSDL.
+- File hướng dẫn khác: Có thể có hoặc không có, gồm 1 hoặc nhiều file html (nếu có nhiều ngôn ngữ), tên chúng được đặt theo ngôn ngữ ví dụ: update_docs_vi.html, update_docs_en.html. Nội dung của chúng chứ các đoạn hướng dẫn riêng, các ghi chú, ... tùy theo mục đích của người lập trình.
+- Thư mục update: Có thể có hoặc không, là thư mục chứa các file thay đổi của module, của hệ thống so với phiên bản trước. Chú ý: Trong thư mục này đặt các file và thư mục theo đúng cấu trúc của hệ thống, tức là thư mục đó được xem như thư mục gốc của NukeViet.
+
+*Ví dụ về gói nâng cấp (tính theo đường dẫn từ thư mục gốc)*
+
+- install/update_data.php
+- install/update_docs_vi.html
+- install/update_docs_en.html
+- install/update_docs_fr.html
+- install/update/index.php
+- install/update/modules/news/theme.php
+
+Khi xây dựng gói nâng cấp cần tuân thủ đúng chuẩn này.
+
+# Cấu hình gói nâng cấp và nâng cấp CSDL
+
+## Ví dụ
+
+Để thực hiên hai công việc này ta thao tác với file update_data.php. Cấu trúc của file update_data.php như sau:
+
+``` php
+<?php
+
+/**
+ * @Project VIDEO CLIPS AJAX 4.x
+ * @Author PHAN TAN DUNG (phantandung92@gmail.com)
+ * @Copyright (C) 2014 PHAN TAN DUNG. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate Dec 01, 2014, 04:33:14 AM
+ */
+
+if (!defined('NV_IS_UPDATE'))
+    die('Stop!!!');
+
+$nv_update_config = array();
+
+// Kieu nang cap 1: Update; 2: Upgrade
+$nv_update_config['type'] = 1;
+
+// ID goi cap nhat
+$nv_update_config['packageID'] = 'NVUDVIDEOCLIP4029';
+
+// Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
+$nv_update_config['formodule'] = 'video-clip';
+
+// Thong tin phien ban, tac gia, ho tro
+$nv_update_config['release_date'] = 1463590800;
+$nv_update_config['author'] = 'PHAN TAN DUNG (phantandung92@gmail.com)';
+$nv_update_config['support_website'] = 'https://github.com/hoaquynhtim99/video-clip-update/tree/4.0.29';
+$nv_update_config['to_version'] = '4.0.29';
+$nv_update_config['allow_old_version'] = array(
+    '4.0.01',
+    '4.0.22',
+    '4.0.23',
+    '4.0.24',
+    '4.0.27',
+    '4.0.28'
+);
+
+// 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
+$nv_update_config['update_auto_type'] = 1;
+
+$nv_update_config['lang'] = array();
+$nv_update_config['lang']['vi'] = array();
+
+// Tiếng Việt
+$nv_update_config['lang']['vi']['nv_up_p1'] = 'Thay đổi cấu trúc bảng dữ liệu';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Đánh dấu phiên bản mới';
+
+$nv_update_config['tasklist'] = array();
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.0.28',
+    'rq' => 1,
+    'l' => 'nv_up_p1',
+    'f' => 'nv_up_p1'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.0.29',
+    'rq' => 1,
+    'l' => 'nv_up_finish',
+    'f' => 'nv_up_finish'
+);
+
+// Danh sach cac function
+/*
+Chuan hoa tra ve:
+array(
+'status' =>
+'complete' => 
+'next' =>
+'link' =>
+'lang' =>
+'message' =>
+);
+status: Trang thai tien trinh dang chay
+- 0: That bai
+- 1: Thanh cong
+complete: Trang thai hoan thanh tat ca tien trinh
+- 0: Chua hoan thanh tien trinh nay
+- 1: Da hoan thanh tien trinh nay
+next:
+- 0: Tiep tuc ham nay voi "link"
+- 1: Chuyen sang ham tiep theo
+link:
+- NO
+- Url to next loading
+lang:
+- ALL: Tat ca ngon ngu
+- NO: Khong co ngon ngu loi
+- LangKey: Ngon ngu bi loi vi,en,fr ...
+message:
+- Any message
+Duoc ho tro boi bien $nv_update_baseurl de load lai nhieu lan mot function
+Kieu cap nhat module duoc ho tro boi bien $old_module_version
+*/
+
+$array_modlang_update = array();
+
+// Lay danh sach ngon ngu
+$result = $db->query("SELECT lang FROM " . $db_config['prefix'] . "_setup_language WHERE setup=1");
+while (list($_tmp) = $result->fetch(PDO::FETCH_NUM)) {
+    $array_modlang_update[$_tmp] = array("lang" => $_tmp, "mod" => array());
+
+    // Get all module
+    $result1 = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $_tmp . "_modules WHERE module_file=" . $db->quote($nv_update_config['formodule']));
+    while (list($_modt, $_modd) = $result1->fetch(PDO::FETCH_NUM)) {
+        $array_modlang_update[$_tmp]['mod'][] = array("module_title" => $_modt, "module_data" => $_modd);
+    }
+}
+
+/**
+ * nv_up_p1()
+ *
+ * @return
+ *
+ */
+function nv_up_p1()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $array_modlang_update;
+
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    foreach ($array_modlang_update as $lang => $array_mod) {
+        foreach ($array_mod['mod'] as $module_info) {
+            $table_prefix = $db_config['prefix'] . "_" . $lang . "_" . $module_info['module_data'];
+            
+            // Cập nhật default chasert của các bảng
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_clip DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_hit DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_topic DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_comm DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Sửa lại các bảng
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_clip CHANGE title title VARCHAR(250) NOT NULL DEFAULT ''");
+                $db->query("ALTER TABLE " . $table_prefix . "_clip CHANGE alias alias VARCHAR(250) NOT NULL DEFAULT ''");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_topic CHANGE title title VARCHAR(250) NOT NULL DEFAULT ''");
+                $db->query("ALTER TABLE " . $table_prefix . "_topic CHANGE alias alias VARCHAR(250) NOT NULL DEFAULT ''");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Cập nhật chasert từng cột của các bảng
+            $array_table = array('_clip', '_hit', '_topic', '_comm');
+            
+            foreach ($array_table as $table) {
+                $sql = "SHOW FULL COLUMNS FROM " . $table_prefix . $table;
+                $result = $db->query($sql);
+                
+                while($row = $result->fetch()) {
+                    if($row['collation'] == 'utf8_general_ci') {
+                        try {
+                            $db->query("ALTER TABLE " . $table_prefix . $table . " CHANGE 
+                             " . $row['field'] . " " . $row['field'] . " " . $row['type'] . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci " . 
+                             ($row['null'] == 'NO' ? "NOT NULL" : "") . (strpos($row['type'], 'varchar') === false ? '' : " DEFAULT '" . $row['default'] . "'"));
+                        } catch (PDOException $e) {
+                            trigger_error($e->getMessage());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return $return;
+}
+
+/**
+ * nv_up_finish()
+ *
+ * @return
+ *
+ */
+function nv_up_finish()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $nv_update_config;
+
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    try {
+        $num = $db->query("SELECT COUNT(*) FROM " . $db_config['prefix'] . "_setup_extensions WHERE basename='" . $nv_update_config['formodule'] . "' AND type='module'")->fetchColumn();
+        $version = "4.0.29 1463590800";
+        
+        if (!$num) {
+            $db->query("INSERT INTO " . $db_config['prefix'] . "_setup_extensions (
+                id, type, title, is_sys, is_virtual, basename, table_prefix, version, addtime, author, note
+            ) VALUES (
+                79, 'module', 'video-clip', 0, 1, 'video-clip', 'video_clip', '4.0.29 1463590800', " . NV_CURRENTTIME . ", 'PHAN TAN DUNG (phantandung92@gmail.com)', 
+                'Module playback of video-clips'
+            )");
+        } else {
+            $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET 
+                id=79, 
+                version='" . $version . "', 
+                author='PHAN TAN DUNG (phantandung92@gmail.com)' 
+            WHERE basename='" . $nv_update_config['formodule'] . "' AND type='module'");
+        }
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    $nv_Cache->delAll();
+    return $return;
+}
+```
+
+**Kể từ NukeViet 4.2.01 về sau đoạn:**
+
+``` php
+// Lay danh sach ngon ngu
+$result = $db->query("SELECT lang FROM " . $db_config['prefix'] . "_setup_language WHERE setup=1");
+while (list($_tmp) = $result->fetch(PDO::FETCH_NUM)) {
+```
+
+Chỉ cần thay bằng
+
+``` php
+foreach ($global_config['allow_sitelangs'] as $_tmp) {
+```
+
+> Chú ý: Nếu trong function cần kiểm tra gọi \$global_config
+
+## Cấu hình gói nâng cấp
+
+Trong ví dụ trên thì việc cấu hình gói nâng cấp được khai báo trong đoạn
+
+``` php
+// Kieu nang cap 1: Update; 2: Upgrade
+$nv_update_config['type'] = 1;
+
+// ID goi cap nhat
+$nv_update_config['packageID'] = 'NVUDVIDEOCLIP4029';
+
+// Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
+$nv_update_config['formodule'] = 'video-clip';
+
+// Thong tin phien ban, tac gia, ho tro
+$nv_update_config['release_date'] = 1463590800;
+$nv_update_config['author'] = 'PHAN TAN DUNG (phantandung92@gmail.com)';
+$nv_update_config['support_website'] = 'https://github.com/hoaquynhtim99/video-clip-update/tree/4.0.29';
+$nv_update_config['to_version'] = '4.0.29';
+$nv_update_config['allow_old_version'] = array(
+    '4.0.01',
+    '4.0.22',
+    '4.0.23',
+    '4.0.24',
+    '4.0.27',
+    '4.0.28'
+);
+
+// 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
+$nv_update_config['update_auto_type'] = 1;
+```
+
+Trong đó
+
+``` php
+$nv_update_config['update_auto_type'] = 1;
+```
+
+Là kiểu nâng cấp, 1 là Update 2 là Upgrade, việc khai báo thông số này không có mục đích gì ngoài việc thay đổi ngôn ngữ thông báo.
+
+``` php
+$nv_update_config['packageID']
+```
+
+Là ID gói nâng cấp, được viết hoa tất cả, được đặt theo chuẩn NVU\[A-Z\]\[0-9\]\{4\} ví dụ NVUMUSIC3400, NVU3501, ....
+
+``` php
+$nv_update_config['formodule'] = 'video-clip';
+```
+
+Giá trị bằng tên module (không ảo) sẽ nâng cấp (hay tên thư mục chứa module đó).
+
+``` php
+$nv_update_config['release_date'] = 1333929600;
+```
+
+Là thời gian phát hành gói nâng cấp/cập nhật module, giá trị này là Unix timestamp lấy theo hàm [time()](http://php.net/manual/en/function.time.php) của php.
+
+``` php
+$nv_update_config['author'] = "Phan Tan Dung (phantandung92@gmail.com)";
+$nv_update_config['support_website'] = "http://nukeviet.vn/phpbb/viewforum.php?f=118";
+$nv_update_config['to_version'] = "3.5.01";
+$nv_update_config['allow_old_version'] = array( "3.0.01", "3.1.00", "3.2.00", "3.3.00", "3.3.01", "3.4.01" );
+$nv_update_config['update_auto_type'] = 1; // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
+```
+
+Là đoạn khai báo lần lượt thông tin tác giả, website hỗ trợ, phiên bản nâng cấp đến (được đặt đúng [quy cách đặt tên phiên bản module](/programming/module)), các phiên bản hỗ trợ nâng cấp, kiểu nâng cấp.
+
+- Đối với kiểu nâng cấp bằng tay, thay vì các file nâng cấp, các code thay đổi được đặt trong thư mục install/update thì chúng được đặt luôn ngang hàng với thư mục gốc. Kiểu nâng cấp này áp dụng chỉ áp dụng cho việc nâng cấp hệ thống NukeViet trong một số trường hợp cần thiết, việc nâng cấp module không nên và không cần dùng kiểu nâng cấp này.
+- Đối với kiểu nâng cấp nửa tự động, hệ thống sẽ thực hiên nâng cấp CSDL và người quản trị phải thực hiện di chuyển bằng tay các file trong thư mục install/update ra ngoài thư mục gốc.
+- Đối với nâng cấp tự động thì việc nâng cấp CSDL và việc di chuyển code là hoàn toàn tự động.
+
+## Ngôn ngữ
+
+Để khai báo thêm cho ngôn ngữ khi nâng cấp, ta tiến hành khai báo qua đoạn
+
+``` php
+$nv_update_config['lang'] = array();
+$nv_update_config['lang']['vi'] = array();
+$nv_update_config['lang']['en'] = array();
+
+// Tiếng Việt
+$nv_update_config['lang']['vi']['nv_up_author'] = 'Cập nhật nhạc sĩ cho bảng bài hát, video';
+
+$nv_update_config['lang']['vi']['nv_up_version'] = 'Cập nhật phiên bản';
+
+// English
+$nv_update_config['lang']['en']['nv_up_author'] = 'Update author for song, clip table';
+
+$nv_update_config['lang']['en']['nv_up_version'] = 'Updated version';
+```
+
+Trong ví dụ trên thì gói nâng cấp hỗ trợ hai ngôn ngữ tiếng việt và tiếng anh.
+
+## Nâng cấp CSDL
+
+Việc nâng cấp CSDL được thư hiện thông qua danh sách các hàm, hệ thống sẽ lần lượt gọi các hàm đó theo cấu hình. Đầu tiên ta khai báo danh sách các hàm sẽ thự hiện:
+
+``` php
+$nv_update_config['tasklist'] = array();
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.0.28',
+    'rq' => 1,
+    'l' => 'nv_up_p1',
+    'f' => 'nv_up_p1'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.0.29',
+    'rq' => 1,
+    'l' => 'nv_up_finish',
+    'f' => 'nv_up_finish'
+);
+```
+
+Trong đó:
+
+- Phần tử r mang giá trị là phiên bản thấp nhất của module mà gói nâng cấp sẽ bỏ qua không thực hiện. Có nghĩa rằng nếu module hiện tại có phiên bản bằng giá trị này hoặc lớn hơn thì hệ thống không thực hiện hàm đó.
+- Phần tử rq là cấu hình bắt buộc thành công hoặc không bắt buộc.
+  - Bằng 0: Không bắt buộc hoàn thành.
+  - Bằng 1: Sẽ cảnh báo quản trị nếu thất bại.
+  - Bằng 2: Sẽ dừng việc nâng cấp và báo lỗi nếu thất bại.
+- Phần tử l là langkey, là các khóa ngôn ngữ thể hiện tên công việc.
+- Phần tử f là tên hàm sẽ thực hiện công việc đó.
+
+Tiếp theo ta viết các hàm thực hiện công việc đó. Ví dụ
+
+``` php
+$array_modlang_update = array();
+
+// Lay danh sach ngon ngu
+$result = $db->query("SELECT lang FROM " . $db_config['prefix'] . "_setup_language WHERE setup=1");
+while (list($_tmp) = $result->fetch(PDO::FETCH_NUM)) {
+    $array_modlang_update[$_tmp] = array("lang" => $_tmp, "mod" => array());
+
+    // Get all module
+    $result1 = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $_tmp . "_modules WHERE module_file=" . $db->quote($nv_update_config['formodule']));
+    while (list($_modt, $_modd) = $result1->fetch(PDO::FETCH_NUM)) {
+        $array_modlang_update[$_tmp]['mod'][] = array("module_title" => $_modt, "module_data" => $_modd);
+    }
+}
+
+/**
+ * nv_up_p1()
+ *
+ * @return
+ *
+ */
+function nv_up_p1()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $array_modlang_update;
+
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    foreach ($array_modlang_update as $lang => $array_mod) {
+        foreach ($array_mod['mod'] as $module_info) {
+            $table_prefix = $db_config['prefix'] . "_" . $lang . "_" . $module_info['module_data'];
+            
+            // Cập nhật default chasert của các bảng
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_clip DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_hit DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_topic DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_comm DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Sửa lại các bảng
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_clip CHANGE title title VARCHAR(250) NOT NULL DEFAULT ''");
+                $db->query("ALTER TABLE " . $table_prefix . "_clip CHANGE alias alias VARCHAR(250) NOT NULL DEFAULT ''");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("ALTER TABLE " . $table_prefix . "_topic CHANGE title title VARCHAR(250) NOT NULL DEFAULT ''");
+                $db->query("ALTER TABLE " . $table_prefix . "_topic CHANGE alias alias VARCHAR(250) NOT NULL DEFAULT ''");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Cập nhật chasert từng cột của các bảng
+            $array_table = array('_clip', '_hit', '_topic', '_comm');
+            
+            foreach ($array_table as $table) {
+                $sql = "SHOW FULL COLUMNS FROM " . $table_prefix . $table;
+                $result = $db->query($sql);
+                
+                while($row = $result->fetch()) {
+                    if($row['collation'] == 'utf8_general_ci') {
+                        try {
+                            $db->query("ALTER TABLE " . $table_prefix . $table . " CHANGE 
+                             " . $row['field'] . " " . $row['field'] . " " . $row['type'] . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci " . 
+                             ($row['null'] == 'NO' ? "NOT NULL" : "") . (strpos($row['type'], 'varchar') === false ? '' : " DEFAULT '" . $row['default'] . "'"));
+                        } catch (PDOException $e) {
+                            trigger_error($e->getMessage());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return $return;
+}
+```
+
+Chú ý:
+
+- Chức năng nâng cấp của hệ thống sẽ sử dụng được tất cả các tài nguyên của NukeViet như các [hàm](/programming/function), [class](/programming/class), [các biến dùng chung](/programming/variables), [các hằng](/programming/other_constants)
+- Được sử dụng biến \$nv_update_baseurl mang giá trị
+  ``` php
+  NV_BASE_SITEURL . 'install/update.php?step=2&substep=3&load=' . $func
+  ```
+
+  . Biến này có tác dụng là đường dẫn giúp load lại nhiều lần một hàm nào đó mà hàm đó thực hiện nhiều việc, phải chạy lại nhiều lần (sẽ được hướng dẫn bên dưới).
+- Được sử dụng biến \$old_module_version mang giá trị là phiên bản hiện tại của module đang được cập nhật.
+
+### Viết hàm nâng cấp
+
+Việc viết các hàm nâng cấp là do mỗi nhà lập trình mà có các cách viết, nội dung và mục đích, tuy nhiên tất cả đều phải trả về một giá trị quy chuẩn, giá trị trả về là một bảng 1 chiều như sau:
+
+``` php
+$return = array( 'status' => 1, 'complete' => 1, 'next' => 1, 'link' => 'NO', 'lang' => 'NO', 'message' => '', );
+```
+
+Trong đó
+
+- status (0 hoặc 1, true hoặc false tương ứng thành công hoặc thất bại) là trạng thái trả về của lần chạy đó.
+- complete hoàn thành hoặc không hoàn thành (0 hoặc 1 true hoặc false) complete khác status ở chỗ complete đánh dấu cho cả hàm (công việc) còn status chỉ đánh dấu cho lần chạy đó.
+- next nếu là 0 (hay false) thì hệ thống kết thúc hàm đó, nếu là 1 (hoặc true) thì hệ thống sẽ tiếp tục chạy tiếp đường dẫn link.
+- link đường dẫn sẽ chạy nếu next là 1 (hoặc true)
+- lang là các ngôn ngữ xảy ra lỗi khi thực hiện ví dụ vi,en,fr, nếu không có để NO, nếu tất cả ngôn ngữ lỗi để ALL.
+- message bất kì thông tin gì trả về nếu không có hãy để trống.
+
+# Nâng cấp các file
+
+Để nâng cấp các file có 3 cách:
+
+1.  Đặt các file thay đổi của module ngang hàng với thư mục gốc của website.
+2.  Đặt các file thay đổi của module vào thư mục update của gói nâng cấp và cấu hình kiểu nâng cấp là tự động.
+3.  Đặt các file thay đổi của module vào thư mục update của gói nâng cấp và cấu hình kiểu nâng cấp là nửa tự động.
+
+Tùy theo từng tình huống mà các nhà phát triển chọn cách đặt cho phù hợp
+
+# Gói nâng cấp mẫu
+
+Tham khảo gói nâng cấp module video-clip lên phiên bản 4.0.09 của tác giả Phan Tấn Dũng (phantandung92@gmail.com) tại: [https://github.com/hoaquynhtim99/video-clip-update/releases/download/4.0.29/update_video-clip_to4.0.29.zip](https://github.com/hoaquynhtim99/video-clip-update/releases/download/4.0.29/update_video-clip_to4.0.29.zip)
+
+# Một số ghi chú
+
+Kể từ phiên bản 4.2.01, thay vì viết
+
+``` php
+// Duyệt tất cả các ngôn ngữ
+$language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
+while (list ($lang) = $language_query->fetch(3)) {
+```
+
+Ta chỉ cần dùng
+
+``` php
+foreach ($global_config['allow_sitelangs'] as $lang) {
+```
+
+> Chú ý: Nếu trong function cần kiểm tra gọi \$global_config

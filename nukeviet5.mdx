@@ -1,0 +1,337 @@
+---
+title: "Hướng dẫn sử dụng NukeViet"
+description: "Những bài viết được liệt kê trong trang này được biên tập và liệt kê theo dạng một cuốn sách Hướng dẫn sử dụng NukeViet 4, do đó mặc dù mỗi bài viết trong đó..."
+---
+
+# (Ghi chú: Tài liệu đang được biên soạn)
+
+## Lời nói đầu
+
+Những bài viết được liệt kê trong trang này được biên tập và liệt kê theo dạng một cuốn sách Hướng dẫn sử dụng NukeViet 4, do đó mặc dù mỗi bài viết trong đó có thể được tách rời để dễ dàng quản lý (và đặc biệt là được cập nhật thường xuyên) nhưng trình tự nội dung của nó (theo mục lục này) vẫn thể hiện theo dạng một cuốn sách liên mạch và thông suốt được biên tập đầy đủ, công phu.
+
+Cuốn sách này được viết nhằm giúp đỡ các bạn yêu thích tạo web có một tài liệu đầy đủ về hệ thống tạo web NukeViet 4. Với cẩm nang này, bạn có thể tạo dựng cho mình 1 website một cách dễ dàng. Thậm chí chỉ cần thêm một chút hiểu biết về web cùng với hướng dẫn này là bạn có thể tạo dựng một website tin tức, một cửa hàng trực tuyến hay một kênh giải trí Game - Nhạc … chuyên nghiệp.
+
+Trong tài liệu này, chúng tôi sẽ hướng dẫn các bạn bắt đầu từ việc cài đặt, quản trị hệ thống NukeViet 4, bên cạnh đó chúng tôi cũng sẽ hướng dẫn sử dụng thêm các chức năng của Cpanel, các phần mềm FTP clients, các thủ thuật liên quan đến hệ thống NukeViet 4.
+
+## Hướng dẫn đọc tài liệu này
+
+- Bạn không nhất thiết phải đọc lần lượt, có thể lướt qua mục lục và xem ngay mục mình quan tâm, sau đó, bạn có thể quay lại đọc những mục có liên quan bất cứ lúc nào nếu bạn không hiểu.
+- Chúng tôi tách riêng bài viết ra theo mục và đặt nó tại các trang khác nhau. Nếu các mục dưới đây không được gắn link truy cập tức là nó đã nằm trong bài viết tại mục chính.
+
+## Phần 1: Hướng dẫn cài đặt NukeViet 5
+
+Xem riêng: Hướng dẫn cài đặt NukeViet 5
+
+1.  [Những yêu cầu cài đặt cho NukeViet 5](/nukeviet5/setup/requirements)
+    1.  [Môi trường máy chủ](/nukeviet5/setup/requirements)
+    2.  [Máy tính người truy cập](/nukeviet5/setup/requirements)
+
+``` text
+  - 
+- Hướng dẫn cài đặt NukeViet 4 trên localhost.
+  - Chuẩn bị cho việc cài đặt NukeViet 5
+  - Tạo cơ sở dữ liệu rỗng
+  - Cài đặt NukeViet
+    - Lựa chọn ngôn ngữ
+    - Bản quyền
+    - Kiểm tra máy chủ
+    - Kiểm tra việc CHMOD
+    - Cấu hình cơ sở dữ liệu
+    - Thông tin website
+    - Kết thúc quá trình cài đặt
+- Hướng dẫn cài đặt NukeViet 4 trên hosting.
+  - Upload file cài đặt lên hosting.
+  - Tạo cơ sở dữ liệu rỗng.
+  - Cài đặt NukeViet 4
+- Hướng dẫn Bảo mật hệ thống NukeViet 4.1.
+```
+
+## Phần 2: Quản trị hệ thống NukeViet 4
+
+1.  [Giới thiệu về NukeViet](/nukeviet/concepts)
+    1.  [Giới thiệu](/nukeviet/about)
+2.  Các khái niệm cần biết
+    1.  [Cấu trúc hệ thống NukeViet](/nukeviet/concepts/structure)
+    2.  [Ngôn ngữ trên site](/nukeviet/concepts/language)
+    3.  [Module là gì?](/nukeviet/concepts/module)
+    4.  [Block là gì?](/nukeviet/concepts/block)
+    5.  [Theme là gì?](/nukeviet/concepts/theme)
+3.  [Đăng nhập khu vực quản trị](/nukeviet4/admin)
+4.  [Thông tin](/nukeviet4/admin/siteinfo)
+    1.  [Cấu hình site](/nukeviet4/admin/siteinfo)
+    2.  [Cấu hình PHP](/nukeviet4/admin/siteinfo)
+    3.  [Tiện ích mở rộng](/nukeviet4/admin/siteinfo)
+    4.  [Các biến môi trường](/nukeviet4/admin/siteinfo)
+    5.  [Các biến tiền định](/nukeviet4/admin/siteinfo)
+    6.  [Nhật ký hệ thống](/nukeviet4/admin/siteinfo)
+5.  [Tài khoản quản trị và bảo mật tài khoản](/nukeviet4/users)
+6.  [Cấu hình hệ thống](/nukeviet4/admin/settings)
+    1.  Cấu hình site
+    2.  Cấu hình chung
+    3.  Ngôn ngữ
+    4.  Cấu hình SMTP
+    5.  [Thiết lập an ninh](/thiet_lap_an_ninh)
+    6.  [Thiết lập plugin Nukeviet](/nukeviet4/admin/settings/plugin)
+    7.  Tiến trình tự động
+    8.  Cấu hình FTP
+    9.  Cấu hình cookie session
+7.   Quản lý modules
+    1.  [Quản lý các module đang hoạt động](/nukeviet4/admin/modules/modules)
+    2.  [Thiết lập module mới](/nukeviet4/admin/modules/setup)
+    3.  [Quản lý module ảo](/nukeviet4/admin/modules/vmodule)
+    4.  [Cài đặt và đóng gói tự động](/nukeviet4/admin/modules/autoinstall)
+8.  [Quản lý giao diện](/nukeviet4/admin/themes)
+    1.  [Thiết lập giao diện](/nukeviet4/admin/themes/config)
+    2.  [Thiết lập layout](/nukeviet4/admin/themes/setuplayout)
+    3.  [Quản lý block](/nukeviet4/admin/themes/blocks)
+        1.  [Thêm block](/nukeviet4/admin/themes/blocks)
+        2.  [Sửa, xóa một block](/nukeviet4/admin/themes/blocks)
+        3.  [Quản lý block trên trang chủ](/nukeviet4/admin/themes/blocks)
+    4.  [Sao chép block](/nukeviet4/admin/themes/xcopyblock)
+    5.  [Cài đặt theme](/nukeviet4/admin/themes/autoinstall)
+        1.  [Cài giao diện mới](/nukeviet4/admin/themes/autoinstall)
+        2.  [Đóng gói giao diện](/nukeviet4/admin/themes/autoinstall)
+        3.  [Đóng gói theme module](/nukeviet4/admin/themes/autoinstall)
+9.  [Quản trị website](/nukeviet4/admin/authors)
+    1.  [Giới thiệu về hệ thống quản trị của nukeviet](/nukeviet4/admin/authors)
+    2.  [Thêm/Sửa Quản trị website](/nukeviet4/admin/authors)
+    3.  [Cấu hình phần quản trị](/nukeviet4/admin/authors)
+10. [Quản trị cơ sở dữ liệu](/nukeviet4/admin/database)
+    1.  Giới thiệu chung về quản trị cơ sở dữ liệu
+    2.  Hướng dẫn tối ưu hóa cơ sở dữ liệu
+    3.  [Hướng dẫn lưu cơ sở dữ liệu](/nukeviet4/admin/database/save)
+    4.  [Hướng dẫn tải về](/nukeviet4/admin/database/save)
+    5.  [Data backup](/nukeviet4/admin/database/file)
+    6.  [Cấu hình](/nukeviet4/admin/database/setting)
+11. [Quản lý file](/nukeviet4/admin/upload)
+    1.  [Hướng dẫn sử dụng hệ thống quản lý file](/nukeviet4/admin/upload)
+    2.  [Cấu hình ảnh thumbnail](/nukeviet4/admin/upload/thumbconfig)
+    3.  [Cấu hình chèn logo](/nukeviet4/admin/upload/config)
+    4.  [Cấu hình upload](/nukeviet4/admin/upload/uploadconfig)
+12. [Ngôn ngữ](/nukeviet4/admin/language)
+    1.  [Ngôn ngữ data](/nukeviet4/admin/language)
+    2.  [Ngôn ngữ giao diện](/nukeviet4/admin/language/interface)
+    3.  [Cấu hình](/nukeviet4/admin/language/setting)
+    4.  [Kiểm tra ngôn ngữ giao diện](/nukeviet4/admin/language/check)
+    5.  Tạo ngôn ngữ giao diện
+13. [Công cụ web](/nukeviet4/admin/webtools)
+    1.  [Dọn dẹp hệ thống](/nukeviet4/admin/webtools)
+    2.  [Kiểm tra phiên bản](/nukeviet4/admin/webtools)
+    3.  [Cấu hình Kiểm tra phiên bản](/nukeviet4/admin/webtools)
+    4.  [Cấu hình thống kê](/nukeviet4/admin/webtools)
+14. [Công cụ SEO](/nukeviet4/admin/seotools)
+    1.  [Sitemap Ping](/nukeviet4/admin/seotools/sitemapping)
+    2.  [Xác thực Google+](/nukeviet4/admin/seotools/googleplus)
+    3.  [Cấu hình tag "title"](/nukeviet4/admin/seotools/pagetitle)
+    4.  [Cấu hình Meta-Tags](/nukeviet4/admin/seotools/metatags)
+    5.  [Cấu hình dịch vụ PING](/nukeviet4/admin/seotools/rpc)
+    6.  [Cấu hình file robots.txt](/nukeviet4/admin/seotools/robots)
+15. [Mở rộng](/nukeviet4/admin/manage)
+
+## Phần 3: Hướng dẫn quản trị các Module
+
+1.  [Hướng dẫn quản trị module Thành viên](/nukeviet4/admin/users)
+    1.  [Giới thiệu về hệ quản trị thành viên](/nukeviet4/admin/users)
+    2.  [Thêm tài khoản mới](/nukeviet4/admin/users)
+    3.  [Tài khoản đợi kích hoạt](/nukeviet4/admin/users)
+    4.  [Nhóm thành viên](/nukeviet4/admin/users)
+    5.  [Quản trị](/nukeviet4/admin/users)
+
+``` text
+      - [[/nukeviet4/admin/users|Thêm quản trị]]
+      - [[/nukeviet4/admin/users|Quyền hạn quản lý module]]
+      - [[/nukeviet4/admin/users|Cấu hình]]
+  - [[/nukeviet4/admin/users|Câu hỏi bảo mật]]
+  - [[/nukeviet4/admin/users|Nội quy site]]
+  - [[/nukeviet4/admin/users|Tùy biến dữ liệu]]
+  - [[/nukeviet4/admin/users|Cấu hình module]]
+  - [[/nukeviet4/admin/users/oauth|Cấu hình đăng nhập qua OAuth]]
+- [[/nukeviet4/admin/about|Hướng dẫn quản trị module About]]
+  - [[/nukeviet4/admin/about|Thêm bài mới]]
+  - [[/nukeviet4/admin/about|Cấu hình]]
+- [[/nukeviet4/admin/banners|Hướng dẫn quản trị module Quảng cáo]]
+  - [[/nukeviet4/admin/banners|Khối quảng cáo]]
+  - [[/nukeviet4/admin/banners|Thêm Khối ]]
+  - [[/nukeviet4/admin/banners|Quảng cáo]]
+  - [[/nukeviet4/admin/banners|Thêm quảng cáo]]
+  - [[/nukeviet4/admin/banners|Hiển thị quảng cáo lên website]]
+- [[/nukeviet4/admin/download|Hướng dẫn quản trị module Download]]
+  - [[/nukeviet4/admin/download|Thêm chủ đề]]
+  - [[/nukeviet4/admin/download|Quản lý chủ đề]]
+  - [[/nukeviet4/admin/download|Thêm file mới]]
+  - [[/nukeviet4/admin/download|File chờ kiểm duyệt]]
+  - [[/nukeviet4/admin/download|Báo cáo lỗi ]]
+  - [[/nukeviet4/admin/download|Cấu hình module]]
+- [[/nukeviet4/admin/contact|Hướng dẫn quản trị module Liên hệ]]
+  - [[/nukeviet4/admin/contact|Quản lý các liên hệ gửi tới]]
+  - [[/nukeviet4/admin/contact|Quản lý các bộ phận]]
+  - [[/nukeviet4/admin/contact|Nội dung thông báo trên trang liên hệ]]
+  - [[/nukeviet4/admin/contact|Hiển thị block supporter]]
+  - [[/nukeviet4/admin/contact|Gửi phản hồi]]
+- [[/nukeviet4/admin/voting|Hướng dẫn quản trị module Thăm dò ý kiến]]
+  - [[/nukeviet4/admin/voting|Tạo Thăm dò ý kiến]]
+  - [[/nukeviet4/admin/voting|Đăng Thăm dò ý kiến]] 
+- [[/nukeviet4/admin/news|Hướng dẫn quản trị module Tin tức]]
+  - [[/nukeviet4/admin/news|Quản lý chuyên mục]]
+  - [[/nukeviet4/admin/news|Thêm bài viết]]
+  - [[/nukeviet4/admin/news|Sửa chữa – xóa tin tức]]
+  - [[/nukeviet4/admin/news|Quản lý Tags]]
+  - [[/nukeviet4/admin/news|Các nhóm tin]]
+  - [[/nukeviet4/admin/news|Theo dòng sự kiện]]
+  - [[/nukeviet4/admin/news|Nguồn tin]]
+  - [[/nukeviet4/admin/news|Cấu hình module]]
+  - [[/nukeviet4/admin/news|Phân quyền quản lý ]]
+- [[/nukeviet4/admin/menu|Hướng dẫn quản trị module Menu]]
+  - [[/nukeviet4/admin/menu|Lấy menu tự động từ tên các chuyên mục, module]]
+  - [[/nukeviet4/admin/menu|Xem & sửa khối]]
+  - [[/nukeviet4/admin/menu|Tạo menu tự do]]
+  - [[/nukeviet4/admin/menu|Hiển thị khối menu lên website]]
+  - [[/nukeviet4/admin/menu|Thêm icon vào đầu các menu]]
+- [[/nukeviet4/admin/shops|Hướng dẫn quản trị module Shops]]
+  - [[/nukeviet4/admin/shops/list|Danh sách sản phẩm]]
+  - [[/nukeviet4/admin/shops/content|Thêm sản phẩm]]
+  - [[/nukeviet4/admin/shops/cat|Loại sản phẩm]]
+  - [[/nukeviet4/admin/shops/group|Nhóm sản phẩm]]
+  - [[/nukeviet4/admin/shops/block|Block sản phẩm]]
+  - [[/nukeviet4/admin/shops/unit|Đơn vị sản phẩm]]
+  - [[/nukeviet4/admin/shops/order|Đơn đặt hàng]]
+  - [[/nukeviet4/admin/shops/money|Đơn vị tiền tệ]]
+  - [[/nukeviet4/admin/shops/template|Tùy biến dữ liệu]]
+  - [[/nukeviet4/admin/shops/coupons|Sử dụng mã giảm giá]]
+  - [[/nukeviet4/admin/shops/point|Điểm tích lũy]]
+  - [[/nukeviet4/admin/shops/download|Quản lý tài liệu]]
+  - [[/nukeviet4/admin/shops/tabs|Quản lý tab]]
+  - [[/nukeviet4/admin/shops/payport|Tích hợp cổng thanh toán]]
+  - [[/nukeviet4/admin/shops/setting|Cấu hình module]]
+- [[/nukeviet4/admin/statistics|Hướng dẫn quản trị module statistics]]
+  - [[/nukeviet4/admin/statistics/allbots|Máy chủ tìm kiếm]]
+  - [[/nukeviet4/admin/statistics/allbrowsers|Trình duyệt]]
+  - [[/nukeviet4/admin/statistics/allcountries|Quốc gia]]
+  - [[/nukeviet4/admin/statistics/allos|Hệ điều hành]]
+  - [[/nukeviet4/admin/statistics/allreferers|Đường dẫn đến site]]
+- [[/nukeviet4/admin/freecontent|Hướng dẫn quản trị module freecontent (module giới thiệu sản phẩm)]]
+  - [[/nukeviet4/admin/freecontent/list|Thêm và sửa khối]]
+- [[/nukeviet4/admin/feeds|Hướng dẫn quản trị module Feeds]]
+- [[/nukeviet4/admin/comment|Quản trị module bình luận]]
+  - [[/nukeviet4/admin/comment/config|Cấu hình module bình luận]]
+  - [[/nukeviet4/admin/comment/edit|Sửa và phê duyệt bình luận]]
+- [[/nukeviet4/admin/laws|Quản trị module Văn bản]]
+  - [[/nukeviet4/admin/laws|Cấu hình module văn bản]]
+  - [[/nukeviet4/admin/laws|Cơ quan ban hành]]
+  - [[/nukeviet4/admin/laws|Quản lý thể loại]]
+  - [[/nukeviet4/admin/laws|Quản lý lĩnh vực]]
+  - [[/nukeviet4/admin/laws|Người ký văn bản]]
+  - [[/nukeviet4/admin/laws|Văn bản]]
+- [[/nukeviet4/admin/videoclips|Quản trị module Video]]
+  - [[/nukeviet4/admin/videoclips|Thêm video clips]]
+  - [[/nukeviet4/admin/videoclips|Quản lý thể loại]]
+  - [[/nukeviet4/admin/videoclips|Cấu hình module]]
+```
+
+## Phần 4: Hướng dẫn cài đặt webserver
+
+1.  [Webserver là gì?](/nukeviet/concepts/localhost)
+2.  [Hướng dẫn cài đặt AppServ trên windows](/web_server/appserv)
+    1.  Cài đặt AppServ
+        1.  Đăng nhập thử vào phpMyAdmin
+    2.  Các lỗi hay gặp phải khi cài AppServ và cách khắc phục
+        1.  Nếu tôi quên root password của MySQL Server thì phải làm sao?
+    3.  Bật Module Rewrite của Apache.
+    4.  Lỗi khi cài AppServ
+3.  [Hướng dẫn cài đặt máy chủ web với XAMPP trên windows](/web_server/xampp)
+4.  [Hướng dẫn cài đặt máy chủ web với Vertrigo trên windows](/web_server/vertrigo)
+5.  [Tạo môi trường localhost cho Ubuntu (sử dụng Xampp)](/nukeviet/setup/localhost_ubuntu)
+6.  [Cài đặt LEMP trên CentOS 6.6 để chạy NukeViet 4](/web_server/cai-dat-lemp-cho-centos6)
+7.  [Cài đặt LEMP trên CentOS 7 để chạy NukeViet 4](/web_server/cai-dat-lemp-cho-centos7)
+8.  [Cài đặt Server chịu tải cao chạy NukeViet 4](/web_server/cai-dat-server-chi-tai-cao)
+9.  [Install and Configure Elasticsearch on CentOS 7](/web_server/install-and-configure-elasticsearch-on-centos-7)
+
+## Phần 5: Làm việc với CSDL MySQL
+
+1.  [Import file SQL vào CSDL sử dụng PHPMyAdmin](/mysql/phpmyadmin/import)
+2.  [Backup (sao lưu) và Restore (phục hồi) sử dụng PHPMyAdmin](/mysql/phpmyadmin/backup_and_restore)
+    1.  [Backup csdl](/backup_csdl)
+    2.  [Restore csdl](/restore_csdl)
+    3.  Drop (hủy) CSDL
+    4.  Xử lý lỗi khi Restore
+3.  [Hướng dẫn trích xuất và phục hồi 1 phần dữ liệu Backup](/mysql/phpmyadmin/faq)
+    1.  Trích 1 phần dữ liệu
+    2.  Restore (phục hồi) phần dữ liệu đã trích xuất.
+4.  [Cắt file sql bằng SQLDumpSplitter](/mysql/sqldumpsplitter)
+5.  [Backup và restore dữ liệu bằng MySQLDumper](/mysql/sqldumpsplitter/backup_and_restore)
+
+## Phần 6: Phụ trợ
+
+1.  [Lập trình Web Việt: PHP và chữ Việt trên Web.](/support/php_and_vietnamese_characters)
+    1.  Bảng mã Unicode và chữ Việt
+    2.  Các Font chữ thuộc bảng mã Unicode
+    3.  Phần mềm dùng để gõ tiếng Việt:
+    4.  Unicode UTF-8 và tiếng Việt trên Web.
+2.  [Phần mềm dùng soạn thảo PHP.](/support/php_software)
+3.  [Chú ý khi lưu file tiếng Việt Unicode.](/support/save_file_as_unicode)
+
+## Phần 7: Đăng ký Tên miền, Host và đưa Web lên Internet
+
+1.  [Mua tên miền và mua host](/support/domain)
+2.  [Chmod trên hosting Linux](/support/hosting/chmod)
+3.  [Upload website lên Host với trình FTP](/support/ftp_client)
+    1.  [Upload website lên Host với công cụ trực tuyến web2ftp](/support/ftp_client/web2ftp)
+    2.  [Upload bằng LeapFTP](/support/ftp_client/leapftp)
+    3.  [Upload bằng Flash FXP](/support/ftp_client/flash_fxp)
+    4.  [Upload bằng FileZilla](/support/ftp_client/filezilla)
+
+## Phần 8: Hướng dẫn sử dụng hosting
+
+1.  [Hướng dẫn sử dụng Cpanel](/support/hosting/cpanel)
+    1.  [Quản lý cơ sở dữ liệu MySQL trên máy chủ](/support/hosting/cpanel/mysql)
+        1.  Tạo 1 cơ sở dữ liệu mới bằng Wizard
+        2.  Quản lý các cơ sở dữ liệu và user tương ứng
+        3.  Truy xuất cơ sở dữ liệu từ xa
+    2.  [File manager (của Cpanel)](/support/hosting/cpanel/file_manager)
+        1.  Tạo một tài khoản FTP (sử dụng Cpanel)
+        2.  Chỉnh sửa thông tin của một tài khoản FTP
+        3.  Các công cụ quản lý FTP khác
+        4.  Công cụ quản lý tập tin File Manager của cPanel
+        5.  Cách thức vào File Manager 2.0
+        6.  Cách thức vào File Manager 3.0
+    3.  [FTP Account](/support/hosting/cpanel/ftp)
+    4.  [Addon domains, Sub domains, Parked domains](/support/hosting/cpanel/domain)
+        1.  Subdomains: Thêm tên miền cấp con cho 1 tên miền có sẵn
+        2.  [Addons domain](/addons_domain)
+        3.  [Parket domain](/parket_domain)
+    5.  [Cài đặt SSL](/support/hosting/cpanel/ssl)
+
+## Phần 9: Các bài viết chuyên đề
+
+1.  [Hướng dẫn cài đặt NukeViet 4 trên free hosting byethost.com](/nukeviet/setup/byethost)
+    1.  Đăng ký free hosting byethost.com
+    2.  Upload file
+    3.  Tạo cở sở dữ liệu
+    4.  Cài đặt nukeviet
+2.  [Cài đặt NukeViet 4 trên IIS7](/nukeviet/setup/iis7)
+3.  [Hướng dẫn chuyển NukeViet 4 từ localhost lên hostting](/nukeviet/setup/change_host).
+    1.  Đăng kí hosting và tên miền
+    2.  Cấu hình domain và Dọn dẹp hệ thống.
+    3.  Tải toàn bộ mã nguồn lên hosting
+    4.  CHMOD 777 một số thư mục
+    5.  Xuất bản cơ sở dữ liệu
+    6.  Nhập khẩu cơ sở dữ liệu
+    7.  Sửa thông số cơ sở dữ liệu
+4.  [Nâng cấp từ NukeViet 2 lên NukeViet 4](/nukeviet/upgrade)
+5.  [Nâng cấp các phiên bản trong NukeViet 4](/nukeviet/upgrade4)
+6.  [Hướng dẫn tích hợp diễn đàn phpbb3](/nukeviet/phpbb3)
+7.  [Hướng dẫn tích hợp diễn đàn vBulletin](/nukeviet/vbulletin)
+8.  [Các phát sinh trong quá trình sử dụng](/nukeviet/arising)
+    1.  [Các thông báo lỗi](/nukeviet/arising/errormessage)
+    2.  [Làm việc bất thường](/nukeviet/arising/workunusual)
+    3.  [Cảnh báo qua email](/nukeviet/arising/emailnotice)
+9.  [.htaccess, redirect 301 - thay đổi tên miền không làm thay đổi traffic và ranking](/nukeviet/htaccess_and_redirect_301)
+10. [Các hướng dẫn cần biết về giao diện khi thiết kế](/nukeviet/note_creat_theme)
+11. [Hướng dẫn tạo API Key cho Google MAP](/google/api/creat-google-map-apikey)
+
+## Phụ lục: Các phần mềm và link tải
+
+- Kho ứng dụng NukeViet (Nơi chứa toàn bộ theme, block, module của NukeViet mọi phiên bản): [http://nukeviet.vn/vi/store/](http://nukeviet.vn/vi/store/)
+- Tải về phần mềm và các tài liệu hỗ trợ cho Webmaster NukeViet: [http://nukeviet.vn/vi/download/](http://nukeviet.vn/vi/download/)
+
+![Lượt truy cập của bạn](http://hostingtoolbox.com/bin/Count.cgi)

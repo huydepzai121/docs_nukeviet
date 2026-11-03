@@ -1,0 +1,30 @@
+---
+title: "change_site_buffer"
+description: "Trước khi gửi nội dung website đến trình duyệt."
+---
+
+Trước khi gửi nội dung website đến trình duyệt.
+
+### Tham số
+
+| STT | Tên biến        | Kiểu dữ liệu | Ghi chú |
+|-----|:----------------|:-------------|:--------|
+| 0   | \$global_config | Array        |         |
+| 1   | \$contents      | String       |         |
+
+### Dữ liệu trả về
+
+Biến `$contents`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'change_site_buffer', $priority, function($vars) {
+    $global_config = $vars[0];
+    $contents = $vars[1];
+
+    // Thực hiện code hook tại đây...
+
+    return $contents;
+});
+```

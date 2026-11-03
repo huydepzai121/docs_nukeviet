@@ -1,0 +1,78 @@
+---
+title: "Cấu trúc tệp tin và thư mục của NukeViet"
+description: "Bạn có thể xem đầy đủ cấu trúc tệp tin và thư mục của NukeViet thông qua kho code của NukeViet tại đây: http://code.google.com/p/nuke-viet/source/browse/trun..."
+---
+
+Bạn có thể xem đầy đủ cấu trúc tệp tin và thư mục của NukeViet thông qua kho code của NukeViet tại đây: [http://code.google.com/p/nuke-viet/source/browse/trunk/nukeviet/](http://code.google.com/p/nuke-viet/source/browse/trunk/nukeviet/)
+
+1.  Mô tả các file trong thư mục gốc
+    - File `index.php`: Là file khởi động hệ thống, gọi ra tất cả các tài nguyên NukeViet sử dụng, xác định các module, các template, thống kê số người online, xác định quyền điều hành module.
+    - File `mainfile.php`: Là file gọi ra tất cả các tài nguyên của hệ thống sử dụng, khởi tạo các hằng, các biến dùng chung. File này được gọi ngay index.php được gọi.
+    - File `.htaccess`: Cấu hình Charset (character set) mặc định cho các file HTML, CSS, JS, PHP, HTM, chặn truy cập bên ngoài đến một số file. Thiết lập cho các modules của Apache.
+    - File `web.config`: Tệp cấu hình dành cho máy chủ windows.
+    - File `CJzip.php`: Chứa các thành phần phục vụ việc nén trang.
+    - File `favicon.ico`: Icon của website.
+    - Các file `robots.php`, `robots.txt`: Thiết lập quyền tìm kiếm của các máy chủ tìm kiếm.
+    - File `service_shops_nganluong.php`: Kết nối thanh toán với nganluong.vn. File này chỉ được sử dụng trong thanh toán của module shops. Được đưa vào từ phiên bản NukeViet 3.1.
+    - File `update_revision.php`: Dùng trong việc nâng cấp hệ thống theo revision. [^1]
+2.  Mô tả các thư mục:
+    1.  Thư mục `admin`:  
+        Thư mục này chứa thư mục con (`modules`) và file `index.php`.  
+        Thư mục modules chứa các module sử dụng trong khu vực quản trị website.
+    2.  Thư mục `cache`:  
+        Là bộ nhớ đệm của hệ thống, khi thực hiện chức năng xóa cache thì các file trong thư mục này sẽ bị xóa. Cache sẽ giúp hệ thống hoạt động nhanh hơn, giảm bớt công việc xử lý của CPU.
+    3.  Thư mục `data`:  
+        Chứa các file dữ liệu từ các module, ví dụ các file dữ liệu quảng cáo (module banners), file config_global.php chứa thông tin cấu hình của site, file metatags.xml lưu cấu hình meta-tag…  
+        Ngoài ra thư mục này cũng có thể chứa nhiều file khác tùy theo mỗi module có hoặc không có lưu file vào.
+    4.  Thư mục `editors`: chứa các trình soạn thảo, NukeViet tích hợp sẵn trình soạn thảo **ckeditor**.
+    5.  Thư mục `files`:  
+        Gồm 5 thư mục con:
+        - `Css`: Chứa các file css nén của website nếu bật chức năng tối ưu hệ thống.
+        - `Dcache`: Bộ nhớ đệm của module uploads. Các file trong thư mục này không được xóa khi dùng chức năng xóa cache của module webtools, vì vậy nếu gặp lỗi ở phần upload thì bước đầu tiên nên làm là xóa thủ công các file trong thư mục này.
+        - `Images`: Chứa các ảnh Thumb của module upload.
+        - `Js`: Chứa file js nén nếu chức năng tối ưu hệ thống được kích hoạt.
+        - `News`: Chứa các hình ảnh của module news. Khi tạo module ảo từ module news, hệ thống sẽ tự động tạo thêm các thư mục có tên là tên module ảo vào thư mục `files`.
+    6.  Thư mục `images`:  
+        Chứa các hình ảnh cơ bản được sử dụng trên toàn hệ thống, jwplayer
+    7.  Thư mục `includes`:  
+        Chứa toàn bộ tài nguyên của bộ nhân NukeViet.
+        - Thư mục `blocks`: Chứa các block global của hệ thống.
+        - Thư mục `class`: Chứa các class: array2xml.class, checkurl.class, crypt.class, Diagnostic.class, download.class, error.class, flood.class…
+        - Thư mục `core`: Chứa các file xử lý cốt lõi của hệ thống.
+        - Thư mục `cronjobs`: Chứa các file tiến trình tự động của hệ thống.
+        - Thư mục `fonts`: Chứa font cho phần capcha.
+        - Thư mục `ini`: Chứa các file dữ liệu như đơn vị tiền tệ, kí hiệu ngôn ngữ, trình duyệt, hệ điều hành..
+        - Thư mục `ip_files`: Dữ liệu IP của các nước.
+        - Thư mục `keywords`: Chứa các hàm tách từ khóa.
+        - Thư mục `phpmailer`: Chứa phpmailer class, là phần phụ trách việc gửi email.
+        - Thư mục `phpsvnclient`: Class dùng để giao tiếp với máy chủ SVN.
+        - Thư mục `utf8`: Các hàm xử lý mã utf-8.  
+          Các file:
+        - `bots.php`: Cấu hình các máy chủ tìm kiếm.
+        - `constants.php`: Các thiết lập hệ thống. Phần thiết lập này sẽ được hướng dẫn tại mục thiết lập hệ thống.
+        - `footer.php`, `header.php`: File thiết lập định dạng xuất ra của website.
+        - `functions.php`: Chứa các hàm NukeViet xây dựng sẵn.
+        - `getloadavg.php`: Chống quá tải máy chủ.
+        - `ini.php`: Đọc dữ liệu từ file ini, đối chiếu để xuất ra biến \$sys_info
+        - `language.php`: Xác định ngôn ngữ data, ngôn ngữ giao diện .
+        - `openid.php`: Thông tin các nhà cung cấp openID được sửa dụng.
+        - `request_uri.php`: Xử lý biến \$\_GET
+        - `rewrite.php`, `rewrite_index.php`, `rewrite_language.php`: Chứa năng rewrite của NukeViet.
+        - `sqldata.php`: Chứa dữ liệu tạo table trong CSDL của các module hệ thống.
+        - `timezone.php`: Thông tin về múi giờ.
+    8.  Thư mục `install`: Phần cài đặt NukeViet.
+    9.  Thư mục `js`: Chứa các file javascript NueViet sử dụng.
+    10. Thư mục `language`:  
+        Chứa các file ngôn ngữ. Trong thu mục này các file ngôn ngữ được phân làm 4 loại.
+        - Ngôn ngữ global: `global.php`, `admin_global.php` lần lượt là ngôn ngữ dùng chung cho toàn bộ khu vực quản trị và khu vực người dùng, nội dung ngôn ngữ được lưu trong biến `$lang_global`.
+        - Ngôn ngữ module (các module khu vực quản trị): `admin_ten-module.php`.
+        - Ngôn ngữ block: (các block trong thư mục `includes/blocks/`) `block.ten-block.php`
+        - Ngôn ngữ cài đặt: `install.php`.
+    11. Thư mục `logs`: Chứa toàn bộ nhật kí hệ thống:
+    12. Thư mục `modules`: Chứa các module khu vực người dùng.
+    13. Thư mục `sess`: Vị trí lưu các session.
+    14. Thư mục `themes`: Chứa các giao diện.
+    15. Thư mục `tmp`: Các file tạm. Các file trong thư mục này sẽ được tự động xóa nhờ tiến trình tự động.
+    16. Thư mục `uploads`: Chứa các file upload của các module, mỗi thư mục trong thư mục này tương đương với một module.
+
+[^1]: Tính năng Update revision đã được loại bỏ từ phiên bản NukeViet 3.2

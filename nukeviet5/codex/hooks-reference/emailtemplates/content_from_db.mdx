@@ -1,0 +1,28 @@
+---
+title: "content_from_db"
+description: "Xử lý biến $array khi lấy từ CSDL ra, áp dụng khi sửa mẫu email."
+---
+
+Xử lý biến \$array khi lấy từ CSDL ra, áp dụng khi sửa mẫu email.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú |
+|-----|:---------|:-------------|:--------|
+| 0   | \$array  | array        |         |
+
+### Dữ liệu trả về
+
+Biến `$array`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'content_from_db', $priority, function($vars) {
+    $array = $vars[0];
+
+    // Thực hiện code hook tại đây...
+
+    return $array;
+});
+```

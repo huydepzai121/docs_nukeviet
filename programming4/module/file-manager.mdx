@@ -1,0 +1,124 @@
+---
+title: "Sử dụng trình quản lí tệp tin cho module"
+description: "Chay hàm javascript sau:"
+---
+
+> Lưu ý: Trình quản lí tệp tin chỉ khả dụng trong khu vực quản trị.
+
+**Đối với NukeViet trước 4.6:**
+
+Chay hàm javascript sau:
+
+``` javascript
+nv_open_browse(script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=upload&popup=1&area=" + area + "&alt=" + alt + "&path=" + path + "&type=" + type + "&currentpath=" + currentpath, "NVImg", 850, 420, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
+```
+
+Trong đó:
+
+- area là ID của input sẽ trả về đường dẫn file
+- alt là ID của input trả về mô tả file. Có thể có hoặc không
+- path là thư mục mở ra ví dụ uploads/news
+- currentpath là thư mục xem hiện tại ví dụ uploads/news/2024. Bỏ trống sẽ lấy path
+
+**Đối với NukeViet 4.6 về sau:**
+
+Trình quản lí tệp tin được gọi là Picker và hỗ trợ nhiều cách thức làm việc. Bạn có thể tham khảo một số cách sau:
+
+## Cách 1: Truyền thống
+
+Sử dụng phương pháp truyền thống như NukeViet4.5 bên trên, cách này không khuyến khích dùng vì nó mở cửa sổ mới và không hỗ trợ đầy đủ tính năng. Phương thức này giữ lại để hỗ trợ các module cũ không muốn nâng cấp lên.
+
+## Cách 2: Đơn giản
+
+Không cần sử dụng javascript, bạn chỉ cần tạo các thẻ input và button dạng như sau
+
+``` html
+<input class="form-control" type="text" name="input_link" id="input_link" value="">
+<input class="form-control" type="text" name="input_alt" id="input_alt" value="">
+<button type="button" data-toggle="selectfile" data-target="input_link" data-target="input_alt" data-path="uploads/news" data-currentpath="uploads/news/2024" data-type="image" class="btn btn-primary">Chọn ảnh</button>
+```
+
+Với cách này hệ thống sẽ tự động mở trình quản lí tệp tin ra khi ấn vào button. `data-toggle="selectfile"` chính là thuộc tính sử dụng để mở lên tình quản lí tệp tin. Các data-\* khác sẽ là tham số để truyền vào tương tự các biến ở cách sử dụng truyền thống của NukeViet 4.5
+
+## Cách 3: Chi tiết
+
+**Bước 1: Load ra thư viện js**
+
+Thông qua javascript:
+
+``` javascript
+let script = document.createElement('script');
+script.src = script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&langinterface=' + nv_lang_interface + '&' + nv_name_variable + '=upload&' + nv_fc_variable + '=js&t=' + nv_cache_timestamp;
+script.async = true;
+document.body.appendChild(script);
+```
+
+Hoặc thông qua Smarty:
+
+``` html
+<script src="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}=upload&amp;{$smarty.const.NV_OP_VARIABLE}=js&amp;langinterface={$smarty.const.NV_LANG_INTERFACE}&amp;t={$smarty.const.SYS_CACHE_TIMESTAMP}"></script>
+```
+
+**Bước 2: Khởi tạo**
+
+Nếu code của bạn được load cùng lúc với quá trình nạp trang hãy dùng
+
+``` javascript
+document.addEventListener('nv.picker.ready', () => {
+    const picker = new nukeviet.Picker('#picker-button', options);
+});
+```
+
+Nếu code của bạn được load sau khi nạp trang thành công hãy dùng
+
+``` javascript
+const picker = new nukeviet.Picker('#picker-button', options);
+```
+
+Trong đó `#picker-button` là \#ID của nút sẽ mở trình quản lí tệp tin khi ấn vào hoặc [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) bất kì hoặc [DOM Element](https://developer.mozilla.org/en-US/docs/Web/API/Element)
+
+`options` là object bao gồm:
+
+``` javascript
+{
+    show: 'inline', // inline hoặc button hoặc không chỉ ra. Nếu là inline toàn bộ đối tượng sẽ thay bằng trình quản lí file
+    path: 'uploads/news', // Thư mục mở ra bỏ trống hoặc không chỉ ra sẽ mở thư mục uploads. Khi là uploads/news thì người dùng không thể duyệt ra bên ngoài uploads
+    currentpath: 'uploads/news/2024', // Thư mục con đang chọn. Ví dụ uploads/news/2024. Hệ thống sẽ mở thư mục uploads/news/2024 nhưng người dùng có thể chọn duyệt ra ngoài thư mục uploads/news.
+    type: 'image', // image hoặc file nếu là image thì chỉ hiển thị ảnh. Bỏ trống hoặc không chỉ ra thì là file
+    imgfile: 'uploads/news/2025/filename.jpg', // Hệ thống sẽ thay currentpath bằng uploads/news/2025 và chọn sẵn file filename.jpg nếu truyền giá trị này vào
+    area: 'input_link', // Là ID của input sẽ điền link file vào khi "chọn". Không bắt buộc
+    alt: 'input_alt' // Là ID của input sẽ điền mô tả file vào khi "chọn". Không bắt buộc
+    onSelect: (file, picker) => { // Hàm chạy khi chọn file. Không bắt buộc
+        // file có dạng như sau: 
+        /*
+        {
+            "name": "le-bong.jpg", // Tên file
+            "ext": "jpg", // Phần mở rộng
+            "thumb": "/assets/le-bong.jpg", // Ảnh nhỏ, chú ý nó chỉ đúng nếu type=image, type khác nó là icon loại file
+            "path": "/uploads/le-bong.jpg", // Đường dẫn tương đối (không có tên miền)
+            "absPath": "https://nukeviet.vn/uploads/le-bong.jpg", // Đường dẫn tuyệt đối (cả tên miền)
+            "alt": "Le Bong", // Mô tả
+            "type": "image", // Loại image hoặc file
+            "width": 1440, // Rộng của ảnh nếu là image, nếu không thì = 0
+            "height": 948, // Cao của ảnh nếu là image, nếu không thì = 0
+            "size": "273,3 KB" // Dung lượng
+        }
+        */
+        picker.hide(); // Đóng
+    }
+}
+```
+
+Sau khi khởi tạo `picker` xong có thể sử dụng một số chức năng:
+
+``` javascript
+picker.show(); // Mở trình quản lí file lên. Giống như ấn vào nút
+picker.hide(); // Ẩn trình quản lí file
+picker.setOption('key', 'value'); // Thay đổi các thiết lập của options ban đầu
+```
+
+Lưu ý: Nếu chưa biết picker đã được tạo trước đó hay chưa trên đối tượng thì thay vì dùng `new nukeviet.Picker` hãy dùng:
+
+``` javascript
+const picker = nukeviet.Picker.getOrCreateInstance('#picker-button', options);
+```

@@ -1,0 +1,30 @@
+---
+title: "user_add_by_openid"
+description: "Thành viên mới từ việc đăng nhập thành công bằng OpenID."
+---
+
+Thành viên mới từ việc đăng nhập thành công bằng OpenID.
+
+### Tham số
+
+| STT | Tên biến    | Kiểu dữ liệu | Ghi chú |
+|-----|:------------|:-------------|:--------|
+| 0   | \$userid    | Integer      |         |
+| 1   | \$user_data | Array        |         |
+| 2   | \$server    | String       |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'user_add_by_openid', $priority, function($vars) {
+    $userid = $vars[0];
+    $user_data = $vars[1];
+    $server = $vars[2];
+
+    // Thực hiện code hook tại đây...
+});
+```

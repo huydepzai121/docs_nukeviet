@@ -1,0 +1,75 @@
+---
+title: "Hướng dẫn cài đặt NukeViet 3 trên hosting."
+description: "Điều kiện và môi trường được hướng dẫn ở đây:"
+---
+
+Điều kiện và môi trường được hướng dẫn ở đây:
+
+- Phiên bản hướng dẫn: NukeViet 3.0 Official version
+- Hosting Sử dụng: Cpanel 11
+- Domain sử dụng: [http://demo.vinades.net](http://demo.vinades.net) (đã trỏ domain tới hosting)
+- Hosting hướng dẫn là host linux, thư mục chứa file có thể khác nhau tùy vào nhà cung cấp hosting.
+
+Với các môi trường khác, hình ảnh và trình tự có sẽ sẽ có đôi chút khác biệt.
+
+## Upload file cài đặt lên hosting
+
+Truy cập website [http://nukeviet.vn/](http://nukeviet.vn/) để download phiên bản NukeViet mới nhất. Khi đó được file NukeViet3.0-Official.rar, giải nén file này được các file ![Hình 16: Đăng nhập vào "cPanel", vào mục "File Manager"](/images/nukeviet/setup/image031.png) Đăng nhập vào "cPanel", vào mục "File Manager" ![Hình 17: File manager](/images/nukeviet/setup/image033.png)
+
+Popup hiện lên hỏi bạn thư mục muốn quản lý, bạn chọn thư mục "public_html". Trình duyệt sẽ chuyển bạn tới trang quản lý
+
+Bạn di chuyển tới thư mục "public_html", click nút upload để mở công cụ upload file ![Hình 18: Chọn mục upload](/images/nukeviet/setup/image035.png)
+
+Tại trang upload file, bạn nhấp nút "Browse..." để tìm đến tệp tin cần upload.
+
+![Hình 19: Chọn Brown](/images/nukeviet/setup/image037.png)
+
+Bạn chọn file nukeviet.zip , ấn "Open" ![Hình 20: Chọn file](/images/nukeviet/setup/image039.png)
+
+Đợi vài phút để trình duyệt upload file lên server.
+
+![Hình 21: Upload](/images/nukeviet/setup/image041.png)
+
+Khi quá trình upload hoàn tất (100%). bạn trở lại trang quản lý file, ấn nút Reload để nạp lại dữ liệu.
+
+![Hình 22](/images/nukeviet/setup/image043.png)
+
+Bạn sẽ thấy file nukeviet.zip đã được tải lên server. Click chuột phải lên file, chọn "Extract" để giải nén file này.
+
+![HÌnh 23: Chọn extract](/images/nukeviet/setup/image045.png)
+
+Cửa sổ Extract hiện ra, bạn chọn thư mục giải nén là "/public_html" để giải nén các file cài đặt của NukeViet. ![Hình 24: Chọn thư mục upload](/images/nukeviet/setup/image047.png)
+
+Trong giây lát, các file sẽ được giải nén, bạn nhấp nút close để đóng của sổ thông báo kết quả. ![Hình 25: Quá trình giải nén](/images/nukeviet/setup/image049.png)
+
+Khi đó thư mục NukeViet được gọi là thư mục gốc của NukeViet và địa chỉ truy cập tới site là [http://demo.vinades.net/nukeviet/](http://demo.vinades.net/nukeviet/))
+
+## Tạo cơ sở dữ liệu rỗng.
+
+Bước 1: Vào "cPanel", mục "MySQL® Database Wizard".
+
+![Hình 26: MySQL® Database Wizard](/images/nukeviet/setup/image051.png)
+
+Bước 2: Tạo cơ sở dữ liệu mới. Nhập tên cơ sở dữ liệu, ví dụ "nukeviet" ![Hình 27: Nhập tên CSDL](/images/nukeviet/setup/image053.png)
+
+Click Next Step để chuyển sang bước tiếp theo ![Hình 28](/images/nukeviet/setup/image055.png) Cần điềm đầy đủ các thông số Username, Password và nhập lại password vào Password (Again) sau đó click vào Create User để chuyển sang bước kế tiếp.
+
+Khi đó cơ sở dữ liệu được tạo với tài khoản:
+
+Database name: vnddemo_nukeviet
+
+Database Username: vnddemo_nukeviet
+
+Mật khẩu: 2Cg5hoWNVRJH (Mật khẩu bạn đặt tương tự như trên)
+
+Hãy ghi nhớ tên này để nhập trong quá trình cài đặt nukeviet. (Chú ý: Tên tiền tố của bảng CSDL các host khác nhau thì có phần tiền tố khác nhau, tên cơ sở dữ liệu và tên người sử dụng có thể giống và khác nhau, tránh nhầm lẫn).
+
+Sau đó cần thêm User vào Database (Thực hiện theo bước 1 và 2 trên hình) ![Hình 29](/images/nukeviet/setup/image057.png) Như vậy bạn đã xong việc tạo CSDL rỗng và người dùng. ![Hình 30: Hoàn tất add user](/images/nukeviet/setup/image059.png)
+
+## Cài đặt NukeViet 3
+
+Từ cửa sổ trình duyệt của bạn, truy cập thư mục gốc chứa bộ cài NukeViet tại địa chỉ [http://demo.vinades.net/nukeviet/](http://demo.vinades.net/nukeviet/) Khi đó chương trình sẽ tự động chuyển sang bước cài đặt trên địa chỉ: [http://demo.vinades.net/nukeviet/install/index.php](http://demo.vinades.net/nukeviet/install/index.php)
+
+Khi đó quá trình cài đặt NukeViet 3 trên hosting tương tự như quá trình cài đặt trên localhost. Xem [Hướng dẫn cài đặt NukeViet 3 trên localhost](/nukeviet/setup/localhost)
+
+Chú ý: Trong quá trình cài đặt NukeViet 3, tại bước (4) Kiểm tra việc CHMOD, Nếu hệ thống có file hoặc thư mục cần chmode Hệ thống sẽ hiển thị thêm khu vực nhập các thông số FTP Bạn nên nhập các thông số FTP để NukeViet 3 chmodecác file và thư mục.

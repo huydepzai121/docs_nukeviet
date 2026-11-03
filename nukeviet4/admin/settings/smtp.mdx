@@ -1,0 +1,28 @@
+---
+title: "Cấu hình SMTP"
+description: "Trong một số trường hợp máy chủ của bạn không có hàm mail hoặc hàm mail bị chặn. Để có thể gửi mail được bạn cần cấu hình gửi mail bằng SMTP"
+---
+
+Trong một số trường hợp máy chủ của bạn không có hàm mail hoặc hàm mail bị chặn. Để có thể gửi mail được bạn cần cấu hình gửi mail bằng SMTP ![](/images/nukeviet/admin/settings/screen_shot_2018-04-02_at_10.34.09.png)
+
+Nếu cấu hình SMTP mà không được thì cấu hình Ssl verify peer , Ssl verify name peer là không.
+
+Ví dụ dùng tài khoản gmail:
+
+- Máy chủ (SMTP) Thư Gửi: smtp.gmail.com
+
+- Cổng gửi mail: 465 hoặc 587
+
+- Sử dụng Xác thực: SSL
+
+- Tên Tài khoản: (tài khoản email của bạn, có cả @gmail.com)
+
+- Mật khẩu: (Mật khẩu đăng nhập gmail)
+
+Vào menu Thông tin - \> Tiện ích mở rộng tìm xem có đoạn sau không
+
+![](/images/nukeviet/setup/image133.png)
+
+Nếu dùng SMTP để gửi mail có sử dụng SSL thì máy chủ cẫn hỗ trợ thư viện openssl. Để kiểm tra xem máy chủ của bạn có hỗ trợ hay không xem theo hướng dẫn sau:
+
+Sau khi cấu hình xong, vào module **Liên hệ** --\> **Gửi phản hồi** để thử lại chức năng gửi mail.

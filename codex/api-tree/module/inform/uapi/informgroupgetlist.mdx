@@ -1,0 +1,39 @@
+---
+title: "Hướng dẫn sử dụng API InformGroupGetList"
+description: "API dùng để lấy danh sách thông báo đẩy do nhóm gửi đi"
+---
+
+## Tác dụng
+
+API dùng để lấy danh sách thông báo đẩy do nhóm gửi đi
+
+### Tham số có thể truyền vào:
+
+### Request Parameters
+
+| Tham số | Kiểu dữ liệu | Tính bắt buộc | Mô tả |
+|:---|----|:---|:---|
+| group_id | int | Bắt buộc | ID của nhóm gửi thông báo đẩy trong CSDL |
+| page | int | Không bắt buộc | Trang hiển thị |
+| per_page | int | Không bắt buộc | Số thông báo trên một trang |
+| filter | string | Không bắt buộc | Lọc thông báo theo một trong các tiêu chí: đang hoạt động (active), đang chờ hiển thị (waiting), đã hết hạn (expired) |
+
+### Dữ liệu trả về:
+
+#### Nếu truy vấn có lỗi:
+
+| Thuộc tính | Kiểu dữ liệu | Mô tả                      |
+|------------|--------------|:---------------------------|
+| status     | string       | Trạng thái truy vấn: error |
+| code       | int          | Mã lỗi                     |
+| message    | string       | Thông báo lỗi              |
+
+#### Nếu truy vấn thành công:
+
+| Thuộc tính | Kiểu dữ liệu | Mô tả |
+|----|----|:---|
+| status | string | Trạng thái truy vấn: success |
+| code | int | Mã lỗi: 0000 |
+| message | string | Thông báo lỗi: Rỗng |
+| total | int | Số lượng row tìm thấy trong CSDL |
+| items | array | Mảng có key là ID của thông báo đẩy, value là mảng chứa toàn bộ thông tin cụ thể của thông báo đẩy được lấy từ CSDL (\*) |

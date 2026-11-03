@@ -1,0 +1,72 @@
+---
+title: "Hướng dẫn debug các câu lệnh SQL"
+description: "$listsqls là mảng một chiều lưu danh sách các câu lệnh"
+---
+
+> Chức năng này được thêm vào từ NukeViet 4.3.06. Các phiên bản NukeViet 4 trước sẽ không thể thực hiện.
+
+Chú pháp chung
+
+``` php
+$db->enableDebug();
+
+// Thực thi các câu lệnh SQL
+
+$list_sqls = $db->debugListSQL();
+```
+
+`$list_sqls` là mảng một chiều lưu danh sách các câu lệnh
+
+## Debug cho toàn hệ thống
+
+> Việc debug cho toàn hệ thống giúp nhà phát triển kiểm tra và tối ưu các câu lệnh tại một trang nào đó.
+
+Để không phải sửa vào nhân của hệ thống, nhà phát triển có thể sử dụng plugin để tiến hành việc debug này.
+
+Bước 1. Thêm plugin enable_db_debug.php vào vị trí trước khi gọi các module để bật chế độ debug.
+
+Bước 2. Thêm plugin lấy ra dữ liệu debug trước khi gửi nội dung đến trình duyệt.
+
+Ví dụ plugin slow.php
+
+``` php
+<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+    <info>
+        <name>Plugin Slow</name>
+        <author>VinaDes.,Jsc</author>
+        <website>http://vinades.vn</website>
+        <description>Lưu lại các URL chạy tốn tài nguyên để tìm cách xử lý</description>
+    </info>
+    <positions>
+    <position>
+    <id>3</id>
+    <note>Trước khi website gửi nội dung tới trình duyệt</note>
+    </position>             
+    </positions>
+</plugin>
+```
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Copyright (C) 2015 VINADES.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate Sat, 07 Mar 2015 03:43:56 GMT
+ */
+
+if (!defined('NV_MAINFILE')) {
+    die('Stop!!!');
+}
+
+$sqls = $db->debugListSQL();
+$num_sqls = sizeof($sqls);
+$sqls = empty($sqls) ? 'No SQL' : ($num_sqls . " queries executed:\n\n" . implode("\n\n", $sqls));
+
+// $sqls là các câu lệnh SQL
+// $num_sqls là số lượng các câu lệnh đã thực thi
+
+```

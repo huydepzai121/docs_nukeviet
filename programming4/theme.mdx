@@ -1,0 +1,73 @@
+---
+title: "Thiết kế giao diện cho hệ thống NukeViet 4.x"
+description: "Công việc thiết kế giao diện cho NukeViet hoàn chỉnh sẽ cần 3 công đoạn với các chức danh và yêu cầu cụ thể như sau"
+---
+
+## Tìm hiểu về Công việc thiết kế giao diện cho NukeViet
+
+Công việc thiết kế giao diện cho NukeViet hoàn chỉnh sẽ cần 3 công đoạn với các chức danh và yêu cầu cụ thể như sau
+
+| Bảng phân hạng chức danh và công việc của VINADES.,JSC |  |  |  |  |  |
+|:--:|----|----|----|----|----|
+| STT | Công việc | Chức danh | Yêu cầu chuyên môn | Phần mềm cần thiết | Sản phẩm của của công việc |
+| 1 | Vẽ (Design) | Chuyên viên đồ họa (Designer) | Vẽ giao diện web dưới dạng Layout có thể cắt HTML được | Photoshop hoặc các phần mề đồ họa tương đương | File đồ họa gốc và ảnh jpg hoặc PNG toàn trang |
+| 2 | Cắt (Cut) | Kỹ thuật viên | Cắt giao diện đã được vẽ ra HTML | Photoshop hoặc các phần mề đồ họa tương đương, các trình duyệt phổ biến và một vài trình soạn thảo code (Notepad++, EmEditor...) | Trang web được thể hiện dưới dạng HTML |
+| 2.1 | Hợp chuẩn HTML (Valid) | Kỹ thuật viên | Chuẩn hóa giao diện đã cắt đạt chuẩn W3C | Các trình duyệt phổ biến và một vài trình soạn thảo code (Notepad++, EmEditor...) | HTML đạt các chuẩn HTML 5 và CSS 3 |
+| 3 | Ghép giao diện | Kỹ thuật viên | Ghép HTML vào hệ thống NukeViet | Các trình duyệt phổ biến và một vài trình soạn thảo code (Notepad++, EmEditor...) | Giao diện được ghép đúng như được thiết kế, hợp chuẩn và không bị xung đột javascript với NukeViet (khi kéo thả block và sử dụng một số chức năng khác) |
+
+Bài viết này hướng dẫn công việc Ghép giao diện cho hệ thống NukeViet 4. Các công việc khác là đặc thù chuyên môn chung nên không được hướng dẫn chi tiết tại tài liệu này.
+
+## Tổng quan về theme của NukeViet
+
+Các theme được đặt trong thư mục `themes/`. Mặc định hệ thống NukeViet có ba theme. Tên của thư mục chứa theme bao gồm chữ cái, chữ số, dấu – và dấu \_ . Cấu trúc của một theme bao gồm:
+
+- Thư mục blocks: Chứa các block của giao diện.
+- Thư mục chứa các file css. Mỗi file css của module có tên là tên của module, khi người dùng truy cập một module thì file css này sẽ được load tự động, khi đóng gói module các file này cũng sẽ được đóng gói tự động.
+- Thư mục images: Chứa các file ảnh, một theme nên chứa các thư mục con: admin, arrows, icons. Trong thư mục này còn chứa các thư mục có tên là tên của module, khi đóng gói module, các thư mục này sẽ được đóng gói tự động.
+- Thư mục js: Chứa các file javascript nếu theme có sử dụng.
+- Thư mục layout: Chứa các file tpl – các file định dạng cho theme.
+- Thư mục modules: Trong thư mục này chứa các thư mục có tên là tên của module, khi đóng gói một module các thư mục tương ứng cũng được đóng gói.
+- Thư mục system: Chứa các file tpl hệ thống, thông thường mỗi theme đều giống nhau về các file này, không cần phải sửa chúng.
+- File config.ini: Thiết lập theme.
+- File default.jpg: Ảnh mô tả theme.
+- File favicon.ico: Icon của theme.
+- File theme.php: File chức năng của theme.
+
+> Chú ý: Cấu trúc trên chỉ mang tính tương đối, tùy vào mục đích của người làm giao diện mà có thể bố trí các thư mục hoặc file khác nhau và khác với cấu trúc gợi ý trên.
+
+## Xây dựng giao diện cơ bản
+
+Để xây dựng một giao diện cơ bản từ giao diện đã có ta tiến hành copy một theme đã có, điển hình là theme default. Xem cách [xây dựng giao diện bằng cách copy theme mặc định](/programming4/theme/copy-from-deault-theme)
+
+<u>**Lưu ý:**</u>
+
+- Các file định dạng tpl là các file sử dụng Xtemplate.
+- Một biến được xuất bằng lệnh assign thì trong file tpl sẽ được đánh dấu bằng \{\}
+
+Ví dụ:
+
+``` php
+$xtpl->assign('TITLE', ‘Tiêu đề trang’); 
+```
+
+Để hiển thị từ “tiêu đề trang” thì trong file tpl ta cần viết \{TITLE\}.
+
+Nếu dữ liệu xuất dạng mảng thì các phần tử ở các cấp được phân cách bằng dấu chấm.
+
+Ví dụ:
+
+``` php
+$xtpl->assign('TITLE', array(“title” => “Tiêu đề”, “id” => 1));
+```
+
+Để xuất chữ Tiêu đề thì trong file tpl cần đặt \{TITLE.title\}.
+
+- Lệnh đánh dấu khối prase sẽ đánh dấu những phần nằm trong cặp \<!--BEGIN: --\> và \<!-- END: --\>.
+
+## Xây dựng giao diện nâng cao
+
+Ngoài các phần cơ bản, NukeViet cũng cung cấp môi trường giúp người dùng tối ưu hóa đến mức tối đa các giao diện:
+
+- Chỉnh sửa file theme.php: Việc chỉnh sửa file này, thêm bớt một số biến xuất ra hoặc viết thêm một số phần sẽ gây ra những thay đổi đáng kể cho giao diện so với các giao diện mặc định.
+- Tối ưu hóa giao diện riêng cho mỗi module: Tiến hành copy file theme.php ở mỗi module sang thư mục tương ứng trong thư mục `themes/ten-theme/modules` sau đó chỉnh sửa các function cho các funcs.
+- Thêm các layout, các template cho block: Để thêm các layout tiến hành tạo thêm file mới có tên `layout.ten-lay-out.tpl` rồi đặt vào thư mục layout. Để thêm mới một template tiến hành tạo file mới có tên `block.ten-template.tpl` rồi đặt vào thư mục `layout`.

@@ -1,0 +1,69 @@
+---
+title: "Thông tin các thay đổi cơ bản của PHP qua các phiên bản và cách cập nhật"
+description: "Tên Rector. Xem thông tin tại đây https://getrector.org/documentation"
+---
+
+## Danh sách các phiên bản đã được ghi nhận (có tài liệu)
+
+1.  [Từ PHP 7.4 lên PHP 8.0](/php/version/7-8)
+2.  [Từ PHP 8.0 lên PHP 8.1](/php/version/80-81)
+3.  [Từ PHP 8.1 lên PHP 8.2](/php/version/81-82)
+4.  [Từ PHP 8.2 lên PHP 8.5](/php/version/82-85)
+
+## Tool tự tối ưu, chuyển mã tương thích PHP tham khảo
+
+Tên Rector. Xem thông tin tại đây [https://getrector.org/documentation](https://getrector.org/documentation)
+
+Tool này khá hay, nó có tác dụng chuyển đổi code PHP sang phiên bản mới nhất đến PHP 8.2 một cách tự động. Ngoài chuyển đổi tương thích nó cũng thực hiện nhiều thứ khác như:
+
+- Tối ưu chất lượng code
+- Tối ưu phong cách code
+- Xóa code thừa
+- Up phong cách code lên PHP bản cao đến 8.2
+- ... xem thêm ở file vendor/rector/rector/packages/Set/ValueObject/SetList.php
+
+Nhưng chỉ nên sử dụng để tham khảo cách code hay, tham khảo cách viết hợp lý hơn. Không nên dùng để chuyển đổi vì nó không có tính tương thích ngược. Có nghĩa nếu bạn chuyển đổi lên PHP 8.2 thì sau đó không chạy được trên PHP 5.6 nữa.
+
+Cài đặt và sử dụng
+
+- Tại 1 thư mục bất kỳ tạo tệp tin composer.json với nội dung `{}`, mở git bash hoặc cmd or bash shell tùy môi trường của bạn dùng chạy lệnh `composer require rector/rector --dev`
+- Tiếp tục chạy lệnh `vendor/bin/rector init` để tạo ra tập tin config rector.php
+- Mở tập tin rector.php lên chỉnh thành như sau
+
+``` php
+<?php
+declare(strict_types = 1);
+
+use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
+use Rector\Config\RectorConfig;
+use Rector\Set\ValueObject\LevelSetList;
+use Rector\Set\ValueObject\SetList;
+
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->paths([
+        __DIR__ . '/src'
+    ]);
+
+    // register a single rule
+    $rectorConfig->rule(InlineConstructorDefaultToPropertyRector::class);
+
+    // define sets of rules
+    $rectorConfig->sets([
+        LevelSetList::UP_TO_PHP_82
+    ]);
+
+    /*
+    $rectorConfig->sets([
+        SetList::PHP_80
+        // SetList::PHP_81,
+        // SetList::PHP_82,
+    ]);
+    */
+};
+```
+
+Có thể dùng SetList hay LevelSetList tùy nhu cầu. Một số Set khác có thể tìm thấy tại `vendor/rector/rector/packages/Set/ValueObject/SetList.php`
+
+- Tạo thư mục src và copy code php của bạn vào đó
+- Chạy `vendor/bin/rector process --dry-run --debug` để xem các thay đổi sẽ thực hiện
+- Chạy `vendor/bin/rector process` để tự động ghi luôn thay đổi vào file

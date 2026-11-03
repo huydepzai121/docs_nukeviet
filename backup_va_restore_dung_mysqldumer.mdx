@@ -1,0 +1,98 @@
+---
+title: "Backup va restore dung mysqldumer"
+description: "Mình xin hướng dẫn cách Backup và Restore bằng MysqlDumper."
+---
+
+Chào các Bạn,
+
+Mình xin hướng dẫn cách Backup và Restore bằng MysqlDumper.
+
+**I. Cài đặt**
+
+Bước1: Cần cài đặt MysqlDumper
+
+Link Download: [http://sourceforge.net/projects/mysqldumper](http://sourceforge.net/projects/mysqldumper)
+
+Sau khi tải về các bạn giải nén ra sau đó đổi tên cho dễ nhớ và nén lại thành file .zip (trong ví dụ này mình đổi thành mysqldum.zip)
+
+Bước 2: Up file nén vào trong thư mục /public_html/ , sau khi up giải nén ra được thư mục mysqldum thuộc đường dẫn: /public_html/mysqldum
+
+Bước3: di chuyển vào trong thư mục msqldum, chmod 777 cho file config.php.
+
+Bước4: Tạo thêm thư mục
+
+Work
+
+work/backup
+
+work/log
+
+work/config
+
+Lưu ý: đường dẫn như sau:
+
+/public_html/mysql/work
+
+/public_html/mysql/work /backup
+
+/public_html/mysql/work/log
+
+/public_html/mysql/work/config
+
+Bước 5: chmod 777 cho các thư mục đó:
+
+Work
+
+work/backup
+
+work/log
+
+work/config
+
+Bước5: Sau khi xong tiến hành cái đặt với link sau:
+
+[http://domain.com/mysqldum/install.php](http://domain.com/mysqldum/install.php) (thay tên miền + đường dẫn thư mục như bạn đã tạo)
+
+![](/images/h12.jpg)
+
+Bước 6: Điền thông tin kết nối đến database
+
+![](/images/h13.jpg)
+
+Bước 7: Sua khi thành công sẽ có giao diện như sau:
+
+![](/images/h14.jpg)
+
+**II. Backup**
+
+![](/images/h15.jpg)
+
+Lưu ý: Chọn data cần backup ở mục: select Database
+
+![](/images/h16.jpg)
+
+Chọn start New Backup
+
+![](/images/h17.jpg) ![](/images/h18.jpg)
+
+Chọn Continue
+
+![](/images/h19.jpg)
+
+Backup thành công.
+
+![](/images/h20.jpg)
+
+**III. Restore**
+
+![](/images/h21.jpg)
+
+Chọn Restore hoặc restore theo bảng
+
+![](/images/h22.jpg)
+
+Chọn tất cả bảng và restore
+
+![](/images/h23.jpg)
+
+![](/images/h24.jpg)

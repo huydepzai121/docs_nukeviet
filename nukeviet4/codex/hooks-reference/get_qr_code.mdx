@@ -1,0 +1,26 @@
+---
+title: "get_qr_code"
+description: "Trong index.php, ngay sau khi load core/userfunctions.php. Dùng xuất ảnh QR Code."
+---
+
+Trong index.php, ngay sau khi load core/user_functions.php. Dùng xuất ảnh QR Code.
+
+### Tham số
+
+| STT | Tên biến     | Kiểu dữ liệu | Ghi chú |
+|-----|:-------------|:-------------|:--------|
+| 0   | \$nv_Request |              |         |
+
+### Dữ liệu trả về
+
+Tùy người lập trình
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_qr_code', $priority, function($vars) {
+    $nv_Request = $vars[0];
+
+    // Thực hiện code hook tại đây...
+});
+```

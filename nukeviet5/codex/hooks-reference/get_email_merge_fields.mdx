@@ -1,0 +1,61 @@
+---
+title: "get_email_merge_fields"
+description: "Khi sửa email template hệ thống lấy danh sách các merge field (tên các biến) và khi gửi email đi hệ thống sẽ lấy đầy đủ tên và dữ liệu của các biến"
+---
+
+Khi sửa email template hệ thống lấy danh sách các merge field (tên các biến) và khi gửi email đi hệ thống sẽ lấy đầy đủ tên và dữ liệu của các biến
+
+### Tham số
+
+Hook này tham số tùy chỉnh, tùy theo nhu cầu sử dụng. Xem chi biết bên dưới
+
+### Dữ liệu trả về
+
+Mảng các merge field chứa tên hoặc cả tên và data tùy theo tham số truyền vào, xem bên dưới.
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_email_merge_fields', $priority, function($vars) {
+    $merge_fields = [];
+    
+    // Chỉ thực hiện code sau khi kiểm tra điều kiện này
+    if (in_array($vars['pid'], $vars['setpids'])) {
+        // Liệt kê các biến dạng danh sách
+        // Ví dụ như sau
+        $merge_fields['user_full_name'] = [
+            'name' => $nv_Lang->getModule('full_name'),
+            'data' => '' // Dữ liệu ở đây
+        ];
+        $merge_fields['user_username'] = [
+            'name' => $nv_Lang->getGlobal('username'),
+            'data' => '' // Dữ liệu ở đây
+        ];
+        $merge_fields['site_name'] = [
+            'name' => $nv_Lang->getGlobal('site_name'),
+            'data' => '' // Dữ liệu ở đây
+        ];
+                
+        // Điền dữ liệu vào các biến sau khi kiểm tra điều kiện này
+        if ($vars['mode'] != 'PRE') {
+            // Ví dụ như bên dưới
+            
+            //$group_id = $vars[0];
+            $username = $vars[1];
+            $first_name = $vars[2];
+            $last_name = $vars[3];
+            //$email = $vars[4];
+            //$photo = $vars[5];
+            //$in_groups = $vars[6];
+            //$idsite = $vars[7];
+            $global_config = $vars[8];
+
+            $merge_fields['user_full_name']['data'] = nv_show_name_user($first_name, $last_name, $username);
+            $merge_fields['user_username']['data'] = $username;
+            $merge_fields['site_name']['data'] = $global_config['site_name'];
+        }
+    }
+    
+    return $merge_fields;
+});
+```

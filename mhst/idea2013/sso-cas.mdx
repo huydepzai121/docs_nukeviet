@@ -1,0 +1,32 @@
+---
+title: "Giải pháp SSO (Single Sign On) sử dụng CAS (Central Authentication Service) trên NukeViet"
+description: "Tích hợp SSO (Single Sign On) sử dụng CAS (Central Authentication Service) trên NukeViet"
+---
+
+## Tóm tắt ý tưởng
+
+Tích hợp SSO (Single Sign On) sử dụng CAS (Central Authentication Service) trên NukeViet
+
+## Kỹ năng yêu cầu
+
+- Ngôn ngữ lập trình: PHP, MySQL, xHTML, CSS…
+- Đánh giá độ khó của ý tưởng: "khó".
+
+Ghi chú: Độ khó trung bình được giả định với một nhóm khoảng 3 SV thành thạo các kỹ năng yêu cầu chắc chắn sẽ hoàn thành dự án trong 3 tháng, không cần làm toàn thời gian. Với module này, thí sinh cần nghiên cứu kỹ hệ thống quản lý tài khoản thành viên của NukeViet để có thể tích hợp CAS mà không bị lỗi trong các trường hợp cụ thể.
+
+## Mô tả chi tiết
+
+Central Authentication Service (CAS) là một protocol phục vụ Single Sign-on trên nền web được phát triển tại đại học Yale. Nó cho phép user truy cập nhiều ứng dụng web khác nhau mà chỉ cần login một lần. Các công việc phải triển khai bao gồm:
+
+- Tích hợp SSO (Single Sign On) sử dụng CAS (Central Authentication Service) vào NukeViet. Thông tin chi tiết về CAS ở link sau [https://wiki.jasig.org/display/CASC/phpCAS](https://wiki.jasig.org/display/CASC/phpCAS)
+- Thử nghiệm giữa các site NukeViet với nhau và với các hệ thống hỗ trợ CAS. Đặc biệt do hệ thống NukeViet đã tích hợp OpenID và bản thân nó đã xử lý nhiều trường hợp tương đối phức tạp.
+
+## Một số khái niệm liên quan
+
+- [OpenID](http://openid.net/): OpenID cho phép user sử dụng một account đã có ở một web site hỗ trợ như Google, Yahoo!, MySpace, NukeViet.vn ... để login vào một web site khác. Nó khác với CAS ở chỗ user vẫn phải login vào từng site, còn đối với CAS user chỉ cần login một lần. NukeViet đã tích hợp sẵn OpenID.
+- [OAuth](http://oauth.net/): OAuth là một protocol cho phép user cấp phép cho một web application truy cập thông tin của mình trên một site khác mà không cần cung cấp thông tin login cho web application đó.
+
+## Người hướng dẫn
+
+- Vũ Văn Thảo (thao@vinades.vn), Nguyễn Thế Hùng (thehung@vinades.vn) - Công ty cổ phần phát triển nguồn mở Việt Nam (VINADES.,JSC)
+- Đội ngũ phát triển mã nguồn mở NukeViet, cộng đồng [http://forum.nukeviet.vn](http://forum.nukeviet.vn)

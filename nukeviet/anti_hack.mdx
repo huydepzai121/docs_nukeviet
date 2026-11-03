@@ -1,0 +1,28 @@
+---
+title: "Hướng dẫn xử lý website sau khi bị hack"
+description: "Dù bạn có bảo mật website như thế nào đi chăng nữa thì không có nghĩa là nó đã được an toàn tuyệt đối. Và sự thật là website của bạn vẫn có thể bị tấn công, ..."
+---
+
+Dù bạn có bảo mật website như thế nào đi chăng nữa thì không có nghĩa là nó đã được an toàn tuyệt đối. Và sự thật là website của bạn vẫn có thể bị tấn công, bị hack! Nó cũng giống như việc mang laptop ra đường là có thể bị mất cắp vậy, không thể tránh được! Tuy nhiên nhờ việc "phòng thủ" kỹ như đã hướng dẫn ở trên, chúng ta hoàn toàn có thể kiểm soát sự cố. Tùy từng trường hợp bị hack mà bạn cần có phương án đối phó vụ thể. Với trường hợp nặng và khó chống đỡ nhất là site của bạn bị [hack local](/web_server/concepts/hack_local) thì bạn cần thực hiện ngay biện pháp sau:
+
+- Báo nhà cung cấp host để được hỗ trợ.
+- Nếu họ không hỗ trợ, bạn cần làm các bước tiếp theo:
+- Đóng của site ngay lập tức (nếu là [Share hosting](/web_server/concepts/share_hosting) thì bỏ qua bước này, nếu là [VPS](/web_server/concepts/virtual_private_server) hoặc [Server](/web_server/concepts/dedicated_server) thì đóng của tất cả các dịch vụ: web, FTP, mail.... trên cùng máy chủ).
+- Không sửa đổi hoặc xóa bất kể file nào.
+- Sao lưu đầy đủ (backup full) toàn bộ code, [CSDL](/nukeviet/admin/database), và logs (file logs của hosting rất quan trọng, giúp chúng ta truy tìm nguyên nhân hoặc dấu viết của hacker) của hosting của site cũ và tải về máy của bạn để có thể khôi phục lại nó.
+- Đổi mọi mật khẩu tài khoản, mật khẩu email, mật khẩu hosting, mật khẩu cơ sở dữ liệu, mật khẩu FTP, mật khẩu mail sử dụng dịch vụ SMTP..., quét virus máy tính của bạn cẩn thận đề phòng máy tính bị dính virus và các phần mềm gián điệp.
+- Xóa sạch hosting để đảm bảo host của bạn sạch (không có nghĩa là host của bạn đã an toàn nếu bị hack local).
+- [Cài lại](/nukeviet/setup) bằng một bản NukeViet tương ứng, đảm bảo nó sạch bằng cách tải về từ trang chủ của NukeViet. Xem hướng dẫn chi tiết [Thay thế code của trang NukeViet đang chạy](/nukeviet/setup/replace_code)
+- Sau đó sử dụng cơ sở dữ liệu và các tệp tin dữ liệu của site cũ để chuyển sang site mới, hãy đảm bảo không bị sót [shell](/web_server/concepts/shell) trên site.
+- Cuối cùng đừng quên nâng cấp lên bản NukeViet mới nhất.
+- Nếu sử dụng share hosting mà bị hack local, tốt nhất hãy đổi nhà cung cấp host.
+- Nếu bạn không đủ khả năng kiểm tra bị hack như thế nào liên hệ với Ban Quản Trị NukeViet để được giúp đỡ.
+
+Lưu ý: Các hosting dùng chung ([Share hosting](/web_server/concepts/share_hosting)) thường dễ bị hack hơn các máy chủ ảo ([Virtual private server - VPS](/web_server/concepts/virtual_private_server)) hoặc máy chủ riêng ([Dedicated Server](/web_server/concepts/dedicated_server)). Vì với các hosting dùng chung, chỉ cần một site bị hack là tất cả các site dùng chung server đều có thể bị tấn công thông qua phương thức [hack local](/web_server/concepts/hack_local).
+
+# Xem thêm
+
+- [Chống lại một cuộc tấn công từ chối dịch vụ](/nukeviet/anti_ddos)
+- [Thiết lập một số chức năng bảo mật](/nukeviet/advanced_setting/security)
+- [Thay thế code của trang NukeViet đang chạy (nhằm làm sạch code hoặc sau khi bị hack)](/nukeviet/setup/replace_code)
+- [Hướng dẫn Bảo mật hệ thống NukeViet](/nukeviet/security)

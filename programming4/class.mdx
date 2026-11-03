@@ -1,0 +1,574 @@
+---
+title: "Các class dùng trong lập trình NukeViet"
+description: "Là biến chứa class request"
+---
+
+## Các class được gọi sẵn
+
+### \$nv_Request
+
+Là biến chứa class request
+
+- Lấy mảng:
+  ``` php
+  $nv_Request->get_typed_array($name, $mode = null, $type = null, $default = null);
+  ```
+- Lấy chuỗi kí tự:
+  ``` php
+  $nv_Request->get_string($name, $mode = null, $default = null, $decode = true);
+  ```
+- Lấy chuỗi an toàn cho CSDL:
+  ``` php
+  $nv_Request->get_title($name, $mode = null, $default = null, $decode = true);
+  ```
+- Lấy số thực:
+  ``` php
+  $nv_Request->get_float($name, $mode = null, $default = null, $decode = true);
+  ```
+- Lấy số nguyên:
+  ``` php
+  $nv_Request->get_int($name, $mode = null, $default = null, $decode = true);
+  ```
+- Lấy số nguyên không âm (thêm vào từ bản 4.3.08):
+  ``` php
+  $nv_Request->get_absint($name, $mode = null, $default = null, $decode = true);
+  ```
+- Lấy giá trị logic:
+  ``` php
+  $nv_Request->get_bool($name, $mode = null, $default = null, $decode = true);
+  ```
+- Kiểm tra tồn tại của một request:
+  ``` php
+  $nv_Request->isset_request($names, $mode, $all = true);
+  ```
+- Xóa bỏ request:
+  ``` php
+  $nv_Request->unset_request($names, $mode);
+  ```
+- Lưu session:
+  ``` php
+  $nv_Request->set_Session($name, $value = '');
+  ```
+- Lưu cookie:
+  ``` php
+  $nv_Request->set_Cookie($name, $value = '', $expire = 0, $encode = true);
+  ```
+- Lấy editor:
+  ``` php
+  $nv_Request->get_editor($name, $default = '', $allowed_html_tags = '');
+  ```
+- Lấy textarea:
+  ``` php
+  $nv_Request->get_textarea($name, $default = '', $allowed_html_tags = '', $save = false);
+  ```
+
+### \$db
+
+Là biến chứa class db của NukeViet - được xây dựng dựa trên [PDO](http://php.net/manual/en/book.pdo.php) của php. Việc sử dụng \$db tương tự việc sử dụng [PDO](http://php.net/manual/en/book.pdo.php). Ngoài ra, DB class còn viết riêng một số hàm:
+
+#### insert_id
+
+Thực thi câu lệnh insert và trả về giá trị khóa chính tự động tăng nếu thành công.
+
+Cú pháp
+
+``` php
+$db->insert_id($_sql, $column = '', $data = array())
+```
+
+Trong đó
+
+- \$\_sql là câu lệnh SQL
+- \$column là tên trường khóa chính sẽ trả về nếu insert thành công.
+- \$data là mảng chứa dữ liệu insert.
+
+Nếu chèn thành công sẽ trả về giá trị của khóa chính vừa insert
+
+#### affected_rows_count
+
+Thực thi câu lệnh INSERT, UPDATE, REPLACE hoặc DELETE và trả về số bản ghi bị tác động.
+
+Cú pháp
+
+``` php
+$db->affected_rows_count($_sql, $data = array())
+```
+
+Trong đó
+
+- \$\_sql là câu lệnh SQL
+- \$data là mảng chứa dữ liệu insert.
+
+#### columns_array
+
+Trả về danh sách các cột của bảng, tương tự câu lệnh `SHOW COLUMNS FROM table` của MySQL
+
+Cú pháp
+
+``` php
+$db->columns_array($table)
+```
+
+#### columns_add
+
+Chèn cột vào bảng
+
+Cú pháp
+
+``` php
+$db->columns_add($table, $column, $type, $length = null, $null = true, $default = null)
+```
+
+#### dblikeescape
+
+Tạo chuỗi an toàn cho câu lệnh LIKE
+
+Cú pháp
+
+``` php
+$db->dblikeescape($value)
+```
+
+#### Các hàm tạo câu lệnh SQL cho các loại CSDL khác nhau
+
+Bao gồm các hàm `sqlreset`, `select`, `from`, `join`, `where`, `group`, `having`, `order`, `limit`, `offset`, `sql`.
+
+Ví dụ:
+
+``` php
+$db_slave->sqlreset()
+    ->select('COUNT(*)')
+    ->from(NV_PREFIXLANG . '_' . $module_data . '_' . $catid)
+    ->where('status=1');
+
+$num_items = $db_slave->query($db_slave->sql())->fetchColumn();
+```
+
+### \$crypt
+
+Là biến chứa class crypt
+
+- Tạo chuỗi mã hóa theo phương thức SHA1:
+  ``` php
+  $crypt->hash($data, $is_salt = false);
+  ```
+- Mã hóa mật khẩu:
+  ``` php
+  $crypt->hash_password($password, $hashprefix = '{SSHA}');
+  ```
+- Kiểm tra mật khẩu:
+  ``` php
+  $crypt->validate_password($password, $hash);
+  ```
+- Mã hóa chuỗi có thể dịch ngược:
+  ``` php
+  $crypt->aes_encrypt($val, $ky = '');
+  ```
+
+  (đã loại ra từ bản 4.3)
+- Dịch ngược chuỗi đã mã hóa:
+  ``` php
+  $crypt->aes_decrypt($val, $ky = '');
+  ```
+
+  (đã loại ra từ bản 4.3)
+- Mã hóa chuỗi có thể dịch ngược:
+  ``` php
+  $crypt->encrypt($val, $ky = '');
+  ```
+
+  (thêm vào từ bản 4.3)
+- Dịch ngược chuỗi đã mã hóa:
+  ``` php
+  $crypt->decrypt($val, $ky = '');
+  ```
+
+  (thêm vào từ bản 4.3)
+
+### \$xtpl
+
+Trong hệ thống NukeViet biến \$xtpl thường được chứa class xtemplate. Tuy nhiên biến này chưa được tạo sẵn.
+
+- Khởi tạo:
+  ``` php
+  $xtpl = new XTemplate($file_name, $file_location);
+  ```
+
+Trong đó `$file_name` là tên file, `$file_location` là đường dẫn tuyệt đối đến file cần chọn.
+
+- Xuất một biến:
+  ``` php
+  $xtpl->assign($name, $content);
+  ```
+- Đánh dấu một khối:
+  ``` php
+  $xtpl->parse($bname);
+  ```
+- Trả về toàn bộ dữ liệu:
+  ``` php
+  $xtpl->out($bname);
+  ```
+- Trả về Text:
+  ``` php
+  $xtpl->text($bname);
+  ```
+
+### \$nv_Cache
+
+Biến chứa class xử lý cache trong NukeViet
+
+#### Xóa tất cả cache trên hệ thống
+
+``` php
+$nv_Cache->delAll($sys = true);
+```
+
+Nếu `$sys = true` thì sẽ xóa cache tất cả các ngôn ngữ, ngược lại sẽ chỉ xóa trên ngôn ngữ hiện tại
+
+#### Xóa cache ở một module
+
+``` php
+$nv_Cache->delMod($module_name, $lang = '');
+```
+
+Nếu `$lang` không chỉ ra cụ thể thì sẽ xóa trên ngôn ngữ hiện tại
+
+#### Lấy cache đã lưu theo file (hoặc khóa)
+
+``` php
+$nv_Cache->getItem($module_name, $filename, $ttl = 0);
+```
+
+- `$module_name, $filename` lần lượt là module và tên file (hoặc khóa) cần lấy
+- `$ttl` là thời gian hết hạn cache (đơn vị là giây), nếu để 0 tức là cache tồn tại vĩnh viễn
+
+Giá trị trả về là nội dung đã lưu trước đó hoặc false nếu file cache không tồn tại
+
+#### Lưu cache theo file (hoặc khóa)
+
+``` php
+$nv_Cache->setItem($module_name, $filename, $content, $ttl = 0);
+```
+
+- `$module_name, $filename` lần lượt là module và tên file (hoặc khóa) cần lưu
+- `$ttl` là thời gian hết hạn cache (đơn vị là giây), nếu để 0 tức là cache tồn tại vĩnh viễn
+
+#### Lưu (lấy) cache câu lệnh SQL
+
+``` php
+$nv_Cache->db($sql, $key, $modname, $lang = '', $ttl = 0);
+```
+
+- `$sql` là câu lệnh SQL
+- `$key` là field unique trong câu lệnh SQL, nếu để rỗng hệ thống tự đánh số thứ tự tăng dần bắt đầu từ 0
+- `$modname` tên module
+- `$lang` nếu không chỉ ra hệ thống xác định ngôn ngữ hiện tại
+- `$ttl` là thời gian hết hạn cache (đơn vị là giây), nếu để 0 tức là cache tồn tại vĩnh viễn
+
+Nếu trước đó câu lệnh đã được lưu hệ thống sẽ trả về kết quả của câu lệnh đó từ cache đã lưu, nếu chưa lưu hệ thống sẽ thực hiện câu lệnh SQL sau đó lưu lại cache và vẫn trả về kết quả của câu lệnh SQL.
+
+### \$nv_BotManager
+
+Xem [hướng dẫn class BotManager (\$nv_BotManager)](/programming4/class/botmanager)
+
+## Các class có thường dùng
+
+Các thư viện này được đặt trong thư mục `vendor` hỗ trợ autoload theo chuẩn PSR-4
+
+### Upload Class
+
+Dùng để upload một file lên hệ thống. Xem [Hướng dẫn chi tiết cách sử dụng class Upload để tải file lên hệ thống](/programming4/class/upload)
+
+- Khởi tạo:
+  ``` php
+  $upload = new NukeViet\Files\Upload($allow_files_type, $global_config['forbid_extensions'], $global_config['forbid_mimes'],NV_UPLOAD_MAX_FILESIZE, NV_MAX_WIDTH, NV_MAX_HEIGHT);
+  ```
+- Lưu một file tải lên:
+  ``` php
+  $upload ->save_file($userfile, $savepath, $replace_if_exists = true);
+  ```
+
+  \$userfile là biến \$\_FILE(\$file_upload);
+- Lưu một file từ URL:
+  ``` php
+  $upload ->save_urlfile($urlfile, $savepath, $replace_if_exists = true);
+  ```
+- Giá trị trả về của việc lưu một file là một mảng bao gồm:
+  - error: Thông tin lỗi.
+  - name: Đường dẫn tuyệt đối đến file.
+  - Basename: Tên file.
+  - Ext: Kiểu file.
+  - Mime: mine-type.
+  - is_img: Có phải là ảnh không.
+
+### HTTP class
+
+Dùng để thực hiện các truy vấn http GET, POST, HEAD
+
+Khởi tạo
+
+``` php
+$NV_Http = new NukeViet\Http\Http($global_config, NV_TEMP_DIR);
+```
+
+Trong đó `$global_config` (các cấu hình) và `NV_TEMP_DIR` (thư mục tmp) là giá trị lấy trực tiếp từ tài nguyên của NukeViet.
+
+#### Sử dụng
+
+- POST
+  ``` php
+  $array = $NV_Http->post(NUKEVIET_STORE_APIURL, $args);
+  ```
+- GET
+  ``` php
+  $array = $NV_Http->post(NUKEVIET_STORE_APIURL, $args);
+  ```
+- HEAD
+  ``` php
+  $array = $NV_Http->post(NUKEVIET_STORE_APIURL, $args);
+  ```
+
+Trong đó
+
+- `NUKEVIET_STORE_APIURL` là đường dẫn truy vấn
+- `$args` là các tham số được mô tả bên dưới
+
+Thiết lập các tham số cho biến \$args:
+
+``` php
+$args = array(
+    'method' => 'GET', // Phương thức GET, POST, HEAD
+    'timeout' => 10, // Thời gian hết hạn truy vấn, bằng 0 nếu không hết hạn
+    'redirection' => 5, // Số chuyển hướng tối đa cho phép
+    'requested' => 0,  // Số truy vấn đã thực hiện nếu có chuyển hướng, giá trị này hệ thống tự trả về
+    'httpversion' => 1.0, // HTTP Version
+    'user-agent' => 'NUKEVIET CMS v4.x. Developed by VINADES. Url: http://nukeviet.vn. Code: md5sitekey', // HTTP User-Agent
+    'referer' => null, // HTTP referer
+    'headers' => array(), // Dữ liệu Header gửi đi
+    'cookies' => array(), // Dữ liệu Cookie gửi đi
+    'body' => null, // Nội dung truy vấn, dạng array
+    'stream' => false, // Nếu đặt là true hệ thống sẽ ghi nội dung trả về ra file
+    'filename' => null, // Chỉ ra đường dẫn file sẽ lưu nếu stream = true
+    'limit_response_size' => null, // Giới hạn dung lượng nội dung trả về
+);
+```
+
+> Lưu ý: Giá trị \$args bên trên là full theo mặc định, bạn có thể bỏ qua và không chỉ ra một hoăc một vài tham số nào đó.
+
+Dữ liệu trả về ở biến \$array
+
+``` php
+$array = array(
+    'headers' => array(), // Header gửi từ server
+    'body' => 'string', // Dữ liệu trả về
+    'response' => array (
+        'code' => 200,
+        'message' => 'string'
+    ),
+    'cookies' => array(), // Cookie gửi từ server
+    'filename' => '' // Đường dẫn file nếu stream = true
+);
+```
+
+Sau khi request cần kiểm tra biến `NukeViet\Http\Http::$error` nếu không rỗng thì là request có lỗi, có dạng
+
+``` php
+NukeViet\Http\Http::$error = array(
+    'code' => 200,
+    'message' => 'Nội dung lỗi'
+);
+```
+
+Code lỗi được quy ước như sau:
+
+``` php
+1 = 'Địa chỉ truy vấn không hợp lệ, vui lòng kiểm tra lại';
+2 = 'Giao thức HTTP bị cấm đối với truy vấn này.';
+3 = 'Thư mục chứa tệp tin sẽ được lưu không thể ghi được.';
+4 = 'Không có tiện ích nào hỗ trợ giao thức HTTP.';
+5 = 'Có quá nhiều chuyển hướng xảy ra.';
+6 = 'Chứng chỉ SSL không thể kiểm tra được.';
+7 = 'Truy vấn HTTP thất bại.';
+8 = 'Không thể lưu dữ liệu vào tệp tin tạm thời.';
+9 = 'Hàm xử lý fopen() thất bại đối với tệp tin.';
+10 = 'Truy vấn HTTP bằng Curl thất bại.';
+11 = 'Có một lỗi không xác định đã xảy ra.';
+```
+
+Có thể sử dụng hàm sau để xác định thông báo lỗi
+
+``` php
+/**
+ * nv_http_get_lang()
+ *
+ * @param mixed $input
+ * @return
+ */
+function nv_http_get_lang($input)
+{
+    global $lang_global;
+
+    if (!isset($input['code']) or !isset($input['message'])) {
+        return '';
+    }
+
+    if (!empty($lang_global['error_code_' . $input['code']])) {
+        return $lang_global['error_code_' . $input['code']];
+    }
+
+    if (!empty($input['message'])) {
+        return $input['message'];
+    }
+
+    return 'Error' . ($input['code'] ? ': ' . $input['code'] . '.' : '.');
+}
+```
+
+Kết quả trả về cuối cùng nằm trong `$array['body']`, nếu stream = true thì dữ liệu được ghi ra file `$array['filename']`
+
+### Download class
+
+- Khởi tạo:
+  ``` php
+  $download = new NukeViet\Files\Download($file_src, $directory, $file_basename, $is_resume, $max_speed);
+  ```
+
+  Trong đó:
+  - \$file_src là đường dẫn tuyệt đối đến file,
+  - \$directory là thư mục chứa file,
+  - \$file_basename tên file tải về,
+  - \$is_resume cho phép tạm ngừng và download lại,
+  - \$max_speed tốc độ tối đa.
+- Tải file về:
+  ``` php
+  $download->download_file();
+  ```
+
+### Images class
+
+Xem [Hướng dẫn chi tiết cách sử dụng class Image để xử lý ảnh](/programming4/class/image)
+
+- Khởi tạo:
+  ``` php
+  $image = new NukeViet\Files\Image(NV_ROOTDIR."/images/logo.png", $max_width,$max_height);
+  ```
+- Thay đổi kích thước theo tỉ lệ phần trăm:
+  ``` php
+  $image->resizePercent(200);
+  ```
+- Cắt ảnh từ giữa:
+  ``` php
+  $image->cropFromCenter(150,200);
+  ```
+- Cắt ảnh từ trái:
+  ``` php
+  $image->cropFromLeft( $leftX, $leftY, $newwidth, $newheight );
+  ```
+- Chèn text:
+  ``` php
+  $image->addstring( $string, $align = 'right', $valign = 'bottom', $font = "", $fsize = 2 );
+  ```
+- Chèn logo:
+  ``` php
+  $image->addlogo($logo, $align = 'right', $valign = 'bottom', $config_logo = array());
+  ```
+
+Trong đó:
+
+- \$logo là đường dẫn tuyệt đối đến file ảnh.
+- \$align là vị trí logo theo phương ngang: left, center, right
+- \$valign là vị trí logo theo phương dọc: top, middle, bottom
+- \$config_logo là mảng một chiều xác định vị trí tuyệt đối của logo, gồm hai thành phần \$config_logo\['x'\], \$config_logo\['y'\]. Khi có giá trị này thì \$align, \$valign sẽ được bỏ qua.
+
+- Xoay ảnh:
+  ``` php
+  $image->rotate(45);
+  ```
+- Lưu ảnh:
+  ``` php
+  $image->save(NV_ROOTDIR.'/'.NV_TEMP_DIR.'/');
+  ```
+- Kết thúc phiên làm việc:
+  ``` php
+  $image->close();
+  ```
+
+## Các class khác của NukeViet
+
+### Gfonts
+
+Xử lý [Google Font](https://www.google.com/fonts)
+
+#### Khởi tạo
+
+``` php
+$gFont = new NukeViet\Client\Gfonts($gfonts, $client_info);
+```
+
+Trong đó `$gfonts` là mảng một chiều dạng
+
+``` php
+$gfonts = array(
+    'subset' => 'latin,vietnamese',
+    'fonts' => 'Open Sans'
+);
+```
+
+Giá trị `subset` và `fonts` có thể lấy ở [https://www.google.com/fonts](https://www.google.com/fonts)
+
+#### Lấy đường dẫn file CSS gọi font
+
+``` php
+$gFont->getUrlCss();
+```
+
+#### Lấy nội dung file CSS gọi font
+
+``` php
+$gFont->getDataCss();
+```
+
+#### Xóa tất cả các font đã lưu trên máy chủ
+
+``` php
+$gFont->destroyAll();
+```
+
+> Thêm vào từ NukeViet 4.3.01
+
+### UrlGetContents
+
+Lấy nội dung từ url.
+
+#### Khởi tạo
+
+``` php
+$UrlGetContents = new NukeViet\Client\UrlGetContents($global_config, $time_limit);
+```
+
+Trong đó:
+
+- \$global_config ta đưa vào biến \$global_config.
+- \$time_limit là thời gian hết hạn tính bằng giây. Bằng 0 nếu không giới hạn.
+
+#### Lấy nội dung của url
+
+``` php
+$UrlGetContents->get($url, $login, $password, $ref);
+```
+
+Trong đó:
+
+- `$url` là đường dẫn cần lấy (bắt buộc).
+- `$login, $password` là thông tin đăng nhập nếu có
+- `$ref` là giá trị http referer nếu có
+
+## Các vendor bên thứ 3 được NukeViet sử dụng
+
+- [PHP Captcha library](https://github.com/Gregwar/Captcha)
+- [OAuth library](https://packagist.org/packages/and/oauth)
+- [PHPMailer](https://github.com/PHPMailer/PHPMailer)
+- [pclzip](https://packagist.org/packages/pclzip/pclzip)
+- [QR Code](https://github.com/endroid/QrCode)
+- [Punycode](https://github.com/true/php-punycode)
+- [Facebook Instant Articles SDK](https://github.com/facebook/facebook-instant-articles-sdk-php)

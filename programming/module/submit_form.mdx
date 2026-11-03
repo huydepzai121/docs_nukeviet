@@ -1,0 +1,107 @@
+---
+title: "Lấy giá trị của biến khi submit form trong NukeViet 3.4"
+description: "Lấy giá trị của inputname qua phương thức post, nếu không có giá trị bằng 0"
+---
+
+## Lấy biến số nguyên
+
+Lấy giá trị của input_name qua phương thức post, nếu không có giá trị bằng 0
+
+``` php
+$id = $nv_Request->get_int( 'id', 'post' );
+```
+
+Lấy giá trị của input_name qua phương thức get, nếu không có giá trị bằng 10
+
+``` php
+$default = 10;
+$id = $nv_Request->get_int( 'id', 'get', $default);
+```
+
+Lấy giá trị của input_name qua phương thức post, hoặc get ưu tiên lấy post trước, nếu không có giá trị bằng 10
+
+``` php
+$default = 10;
+$id = $nv_Request->get_int( 'id', 'post,get', $default);
+```
+
+## Lấy biến số thực
+
+Lấy giá trị của input_name qua phương thức post, nếu không có giá trị bằng 0
+
+``` php
+$id = $nv_Request->get_float( 'id', 'post' );
+```
+
+Lấy giá trị của input_name qua phương thức get, nếu không có giá trị bằng 10.5
+
+``` php
+$default = 10.5;
+$id = $nv_Request->get_float( 'id', 'get', $default);
+```
+
+Lấy giá trị của input_name qua phương thức post, hoặc get ưu tiên lấy post trước, nếu không có giá trị bằng 10.5
+
+``` php
+$default = 10.5;
+$id = $nv_Request->get_float( 'id', 'post,get', $default);
+```
+
+## Lấy biến của thẻ form input
+
+Sử dụng hàm: filter_text_input: Lấy giá trị của input_name qua phương thức post, nếu không có giá trị bằng rỗng
+
+``` php
+$value = filter_text_input( 'input_name', 'post', '' ); 
+```
+
+Lấy giá trị của input_name qua phương thức post hoặc get, nếu không có giá trị bằng rỗng Giá trị của biến sẽ được gọi qua hàm nv_htmlspecialchars để thay thế các mã html đặc biệt
+
+``` php
+$value = filter_text_input( 'input_name', 'post,get', "", 1);
+```
+
+Lấy giá trị của input_name qua phương thức post hoặc get, nếu không có giá trị bằng rỗng Giá trị của biến sẽ được gọi qua hàm nv_htmlspecialchars để thay thế các mã html đặc biệt Giá trị của biến lấy 255 ký tự đầu tiên, nếu giá trị nhiều hơn 255 ký tự thì các ký tự sau 255 sẽ bị cắt đi
+
+``` php
+$value = filter_text_input( 'input_name', 'post,get', "", 1, 255);
+```
+
+Lấy giá trị của input_name qua phương thức request, nếu không có giá trị bằng default Giá trị của biến lấy 100 ký tự đầu tiên, nếu giá trị nhiều hơn 100 ký tự thì các ký tự sau 100 sẽ bị cắt đi Giá trị của biến sẽ thay thế các kỹ tự khác a-zA-Z0-9 bằng ký tự gạch dưới
+
+``` php
+$default = "default";
+$preg_replace = array( 'pattern' => "/[^a-zA-Z0-9]/", 'replacement' => "_");
+$value = filter_text_input( 'input_name', 'request', $default, 0, 100, $preg_replace );
+```
+
+## Lấy biến của thẻ form textarea
+
+Sử dụng hàm: filter_text_textarea, khi 1 form có textarea, chỉ dùng phương thức post, chứ không dùng phương thức get, nếu không sẽ bị mất dữ liệu sử dụng filter_text_textarea cho các editor
+
+``` php
+$content = filter_text_textarea( 'content', '', NV_ALLOWED_HTML_TAGS );
+// dung de lay data tu textarea.
+//Chì chỉ các tags được liệt kê trong NV_ALLOWED_HTML_TAGS mới được sử dụng, các mã khác sẽ bị lọc bỏ
+$content = nv_editor_nl2br( $content );// dung de save vào CSDL
+
+$content = nv_editor_br2nl( $row['content'] ); // dung de lay data tu CSDL
+$content = nv_htmlspecialchars( $content ); // dung de dua vao editor
+$content = filter_text_textarea( 'content', ''); //sẽ không lọc các tags html
+```
+
+**sử dụng filter_text_textarea cho các textarea không sử dụng editor**
+
+``` php
+
+$content = filter_text_textarea( 'content', '', NV_ALLOWED_HTML_TAGS );
+// dung de lay data tu textarea.
+//Chì chỉ các tags được liệt kê trong NV_ALLOWED_HTML_TAGS mới được sử dụng, các mã khác sẽ bị lọc bỏ
+
+$content = nv_nl2br( $content, '<br />' );// dung de save vao csdl
+
+$content = nv_br2nl( $row['content'] ); // dung de lay data tu CSDL
+$content = nv_htmlspecialchars( $content ); // dung de dua vao textarea
+
+$content = filter_text_textarea( 'content', ''); //sẽ không lọc các tags html
+```

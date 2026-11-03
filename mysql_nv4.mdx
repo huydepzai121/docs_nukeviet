@@ -1,0 +1,516 @@
+---
+title: "Hướng dẫn truy vấn CSDL mysqli, pdo trong Nukeviet 4x"
+description: "PDO (PHP Data Object) là các API có sẵn của PHP cho phép người lập trình có thể kết nối để làm việc với cơ sở dữ liệu. PDO không phải là một khái niệm mới, n..."
+---
+
+PDO (PHP Data Object) là các API có sẵn của PHP cho phép người lập trình có thể kết nối để làm việc với cơ sở dữ liệu. PDO không phải là một khái niệm mới, nó được giới thiệu lần đầu tiên ở phiên bản PHP 5, hiện nay đang được sử dụng rất phổ biến. PDO là các đối tượng dữ liệu trong PHP, nó sẽ chuyển tất cả dữ liệu thành đối tượng, đồng thời cũng cung cấp các phương thức để thao tác với cơ sở dữ liệu.
+
+## I. Lưu ý
+
+Khi Sử dụng các đoạn code có khả năng lỗi cần viết vào try, catch
+
+``` php
+try {
+    $db->query('');
+} catch (PDOException $e) {
+    trigger_error(print_r($e, true));
+}
+```
+
+## II. Fetch dữ liệu
+
+Có hai cách căn bản để lấy dữ liệu trong PDO là query và excute.
+
+\- Query: sử dụng trong các trường hợp câu truy vấn không có biến truyền vào, hoặc các biến chắc chắn không gây ra Sql Injection
+
+``` php
+$result = $db->query('select SQL_CALC_FOUND_ROWS * from nv3_config LIMIT 0, 30');
+$rs1 = $db->query('SELECT FOUND_ROWS()');
+$all_page = $rs1->fetchColumn();
+print("all_page $all_page rows");
+foreach ($result as $row) {
+    // lặp qua từng dòng
+    printf('module: %s<br />config_name: %s <p />', $row['module'], $row['config_name']);
+}
+```
+
+\- Exec: sử dụng trong các trường hợp câu truy vấn không có biến truyền vào, hoặc các biến chắc chắn không gây ra Sql Injection, giá trị trả về là số dòng thực hiện.
+
+``` php
+$count = $db->exec("DELETE FROM nv3_config WHERE module = 'khongco'");
+print("Deleted $count rows");
+```
+
+Ngoài ra, còn có một cách tiếp cận khác nữa là sử dụng `bindParam`, phương thức này sử dụng trong trường hợp nếu có biến truyền vào câu truy vấn.
+
+``` php
+$config_name = 'users2';
+$del = $db->prepare('DELETE FROM nv3_config2 WHERE config_name=:config_name');
+$del->bindValue(':config_name', $config_name);
+$del->execute();
+```
+
+``` php
+$module = 'users';
+$sth = $db->prepare("select * from nv3_config WHERE module=:module LIMIT 0, 4");
+$sth->bindParam(':module', $module);
+$sth->execute();
+$array = $sth->fetchAll();
+var_export($array);
+```
+
+## III. Chỉ định dữ liệu đầu ra
+
+Cũng như cách dùng của API mysql, dữ liệu khi được lấy ra từ cơ sở dữ liệu cần phải được “đổ” (fetch) vào một array, object hoặc một class thì mới sử dụng được. PDO cũng cung cấp một số kiểu fetch cơ bản như sau:
+
+- `PDO::FETCH_ASSOC`: Trả về dạng mảng (array)
+- `PDO::FETCH_BOTH`: Trả về một mảng, key giữa tên cột và giá trị index bắt đầu từ 0
+- `PDO::FETCH_BOUND`: Trả về TRUE và gán các giá trị của các cột trong kết quả tương ứng vào các biến bạn đã thiết lập cho nó.
+- `PDO::FETCH_CLASS`: Trả lại một lớp (class)
+- `PDO::FETCH_OBJ`: Trả về một đối tượng vô danh với tên tương ứng với các cột
+- `PDO::FETCH_NUM`: (Là số 3 ) Trả về một mảng, giá trị index bắt đầu từ 0
+
+Mặc định, NukeViet sử dụng `PDO::FETCH_ASSOC`.
+
+``` php
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE status=1 AND id=' . $id;
+$row = $db->query($sql)->fetch();
+```
+
+## IV. Thao tác dữ liệu
+
+### 1. Create (insert)
+
+``` php
+$sth = $db->prepare('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' VALUES(NULL, :name, :birthday, :class)');
+$sth->bindParam(':name', $name, PDO::PARAM_STR);
+$sth->bindParam(':name', $birthday, PDO::PARAM_STR);
+$sth->bindParam(':class', $class, PDO::PARAM_STR);
+$sth->execute();
+
+```
+
+### 2. Update
+
+``` php
+
+$sth = $db->prepare('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET name = :name, birthday = :birthday, class = :class)');
+$sth->bindParam(':name', $name, PDO::PARAM_STR);
+$sth->bindParam(':name', $birthday, PDO::PARAM_STR);
+$sth->bindParam(':class', $class, PDO::PARAM_STR);
+$sth->execute();
+
+```
+
+### 3. Delete
+
+``` php
+
+$sth = $db>prepare('DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = :id');
+$stmt->bindParam(':id', $id);
+$stmt->execute();
+```
+
+Thực thi nhiều câu lệnh Xem ví dụ:
+
+``` php
+$stmt = $db->prepare('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' VALUES(:name)');
+$stmt->bindParam(':name', $name);
+# First insertion
+$name = 'Keith';
+$stmt->execute();
+
+# Second insertion
+$name = 'Steven';
+$stmt->execute();
+
+// Max Weight
+$_sql = 'SELECT max(weight) FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE catid=' . $catid;
+$weight = $db->query($_sql)->fetchColumn();
+$weight = intval($weight) + 1;
+// Fetch Limit
+$db->sqlreset()
+    ->select('COUNT(*)')
+    ->from(NV_PREFIXLANG . '_' . $module_data)
+    ->where('status=1');
+$all_page = $db->query($db->sql())
+    ->fetchColumn();
+$db->select('*')
+    ->order('id DESC')
+    ->limit($per_page)
+    ->offset($page);
+while ($row = $_query->fetch()) {
+    // $id = $row['id'];
+}
+```
+
+## V. Các chú ý trong lập trình CSDL với NukeViet
+
+### 1. Đặt tên các bảng và cột
+
+- Tên bảng, tên cột chỉ dùng từ từ 2 đến 30 ký tự, chỉ dùng các ký tự a-z, 0-9 và dấu gạch dưới
+- Tất cả các dữ liệu các cột cần viết thường, (Nếu có viết hoa thì kết quả trả về trong các mảng khi Fetch dữ liệu cũng là các mảng có chỉ số viết thường)
+
+### 2. Về các câu truy vấn các cột
+
+Thường chúng ta viết câu truy vấn chúng ta viết như sau
+
+``` php
+
+SELECT `catid`, `parentid`, `title` FROM `nv3_vi_news_cat`
+
+```
+
+Thì cần viết lại:
+
+``` php
+
+SELECT catid, parentid, title FROM nv3_vi_news_cat
+
+```
+
+Tức bỏ dấu \` đi để có thể chạy được trên các loại CSDL khác, Khi đó sẽ không dùng được các tên sau trong bảng và cột của CSDL: add, all, alter, analyze, and, as, asc, before, between, bigint, binary, both, by, call, cascade, case, change, char, character, check, collate, column, comment, condition, constraint, continue, convert, create, cross, current_user, cursor, database, databases, date, day_hour, day_minute, day_second, dec, decimal, declare, default, delayed, delete, desc, describe, distinct, distinctrow, drop, dual, else, elseif, enclosed, escaped, exists, exit, explain, false, fetch, file, float4, float8, for, force, foreign, from, fulltext, get, grant, group, having, high_priority, hour_minute, hour_second, identified, if, ignore, ignore_server_ids, in, index, infile, inner, insert, int1, int2, int3, int4, int8, integer, interval, into, is, iterate, join, key, keys, kill, leading, leave, left, level, like, limit, lines, load, lock, long, loop, low_priority, master_bind, master_heartbeat_period, master_ssl_verify_server_cert, match, middleint, minute_second, mod, mode, modify, natural, no_write_to_binlog, not, null, number, numeric, on, optimize, option, optionally, or, order, outer, outfile, partition, precision, primary, privileges, procedure, public, purge, read, real, references, release, rename, repeat, replace, require, resignal, restrict, return, revoke, right, rlike, rows, schema, schemas, select, separator, session, set, share, show, signal, spatial, sql_after_gtids, sql_before_gtids, sql_big_result, sql_calc_found_rows, sql_small_result, sqlstate, ssl, start, starting, straight_join, table, terminated, then, to, trailing, trigger, true, undo, union, unique, unlock, unsigned, update, usage, use, user, using, values, varcharacter, varying, view, when, where, while, with, write, year_month, zerofill
+
+### 3. Đặt bí danh cho bảng (Table Allias)
+
+Không dùng mệnh đề AS cho bảng (Vẫn có thể dùng Allias cho cột được) Thay vì viết
+
+``` php
+
+SELECT t1.catid, t1.parentid, t1.title FROM nv3_vi_news_cat AS t1
+
+```
+
+Hãy viết bằng
+
+``` php
+
+SELECT t1.catid, t1.parentid, t1.title FROM nv3_vi_news_cat t1
+
+```
+
+### 4. Viết câu lệnh và lấy về chỉ số tăng tự động
+
+Trước chúng ta viết
+
+``` php
+
+$sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_cat
+(catid, parentid, title, titlesite, alias, description)
+VALUES
+(NULL, :parentid, :title, :titlesite, :alias, :description)";
+
+```
+
+Và dùng
+
+``` php
+ 
+$sth = $db->prepare($sql);
+$sth->bindParam…..
+$sth->execute();
+```
+
+Thì cần viết lại theo cách
+
+``` php
+
+$sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_cat
+( parentid, title, titlesite, alias, description)
+VALUES
+(:parentid, :title, :titlesite, :alias, :description)";
+$data_insert = array();
+$data_insert['parentid'] = $parentid;
+$data_insert['title'] = $title;
+$data_insert['titlesite'] = $titlesite;
+$data_insert['alias'] = $alias;
+$data_insert['description'] = $description;
+$newcatid = $db->insert_id( $sql, 'catid', $data_insert );
+
+```
+
+### 5. Khi câu lệnh có Limit cần sử dụng lớp \$db để tạo câu lệnh SQL
+
+``` php
+
+$db->sqlreset()
+    ->select('COUNT(*)')
+    ->from(NV_PREFIXLANG . '_' . $module_data . '_rows')
+    ->where('status= 1 AND inhome=1');
+$all_page = $db->query($db->sql())
+    ->fetchColumn();
+$db->select('id, catid, listcatid, topicid, admin_id, author, sourceid, addtime, edittime, publtime, title, alias, hometext, homeimgfile, homeimgalt, homeimgthumb, allowed_rating, hitstotal, hitscm, total_rating, click_rating')
+    ->order('id DESC')
+    ->limit($per_page)
+    ->offset(page);
+$result = $db->query($db->sql());
+
+```
+
+Ngoài ra nếu câu lệnh SQL có sử dụng SQL_CALC_FOUND_ROWS, SELECT FOUND_ROWS() để lấy tổng số kết quả truy vấn (các cách này chỉ chạy trên MySQL). Thì khi đó cần viết thành 2 câu lệnh truy vấn tương tự như trên.
+
+### 6. Không sử dụng REPLACE INTO trong câu lệnh SQL
+
+thay vì đó hãy sử dụng INSERT hay update Nguyên nhân REPLACE INTO chỉ dùng được trên MySQL, ngoài ta REPLACE INTO nếu chạy trên MySQL với Storage Engine InnoDB thực chất cũng dùng hai câu lệnh DELETE và INSERT cùng lúc
+
+### 7. PDOStatement :: rowCount ()
+
+trả về số hàng bị ảnh hưởng bởi cuối cùng DELETE, INSERT, hoặc UPDATE thực hiện bởi các đối tượng PDOStatement tương ứng. Không sử dụng đối với câu lệnh SQL SELECT do trên Oracle không chạy Nếu viết
+
+``` php
+
+$result = $db->query("SELECT * FROM " . $db_config['prefix'] . "_" . $lang_data . "_modules where title='news'");
+if ($result->rowCount()) {
+    //
+}
+
+```
+
+Cần viết thành
+
+``` php
+
+$result = $db->query("SELECT COUNT(*) FROM " . $db_config['prefix'] . "_" . $lang_data . "_modules where title='news'");
+if ($result->fetchColumn()) {
+    //
+}
+
+```
+
+### 8. Sử dụng Prepares a statement
+
+PDOStatement::bindParam, PDOStatement::bindValue đều dùng để truyền dữ liệu cho Prepares a statement, nhưng chúng khác nhau PDOStatement::bindParam Truyền địa chỉ của biến. PDOStatement::bindValue Truyền giá trị của biến. - Nên nếu dùng trong vòng lặp, mà chưa chạy PDOStatement::execute thì cần dùng PDOStatement::bindValue - Nếu cần gán giá trị \> 400 ký tự bắt buộc phải dùng PDOStatement::bindParam và phải có cả độ dài của chuỗi
+
+``` php
+
+$sth = $db->prepare('UPDATE nv3_vi_news_bodyhtml SET bodyhtml = :bodyhtml WHERE id=4');
+$len = strlen($bodyhtml);
+$sth->bindParam(':bodyhtml', $bodyhtml, PDO::PARAM_STR, $len);
+$sth->execute();
+
+```
+
+## VI. INSERT CSDL trong PDO
+
+``` php
+
+$stmt = $db->prepare('INSERT INTO ' . $db_config['prefix'] . '_' . $module_data . ' SET
+      send_to = :send_to,
+      subject = :subject,
+      message = :message,
+      status = ' . intval($data['status']) . ',
+      finish = ' . intval($data['finish']) . '');
+
+$stmt->bindParam(':send_to', $data['send_to'], PDO::PARAM_STR);
+$stmt->bindParam(':subject', $data['subject'], PDO::PARAM_STR);
+$stmt->bindParam(':message', $data['message'], PDO::PARAM_STR, strlen($data['message']));
+$stmt->execute();
+$stmt->closeCursor();
+
+if ($data['newsletter_id'] = $db->lastInsertId()) {
+}
+
+```
+
+## VII. Update CSDL trong PDO
+
+``` php
+
+$stmt = $db->prepare('UPDATE ' . $db_config['prefix'] . '_' . $module_data . ' SET
+      subject = :subject,
+      send_to = :send_to,
+      message = :message,
+      status = ' . intval($data['status']) . ',
+   WHERE newsletter_id=' . $data['newsletter_id']);
+
+$stmt->bindParam(':subject', $data['subject'], PDO::PARAM_STR);
+$stmt->bindParam(':send_to', $data['send_to'], PDO::PARAM_STR);
+$stmt->bindParam(':message', $data['message'], PDO::PARAM_STR, strlen($data['message']));
+if ($stmt->execute()) {
+}
+$stmt->closeCursor();
+
+```
+
+## VIII. Xóa CSDL
+
+có 2 cách xóa nhưng có 3 phương thức xóa
+
+``` php
+
+// Sử dụng mysqli
+$db->query('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . ' WHERE newsletter_id=' . intval($data['newsletter_id']));
+
+// Sử dụng PDO theo phương thức bindParam đối với string send_to
+$stmt = $db->prepare('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . ' WHERE send_to=: send_to, newsletter_id=' . intval($data['newsletter_id']));
+$stmt->bindParam(':send_to', $data['send_to'], PDO::PARAM_STR);
+$stmt->execute()
+$stmt->closeCursor();
+
+// Sử dụng PDO theo phương thức $db->quote đối với string send_to
+$stmt = $db->prepare('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . ' WHERE send_to= ' . $db->quote($data['send_to']) . ', newsletter_id=' . intval($data['newsletter_id']));
+$stmt->bindParam(':send_to', $data['send_to'], PDO::PARAM_STR);
+$stmt->execute()
+$stmt->closeCursor();
+
+```
+
+## Truy vấn khác
+
+### Truy vấn phân trang trong Nukeviet 4x
+
+``` php
+
+$per_page = 30;
+
+$page = $nv_Request->get_int('page', 'get', 1);
+
+$sql = $db_config['prefix'] . '_' . $module_data;
+
+$num_items = $db->query('SELECT COUNT(*) FROM ' . $sql)->fetchColumn();
+
+$base_url = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=main&amp;per_page=' . $per_page;
+
+$generate_page = nv_generate_page($base_url, $num_items, $per_page, $page);
+
+$db->sqlreset()
+    ->select('*')
+    ->from($sql)
+    ->order('weight ASC')
+    ->limit($per_page)
+    ->offset(($page - 1) * $per_page);
+
+$result = $db->query($db->sql());
+
+$array_content = array();
+
+while ($rows = $result->fetch()) {
+    $array_content[] = $rows;
+}
+
+```
+
+### Truy vấn một số trường trong CSDL
+
+có 2 cách
+
+#### Cách 1:
+
+``` php
+
+$sql = 'SELECT newsletter_id, send_to FROM ' . $db_config['prefix'] . '_' . $module_data . ' WHERE newsletter_id = 1 ORDER BY newsletter_id ASC LIMIT 0, 20';
+
+$result = $db->query($sql);
+
+$array_content = array();
+
+while (list ($newsletter_id, $send_to) = $result->fetch(3)) {
+    $array_content[] = array(
+        'newsletter_id' => $newsletter_id,
+        'send_to' => $send_to
+    );
+}
+$result->closeCursor();
+
+```
+
+#### Cách 2
+
+``` php
+
+$sql = 'SELECT newsletter_id, send_to FROM ' . $db_config['prefix'] . '_' . $module_data . ' WHERE newsletter_id = 1 ORDER BY newsletter_id ASC LIMIT 0, 20';
+
+$result = $db->query($sql);
+
+$array_content = array();
+
+while ($rows = $result->fetch()) {
+    $array_content[] = $rows;
+}
+$result->closeCursor();
+
+```
+
+### Truy vấn 1 trường csdl lấy 1 record duy nhất
+
+``` php
+
+$sql = 'SELECT newsletter_id, send_to FROM ' . $db_config['prefix'] . '_' . $module_data . ' WHERE newsletter_id = 1 ORDER BY newsletter_id ASC LIMIT 0, 1';
+
+$result = $db->query($sql);
+
+list ($newsletter_id, $send_to) = $result->fetch(3);
+
+$result->closeCursor();
+
+```
+
+Truy vấn tính tổng số dòng có trong 1 bảng CSDL
+
+``` php
+
+$result = $db->query('SELECT COUNT(*) FROM ' . $db_config['prefix'] . '_' . $module_data);
+
+list ($total) = $result->fetch(3);
+
+$result->closeCursor();
+
+```
+
+### CSDL có chứa kiểu float để giá trị không bị biến đổi
+
+đối với csdl có chứa kiểu float để giá trị không bị biến đổi trong truy vấn bạn cần làm như sau
+
+``` php
+
+// chuyển đổi chế độ giá trị từ number sang string : true, number: false
+$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+
+$db->sqlreset()
+    ->select('*')
+    ->from($sql)
+    ->limit($per_page)
+    ->offset(($page - 1) * $per_page);
+
+$result = $db->query($db->sql());
+
+$array = array();
+while ($rows = $result->fetch()) {
+    $array[] = $rows;
+}
+
+```
+
+Đây là kết quả bạn thu được
+
+`$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);`
+
+``` php
+
+array(9) {
+  ["value"]=>
+  string(10) "0.80589998"
+}
+
+```
+
+`$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);`
+
+``` php
+
+array(9) {
+  ["value"]=>
+  float(0.80589997768402)
+}
+
+```
+
+Sự an toàn của truy vấn tham số không có hiệu lực khi bạn sử dụng PDO :: ATTR_EMULATE_PREPARES =\> true . Ứng dụng của bạn phải đảm bảo rằng các dữ liệu được liên kết với các tham số (s) không chứa mã độc hại Transact-SQL.
+
+Ngoài ra bạn có thể sử dụng
+
+``` php
+$item['value'] = number_format($item['value'], 8, '.', '');
+```
+
+để format lại dữ liệu của bạn trong đó 8 là chỉ số thập phân mà bạn muôn giữ lại

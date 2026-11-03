@@ -1,0 +1,80 @@
+---
+title: "Hướng dẫn sử dụng class BotManager"
+description: "BotManager là class quản lý các thẻ meta, xuất các header cho các máy chủ tìm kiếm index, hoặc không index, follow hoặc không follow trang web"
+---
+
+BotManager là class quản lý các thẻ meta, xuất các header cho các máy chủ tìm kiếm index, hoặc không index, follow hoặc không follow trang web
+
+> Class này được thêm vào từ NukeViet 4.4.08
+
+Class này được gọi sẵn trong hệ thống, khả dụng trong biến `$nv_BotManager`.
+
+## Cách sử dụng
+
+> Xem tài liệu [https://developers.google.com/search/reference/robots_meta_tag?hl=vi#directives](https://developers.google.com/search/reference/robots_meta_tag?hl=vi#directives) về các giá trị thẻ meta
+
+- `$nv_BotManager->reset()` thiết lập hết các cấu hình về mặc định. Mặc định sẽ không có thẻ meta hay header nào liên quan đến robot
+- `$nv_BotManager->setAll()` robot tag mang giá trị "all"
+- `$nv_BotManager->setPrivate()` dùng cho website không public, robot tag mang giá trị noindex và follow. Tức là cho phép đọc các liên kết trên trang nhưng không index trang
+- `$nv_BotManager->setNone()` robot tag mang giá trị "none" tương đương với noindex, nofollow.
+- `$nv_BotManager->setIndex()` cho phép index trang đó. Lưu ý nếu không dùng cái này, và không cấm thì mặc định các máy chủ vẫn index bình thường.
+- `$nv_BotManager->setNoIndex()` không cho phép index trang đó
+- `$nv_BotManager->setImageIndex()` khả dụng với Google, cho phép index ảnh ở trong trang
+- `$nv_BotManager->setNoImageIndex()` khả dụng với Google, không cho phép index ảnh ở trong trang
+- `$nv_BotManager->setFollow()` cho phép truy cập các liên kết trong trang
+- `$nv_BotManager->setNoFollow()` không cho phép truy cập các liên kết trong trang
+- `$nv_BotManager->setArchive()` cho phép lưu lại trang trong bộ nhớ đệm của bộ máy tìm kiếm
+- `$nv_BotManager->setNoArchive()` không cho phép lưu lại trang trong bộ nhớ đệm của bộ máy tìm kiếm
+- `$nv_BotManager->setSnippet()` hiển thị đoạn trích văn bản hoặc bản xem trước video trong kết quả tìm kiếm cho trang này. Hình thu nhỏ tĩnh (nếu có) vẫn có thể hiển thị nếu mang lại trải nghiệm tốt hơn cho người dùng. Lệnh này áp dụng cho tất cả các dạng kết quả tìm kiếm (trên Google: tìm kiếm trên web, Google Hình ảnh, Khám phá).
+- `$nv_BotManager->setNoSnippet()` không hiển thị đoạn trích văn bản hoặc bản xem trước video trong kết quả tìm kiếm cho trang này. Hình thu nhỏ tĩnh (nếu có) vẫn có thể hiển thị nếu mang lại trải nghiệm tốt hơn cho người dùng. Lệnh này áp dụng cho tất cả các dạng kết quả tìm kiếm (trên Google: tìm kiếm trên web, Google Hình ảnh, Khám phá).
+- `$nv_BotManager->setTranslate()` cung cấp bản dịch của trang này trong kết quả tìm kiếm.
+- `$nv_BotManager->setNoTranslate()` không cung cấp bản dịch của trang này trong kết quả tìm kiếm.
+- `$nv_BotManager->setUnavailableAfter($time)` áp dụng cho Google. Không hiển thị trang này trong kết quả tìm kiếm sau ngày/giờ chỉ định. `$time` là kết quả của hàm `time()`
+- `$nv_BotManager->removeUnavailableAfter()` hủy kết quả của phương thức `setUnavailableAfter` nếu có.
+- `$nv_BotManager->getMetaTags()` trả về kết quả metatag ví dụ `<meta name="googlebot-news" content="nosnippet">`
+- `$nv_BotManager->outputToHeaders(&$headers, &$sys_info)` xóa bỏ `$sys_info['server_headers']['x-robots-tag']` đồng thời thêm `X-Robots-Tag` vào biến `$headers`. Phương thức này sử dụng ở các trang full giao diện và muốn xuất X-Robots-Tag vào header. Mặc định NukeViet xuất vào thẻ `<meta` ở các trang full giao diện.
+- `$nv_BotManager->printToHeaders()` xuất trực tiếp dạng `@Header('X-Robots-Tag: xxx, yyy');`
+
+## Lưu ý
+
+- Các phương thức dạng `setXXX` sẽ hủy kết quả của `setNoXXX` nếu trước đó có gọi `setNoXXX`. Mặc định nếu không dùng lệnh `setNoXXX` thì các công cụ tìm kiếm tự hiểu là "cho phép" chứ bạn không cần phải dùng `setXXX`.
+- Tại các trang không muốn index, hãy xác định xem có cho đọc các liên kết trong trang đó hay không. Thông thường là có. Để tránh cấm luôn việc đọc các liên kết trên trang
+
+## Ví dụ
+
+**Tại trang giao diện đầy đủ, muốn chặn index**
+
+``` php
+$nv_BotManager->setPrivate();
+```
+
+Hoặc
+
+``` php
+$nv_BotManager->setFollow()->setNoIndex();
+```
+
+**Tại trang giao diện không đầy đủ**
+
+> Giao diện không đầy dủ là giao diện hiển thị không thông qua lệnh `echo nv_site_theme($contents);` tuy nhiên có gọi `include NV_ROOTDIR . '/includes/footer.php';` ví dụ như
+
+``` php
+$content_comment = nv_comment_module($module, $checkss, $area, $id, $allowed_comm, $page, $status_comment, 0);
+include NV_ROOTDIR . '/includes/header.php';
+echo $content_comment;
+include NV_ROOTDIR . '/includes/footer.php';
+```
+
+Muốn chặn index dùng
+
+``` php
+$nv_BotManager->setNoIndex()->setFollow();
+$content_comment .= $nv_BotManager->getMetaTags(true);
+$nv_BotManager->outputToHeaders($headers, $sys_info);
+```
+
+**Tại các trang không xuất giao diện, chỉ header rồi redirect**
+
+``` php
+$nv_BotManager->setFollow()->setNoIndex()->printToHeaders();
+```

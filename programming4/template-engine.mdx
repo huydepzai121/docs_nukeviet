@@ -1,0 +1,293 @@
+---
+title: "PHP Template Engine"
+description: "Ở các phiên bản trước NukeViet 4.4 chúng tôi sử dụng Xtemplate để tách html và PHP"
+---
+
+Ở các phiên bản trước NukeViet 4.4 chúng tôi sử dụng Xtemplate để tách html và PHP
+
+Từ phiển bản 4.4 Chúng tôi xây dựng giao diện mới dựa trêm Smarty, và chuyển dần từ Xtemplate sang Smarty 3
+
+Tài liệu hướng dẫn sử dụng Smarty 3:
+
+- [https://www.smarty.net/crash_course](https://www.smarty.net/crash_course)
+- [https://www.smarty.net/docs/en/](https://www.smarty.net/docs/en/)
+
+## Chuyển đổi cách viết từ Xtemplate sang Smarty
+
+**Với Xtemplate code PHP**
+
+``` php
+    $xtpl = new XTemplate($layout_file, NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/layout');
+    
+    $xtpl->assign('MODULE_CONTENT', $contents);    
+    return $xtpl->text('main');
+```
+
+Chuyển sang Smarty
+
+``` php
+    $smarty = new Smarty();
+    $smarty->setTemplateDir(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/layout');
+    
+    $smarty->assign('MODULE_CONTENT', $contents);        
+    return $smarty->fetch($layout_file);
+```
+
+**Với Xtemplate code HTML**
+
+``` html
+<!-- BEGIN: main -->
+{FILE "header_only.tpl"}
+    {MODULE_CONTENT}
+{FILE "footer_only.tpl"}
+<!-- END: main -->
+```
+
+Chuyển sang Smarty
+
+``` html
+{include file='header_only.tpl'} 
+{$MODULE_CONTENT}
+{include file='footer_only.tpl'}
+```
+
+## Xử lý xòng lặp dữ liệu
+
+Giả sử có mảng dữ liệu muốn xuất ra html
+
+``` php
+$contacts = array(
+        array(
+            "phone" => "1",
+            "fax" => "2",
+            "cell" => "3"
+        ),
+        array(
+            "phone" => "555-4444",
+            "fax" => "555-3333",
+            "cell" => "760-1234"
+        )
+    );
+```
+
+**Với Xtemplate code PHP**
+
+``` php
+foreach ($contacts as $row) {
+    $xtpl->assign('ROW', $row);
+    $xtpl->parse('main.loop');
+}
+```
+
+**Với Xtemplate code HTML**
+
+``` html
+<!-- BEGIN: main -->
+<!-- BEGIN: loop -->
+        <br>
+        phone: {ROW.phone}
+        <br>
+            fax: {ROW.fax}
+        <br>
+            cell: {ROW.cell}
+        <br>
+<!-- END: loop -->
+<!-- END: main -->
+```
+
+**Chuyển sang Smarty code PHP**
+
+``` php
+$smarty->assign("contacts",$contacts);
+```
+
+**Chuyển sang Smarty code HTML**
+
+``` html
+{foreach $contacts as $contact}
+        <br>
+        phone: {$contact.phone}
+        <br>
+
+        fax: {$contact.fax}
+        <br>
+
+        cell: {$contact.cell}
+        <br>
+    {/foreach}
+```
+
+Hoặc viết theo cách
+
+``` html
+    {section name=sec1 loop=$contacts}
+        <br>
+        phone: {$contacts[sec1].phone}
+        <br>
+
+            fax: {$contacts[sec1].fax}
+        <br>
+
+            cell: {$contacts[sec1].cell}
+        <br>
+    {/section}
+  
+```
+
+## Một số phương thức định dạng cơ bản
+
+Ví dụ biến \{\$tile\} Trong template cần xử lý ta có thể xử lý như sau:
+
+``` text
+{$tile|upper} viết hoa $itle
+
+{$tile|lower} viết thường $itle
+
+{$tile|capitalize} viết hoa đầu từ $itle
+
+{$tile|strip_tags} Định dạng bỏ kí tự đặc biệt $itle
+
+{$date|date_format} Định dạng ngày thàng $ate
+```
+
+Ngoài các ví dụ trên smarty còn hỗ trợ các phương thức xử lý biến sau:
+
+``` text
+capitalize
+cat
+count_characters
+count_paragraphs
+count_sentences
+count_words
+date_format
+default
+escape
+from_charset
+indent
+lower
+nl2br
+regex_replace
+replace
+spacify
+string_format
+strip
+strip_tags
+to_charset
+truncate
+unescape
+upper
+wordwrap
+```
+
+## Xử lý các hàm toán học trong template
+
+Ví dụ:
+
+``` text
+{$foo+1}
+
+{$foo*$bar}
+
+{* some more complicated examples *}
+
+{$foo->bar-$bar[1]*$baz->foo->bar()-3*7}
+
+{if ($foo+$bar.test%$baz*134232+10+$b+10)}
+
+{$foo|truncate:"`$fooTruncCount/$barTruncFactor-1`"}
+
+{assign var="foo" value="`$foo+$bar`"}
+```
+
+Mặc dù Smarty có thể xử lý một số biểu thức và cú pháp rất phức tạp, Nếu bạn thấy cú pháp khuôn mẫu của bạn trở nên quá phức tạp, bạn nên di chuyển vào PHP để xử lý thông qua các block, module, plugins của NukeViet
+
+## Xử lý Cấu trúc điều khiển \{if\},\{elseif\},\{else\}
+
+``` html
+{if $name eq 'Fred'}
+    Welcome Sir.
+{elseif $name eq 'Wilma'}
+    Welcome Ma'am.
+{else}
+    Welcome, whatever you are.
+{/if}
+
+{* an example with "or" logic *}
+{if $name eq 'Fred' or $name eq 'Wilma'}
+   ...
+{/if}
+
+{* same as above *}
+{if $name == 'Fred' || $name == 'Wilma'}
+   ...
+{/if}
+
+{* parenthesis are allowed *}
+{if ( $amount < 0 or $amount > 1000 ) and $volume >= #minVolAmt#}
+   ...
+{/if}
+
+{* you can also embed php function calls *}
+{if count($var) gt 0}
+   ...
+{/if}
+
+{* check for array. *}
+{if is_array($foo) }
+   .....
+{/if}
+
+{* check for not null. *}
+{if isset($foo) }
+   .....
+{/if}
+
+{* test if values are even or odd *}
+{if $var is even}
+   ...
+{/if}
+{if $var is odd}
+   ...
+{/if}
+{if $var is not odd}
+   ...
+{/if}
+
+{* test if var is divisible by 4 *}
+{if $var is div by 4}
+   ...
+{/if}
+
+{*
+  test if var is even, grouped by two. i.e.,
+  0=even, 1=even, 2=odd, 3=odd, 4=even, 5=even, etc.
+*}
+{if $var is even by 2}
+   ...
+{/if}
+
+{* 0=even, 1=even, 2=even, 3=odd, 4=odd, 5=odd, etc. *}
+{if $var is even by 3}
+   ...
+{/if}
+```
+
+Hoặc ví dụ:
+
+``` html
+{if isset($name) && $name == 'Blog'}
+     {* do something *}
+{elseif $name == $foo}
+    {* do something *}
+{/if}
+
+{if is_array($foo) && count($foo) > 0}
+    {* do a foreach loop *}
+{/if}
+```
+
+## Lấy giá trị của hằng đã được định nghĩa
+
+Ví dụ template muốn lấy 1 hằng đã được định nghĩa có thể dùng biến sau: \{\$smarty.const.CONST_NAME\}
+
+Ví dụ: NV_ROOTDIR: \{\$smarty.const.NV_ROOTDIR\}

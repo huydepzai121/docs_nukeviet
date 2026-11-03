@@ -1,0 +1,28 @@
+---
+title: "emailtemplates_on_emailtemplate_save_error"
+description: "Xảy ra khi có lỗi lưu mẫu email vào CSDL."
+---
+
+Xảy ra khi có lỗi lưu mẫu email vào CSDL.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú            |
+|-----|:---------|:-------------|:-------------------|
+| 0   | \$array  |              |                    |
+| 1   | \$e      | object       | PDOError Exception |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'emailtemplates_on_emailtemplate_save_error', $priority, function($vars) {
+    $array = $vars[0];
+    $e = $vars[1];
+
+    // Thực hiện code hook tại đây...
+});
+```

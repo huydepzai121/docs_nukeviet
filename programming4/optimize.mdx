@@ -1,0 +1,32 @@
+---
+title: "Tối ưu khi lập trình với mã nguồn NukeViet 4"
+description: "Hạn chế chỉnh sửa trực tiếp vào các file mặc định, bởi khi nâng cấp nhiều file sẽ được ghi đè, lúc đó sẽ mất hết các chỉnh sửa của chúng ta."
+---
+
+Hạn chế chỉnh sửa trực tiếp vào các file mặc định, bởi khi nâng cấp nhiều file sẽ được ghi đè, lúc đó sẽ mất hết các chỉnh sửa của chúng ta.
+
+## 1) Hệ thống
+
+- NukeViet sử dụng composer để autoload các thư viên PHP, nên nếu cần thêm thư viên nào, ví dụ PHPWord, PHPExcel bạn sẽ phải hiểu về composer: [https://nukeviet.vn/vi/news/nhom-phat-trien/Quan-li-cac-thu-vien-PHP-voi-Composer-382.html](https://nukeviet.vn/vi/news/nhom-phat-trien/Quan-li-cac-thu-vien-PHP-voi-Composer-382.html)
+- NukeViet sủ dụng getbootstrap, được tùy biến từ 12 cột mặc định thành 24 cột để chia nhỏ các cột ra. Nên nếu lấy giao diện getbootstrap từ các nguồn khác bạn sẽ phải cấu hình lại giao diện của mình cho phù hợp.
+
+## 2) Giao diện
+
+- Các giao diện mặc định của hệ thống, bạn không nên sửa bất kỳ gì vào nó. Nếu cần sửa, hãy copy sang giao diện khác.
+- Nếu không cần chỉnh sửa ghì giao diện của module, thì hãy xóa giao diện của module đi, để khi nâng cấp sẽ không phải sửa nhiều.
+- Nếu đã copy giao diện của module; cần copy cả template của module và css của module (js không bắt buộc phải copy)
+- Nếu cần chỉnh sửa file modules/tên module/theme.php, hãy copy nó vào giao diện của module để chỉnh sửa: /themes/tên giao diện/modules/tên module/theme.php
+- Nếu muốn mỗi module ảo của một module trình bày theo 1 cách khách nhau, hãy tham khảo bài viết sau: [https://nukeviet.vn/vi/news/Tin-tuc/ao-hoa-trong-nukeviet-4-1-486.html](https://nukeviet.vn/vi/news/Tin-tuc/ao-hoa-trong-nukeviet-4-1-486.html)
+
+## 3) Ngôn ngữ
+
+- Để tránh việc sửa ngôn ngữ , dẫn đến khi cập nhật code ngôn ngữ bị ghi đè, mất hết các cấu hình, Các bạn khi cần sửa vào ngôn ngữ các file, module copy dòng đó đưa vào file: themes/ten-theme/language/vi.php (Tương tự với các ngôn ngữ khác)
+- Ngôn ngữ trong giao diện luôn được gọi, nó sẽ ghi đè các cấu hình đã được cấu hình của hệ thống và module.
+
+## 4) Module
+
+- Nếu chính sửa giao diện của module, theme không được, bạn hãy copy module và đổi tên nó thành module khác, và chỉnh sửa.
+
+``` text
+* 
+```

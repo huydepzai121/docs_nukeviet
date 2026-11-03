@@ -1,0 +1,180 @@
+---
+title: "Các hằng được định nghĩa trong NukeViet 4.x"
+description: "Các hằng cấu hình hệ thống được định nghĩa trong file constants.php, ngoài ra NukeViet còn định nghĩa một số hằng sau:"
+---
+
+Các hằng cấu hình hệ thống được định nghĩa trong file `constants.php`, ngoài ra NukeViet còn định nghĩa một số hằng sau:
+
+- NV_START_TIME: Thời gian bắt đầu phiên làm việc.
+- NV_ROOTDIR: Thư mục gốc website ví dụ: D:/Web/www/nukeviet
+- NV_IS_USER_FORUM: Có giá trị true nếu site có tích hợp diễn đàn.
+- NV_OPENID_ALLOWED: Cho phép đăng nhập bằng OpenID.
+- NV_CURRENTTIME: Thời gian hiện tại, giá trị bằng time().
+- NV_DEL_ONLINE_TIME: Thời gian xóa trạng thái online.
+- NV_CLIENT_IP: Ip của client.
+- NV_SERVER_NAME: tên máy chủ, ví dụ mydomain1.com.
+- NV_SERVER_PROTOCOL: Giao thức, ví dụ http.
+- NV_SERVER_PORT: Cổng, ví dụ 80.
+- NV_MY_DOMAIN: Tên miền website, ví dụ [http://mydomain1.com:80](http://mydomain1.com:80).
+- NV_HEADERSTATUS: Ví dụ HTTP/1.0.
+- NV_USER_AGENT: Thông tin useragent.
+- NV_BASE_SITEURL: Tên thư mục gốc chứa file kèm theo ý tự / ở đầu và cuối. Nếu không có thư mục thì là ký tự /, ví dụ /nukeviet/ hoặc / hoặc /nukeviet/nukeviet2/.
+- NV_BASE_ADMINURL: đường dẫn đến admin, ví dụ /nukeviet/admin.
+- NV_DOCUMENT_ROOT: Đường dẫn tuyệt đối đến thư mục chứa web của server, ví dụ D:/AppServ/www.
+- NV_EOL: Kí tự ngắt dòng.
+- NV_UPLOAD_MAX_FILESIZE: Kích thước tối đa file tải lên, tính bằng byte.
+- NV_UPLOADS_REAL_DIR: Đường dẫn tuyệt đối đến thư mục chứa file.
+- NV_CACHE_PREFIX: Tiếp đầu tố của cache.
+- NV_IS_AJAX: Kiểm tra referer hệ thống hay bên ngoài, giá trị true hoặc false.
+- NV_IS_MY_USER_AGENT:Xác định có phải User_Agent của NukeViet hay không.
+- NV_AUTHORS_GLOBALTABLE: Tên table authors.
+- NV_GROUPS_GLOBALTABLE: Tên table nhóm thành viên.
+- NV_USERS_GLOBALTABLE: Tên table thành viên.
+- NV_SESSIONS_GLOBALTABLE: Tên table lưu session.
+- NV_COOKIES_GLOBALTABLE: Tên table lưu cookie.
+- NV_LANGUAGE_GLOBALTABLE: Tên bable lưu ngôn ngữ.
+- NV_BANNERS_CLIENTS_GLOBALTABLE: Tên table chứa khách hàng phần quảng cáo.
+- NV_BANNERS_PLANS_GLOBALTABLE: Tên table chứa
+- NV_BANNERS_ROWS_GLOBALTABLE: Tên table chứa quảng cáo.
+- NV_BANNERS_CLICK_GLOBALTABLE: Tên table chứa thông tin thống kê quảng cáo.
+- NV_CONFIG_GLOBALTABLE: Tên table cấu hình hệ thống.
+- NV_UPLOAD_GLOBALTABLE: Tên table lưu các file upload.
+- NV_CRONJOBS_GLOBALTABLE: Tên table lưu tiến trình tự động.
+- NV_PREFIXLANG: Tiếp đầu tố + ngôn ngữ của table ví dụ nv3_vi.
+- NV_MODULES_TABLE: Tên table lưu thông tin các module.
+- NV_BLOCKS_TABLE: Tên table lưu thông tin các blcok.
+- NV_MODFUNCS_TABLE: Tên table thiết lập các layout cho theme.
+- NV_COUNTER_TABLE: Tên table chứa thông tin thống kê.
+- NV_SEARCHKEYS_TABLE: Tên table chứa các từ khóa tìm kiếm.
+- NV_REFSTAT_TABLE: Tên table thống kê các referer.
+- UPLOAD_CHECKING_MODE: Kiểu kiểm tra file tải lên.
+- ADMIN_LOGIN_MODE: Kiểu đăng nhập của admin.
+- PCLZIP_TEMPORARY_DIR: Đường dẫn tuyệt đối đến thư mục chứa file nén tạm thời.
+- NV_IS_USER: Có phải là thành viên không.
+- NV_IS_SPADMIN: Có phải là admin tối cao hoặc người điều hành chung không.
+- NV_IS_GODADMIN: Có phải là admin tối cao không.
+- NV_IS_MODADMIN: Có phải là người quản trị hay không. (Bao gồm điều hành module, điều hành chung, quản trị tối cao).
+- NV_ALLOW_FILES_TYPE: Các kiểu file được tải lên.
+- NV_ALLOW_UPLOAD_FILES: Cho phép tải file lên.
+- NV_LANG_DATA: Ngôn ngữ data.
+- NV_LANG_INTERFACE: Ngôn ngữ giao diện.
+- NV_UPLOADS_DIR: Tên thư mục upload
+- SYSTEM_UPLOADS_DIR: Tương tự NV_UPLOADS_DIR
+- SYSTEM_CACHEDIR: Tương tự NV_CACHEDIR
+- NV_IP_DIR: Thư mục chưa file ip
+- NV_CACHEDIR: Thư mục cache
+- NV_ASSETS_DIR: Thư mục assets
+- NV_EDITORSDIR: Thư mục editor
+- NV_BANNER_DIR: Thư mục file cấu hình quảng cáo
+- NV_FILEHEAD: Thông tin mô tả các file php
+- NUKEVIET_STORE_APIURL: Giá trị API cố định của NukeViet Store
+- NV_ANTI_AGENT: Nếu là true báo hiệu hệ thống sẽ chặn các User Agent = none
+- NV_ANTI_IFRAME: Nếu là true báo hiệu hệ thống sẽ cấm các chèn iframe
+- NV_GFX_HEIGHT: Chiều cao mã captcha
+- NV_GFX_NUM: Độ dài mã captcha
+- NV_GFX_WIDTH: Chiều rộng mã captcha
+- NV_LIVE_COOKIE_TIME: Thời gian một cookie tồn tại
+- NV_LIVE_SESSION_TIME: Thời gian tồn tại của session
+- NV_MAX_HEIGHT: Chiều cao tối đa ảnh được phép upload
+- NV_MAX_WIDTH: Chiều rộng tối đa ảnh được phép upload
+- NV_SYSTEM: Nếu hằng này được định nghĩa có nghĩa đang ở khu vực ngoài site
+- NV_CONFIG_FILENAME: Vị trí file config của hệ thống
+- NV_ADMINDIR: Tên thư mục quản trị
+- NV_DATADIR: Tên thư mục data
+- NV_LOGS_DIR: Tên thư mục logs
+- NV_TEMP_DIR: Tên thư mục tmp
+- NV_TEMPNAM_PREFIX: Tiếp đầu tố của file tạm
+- NV_ERRORLOGS_FILENAME: Tên thư mục error_log
+- NV_LOGS_EXT: tên phần mở rộng (ext) của file log
+- NV_NAME_VARIABLE: Định nghĩa biến request module name
+- NV_OP_VARIABLE: Định nghĩa biến request function của module
+- NV_LANG_VARIABLE: Định nghĩa biến request ngôn ngữ data
+- ZLIB_OUTPUT_COMPRESSION_LEVEL: Độ nén trang khi bật chế độ GZip
+- NV_ONLINE_UPD_TIME: Thời gian để tính thành viên online
+- NV_REF_LIVE_TIME: Thời gian lưu trữ referer
+- NV_MIN_SEARCH_LENGTH: Độ dài tối thiểu của khóa tìm kiếm
+- NV_MAX_SEARCH_LENGTH: Độ dài tối đa của khóa tìm kiếm
+- NV_TITLEBAR_DEFIS: Ký tự phân cách của tiêu đề site
+- NV_ALLOW_REQUEST_MODS: Các phương thức request được chấp nhận
+- NV_REQUEST_DEFAULT_MODE: Phương thức request mặc định
+
+Thông tin định nghĩa một số trình duyệt và hệ điều hành:
+
+``` php
+//Browser Names
+define('BROWSER_OPERA', 'Opera');
+define('BROWSER_OPERAMINI', 'Opera Mini');
+define('BROWSER_WEBTV', 'WebTV');
+define('BROWSER_EXPLORER', 'Internet Explorer');
+define('BROWSER_EDGE', 'Microsoft Edge');
+define('BROWSER_POCKET', 'Pocket Internet Explorer');
+define('BROWSER_KONQUEROR', 'Konqueror');
+define('BROWSER_ICAB', 'iCab');
+define('BROWSER_OMNIWEB', 'OmniWeb');
+define('BROWSER_FIREBIRD', 'Firebird');
+define('BROWSER_FIREFOX', 'Firefox');
+define('BROWSER_ICEWEASEL', 'Iceweasel');
+define('BROWSER_SHIRETOKO', 'Shiretoko');
+define('BROWSER_MOZILLA', 'Mozilla');
+define('BROWSER_AMAYA', 'Amaya');
+define('BROWSER_LYNX', 'Lynx');
+define('BROWSER_SAFARI', 'Safari');
+define('BROWSER_IPHONE', 'iPhone');
+define('BROWSER_IPOD', 'iPod');
+define('BROWSER_IPAD', 'iPad');
+define('BROWSER_CHROME', 'Chrome');
+define('BROWSER_COCCOC', 'Coc Coc');
+define('BROWSER_ANDROID', 'Android');
+define('BROWSER_GOOGLEBOT', 'GoogleBot');
+define('BROWSER_YAHOOSLURP', 'Yahoo! Slurp');
+define('BROWSER_W3CVALIDATOR', 'W3C Validator');
+define('BROWSER_BLACKBERRY', 'BlackBerry');
+define('BROWSER_ICECAT', 'IceCat');
+define('BROWSER_NOKIAS60', 'Nokia S60 OSS Browser');
+define('BROWSER_NOKIA', 'Nokia Browser');
+define('BROWSER_MSN', 'MSN Browser');
+define('BROWSER_MSNBOT', 'MSN Bot');
+define('BROWSER_BINGBOT', 'Bing Bot');
+
+//Platform Names
+define('PLATFORM_WIN', 'Windows');
+define('PLATFORM_WIN10', 'Windows 10');
+define('PLATFORM_WIN8', 'Windows 8');
+define('PLATFORM_WIN7', 'Windows 7');
+define('PLATFORM_WIN2003', 'Windows 2003');
+define('PLATFORM_WINVISTA', 'Windows Vista');
+define('PLATFORM_WINCE', 'Windows CE');
+define('PLATFORM_WINXP', 'Windows XP');
+define('PLATFORM_WIN2000', 'Windows 2000');
+define('PLATFORM_APPLE', 'Apple');
+define('PLATFORM_LINUX', 'Linux');
+define('PLATFORM_OS2', 'OS/2');
+define('PLATFORM_BEOS', 'BeOS');
+define('PLATFORM_IPHONE', 'iPhone');
+define('PLATFORM_IPOD', 'iPod');
+define('PLATFORM_IPAD', 'iPad');
+define('PLATFORM_BLACKBERRY', 'BlackBerry');
+define('PLATFORM_NOKIA', 'Nokia');
+define('PLATFORM_FREEBSD', 'FreeBSD');
+define('PLATFORM_OPENBSD', 'OpenBSD');
+define('PLATFORM_NETBSD', 'NetBSD');
+define('PLATFORM_SUNOS', 'SunOS');
+define('PLATFORM_OPENSOLARIS', 'OpenSolaris');
+define('PLATFORM_ANDROID', 'Android');
+define('PLATFORM_IRIX', 'Irix');
+define('PLATFORM_PALM', 'Palm');
+```
+
+- NV_MEMCACHED_HOST: Tên host Memcached
+- NV_MEMCACHED_PORT: Memcache port
+- NV_REDIS_HOST: Redis cache host
+- NV_REDIS_PORT: Redis cache post
+- NV_REDIS_PASSWORD: Redis cache pass
+- NV_REDIS_DBINDEX: Redis cache prefix
+- NV_REDIS_TIMEOUT: Redis cache timeout
+- ADMIN_LOGIN_MODE: Cấp bậc admin được phép đăng nhập: 1 =\> Quản trị tối cao được đăng nhập, 2 điều hành chung được đăng nhập, 3 =\> Tất cả các admin được đăng nhập
+- NV_IS_REWRITE_OBSOLUTE: Nếu được định nghĩa và có giá trị true hệ thống sẽ rewrite các link với đường dẫn tuyệt đối (chứa domain)
+- NV_REWRITE_EXTURL: Nếu được định nghĩa bằng true tức liên kết hiện tại đang rewrite với giá trị phần mở rộng ở cuối
+- NV_IS_DRAG_BLOCK: Nếu định nghĩa bằng true tức admin đang bật kéo thả block
+- NV_ALLOWED_HTML_TAGS: Các mã html được chấp nhận trong request
+- NV_ADMIN: Hằng này định nghĩa tức đang thao tác trong admin

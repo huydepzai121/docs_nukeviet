@@ -1,0 +1,32 @@
+---
+title: "event_before_sending_test_mail"
+description: "Sự kiện xảy ra trước khi gửi thử nghiệm một mẫu email tại phần quản lý mẫu email."
+---
+
+Sự kiện xảy ra trước khi gửi thử nghiệm một mẫu email tại phần quản lý mẫu email.
+
+### Tham số
+
+| STT | Tên biến       | Kiểu dữ liệu | Ghi chú |
+|-----|:---------------|:-------------|:--------|
+| 0   | \$emailid      | int          |         |
+| 1   | \$email_data   | array        |         |
+| 2   | \$merge_fields | array        |         |
+| 3   | \$field_data   | array        |         |
+
+### Dữ liệu trả về
+
+Tùy người lập trình
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'event_before_sending_test_mail', $priority, function($vars) {
+    $emailid = $vars[0];
+    $email_data = $vars[1];
+    $merge_fields = $vars[2];
+    $field_data = $vars[3];
+
+    // Thực hiện code hook tại đây...
+});
+```

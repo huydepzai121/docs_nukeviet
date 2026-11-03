@@ -1,0 +1,122 @@
+---
+title: "Hướng dẫn cài đặt NukeViet 3 trên free hosting"
+description: "Truy cập vào địa chỉ byethost.comvà chọn mục Free hosting"
+---
+
+## Đăng ký freehosting trên byethost.com
+
+Truy cập vào địa chỉ byethost.comvà chọn mục Free hosting
+
+![Hình 1: Truy cập vào trang đăng ký](/images/nukeviet/setup/image061.png)
+
+Trong trang tiếp theo chọn mục Click here to sign up for free hosting(Xem hình 2).
+
+![Hình 2: Chọn mục đăng ký](/images/nukeviet/setup/image063.png)
+
+Trong trang đăng ký chúng ta nhập đầy đủ thông tin đăng ký với nhà cung cấp hosting, nhớ các thông tin này để đăng nhập trong các bước sau.
+
+![Hình 3: Nhập thông tin đăng ký](/images/nukeviet/setup/image065.png)
+
+Chọn Register để đăng ký
+
+![Hình 4: Chọn Clik Me To Continue](/images/nukeviet/setup/image067.png)
+
+Tiếp theo chọn Click Me To Continue.
+
+Sau đó nhập các ký tự kiểm tra và chọn Register. ![Hình 5](/images/nukeviet/setup/image069.png)
+
+Hệ thống thông báo đã gửi 1 email đến gmail của người đăng ký. ![Hình 6: Thông báo gửi email](/images/nukeviet/setup/image071.png)
+
+Tiếp theo chúng ta vào mail vừa đăng ký để nhận mail kích hoạt và thông tin tài khoản, trong mail thứ nhất là link kích hoạt tài khoản, click chọn link này sẽ dẫn đến trang nhập mã hoàn tất đăng ký (Xem hình 7).
+
+![Hình 7: link đăng ký trong mail](/images/nukeviet/setup/image073.png)
+
+Sau đó chúng ta nhập mã xác nhận kích hoạt và chọn Register để hoàn tất ![Hình 8: Nhập mã kích hoạt](/images/nukeviet/setup/image075.png)
+
+Trong cửa sổ tiếp theo chọn Click here to log into your VistaPanel để chuyển đến login (Xem hình 13)
+
+![Hình 9: Chọn login](/images/nukeviet/setup/image077.png)
+
+Tiếp theo sẽ là cửa sổ đăng nhập
+
+![Hình 10: cửa sổ đăng nhập](/images/nukeviet/setup/image079.png)
+
+Username và password dùng để đăng nhập chúng ta lấy trong mail thứ 2
+
+Sau khi đăng nhập trang web sẽ chuyển đến giao diện quản lý hệt hống của VistaPanel (Xem hình 11).
+
+![Hình 11: giao diện quản lý VistaPanel](/images/nukeviet/setup/image081.png)
+
+## Upload file
+
+### Upload bộ cài lên hosting
+
+Truy cập địa chỉ [http://nukeviet.vn](http://nukeviet.vn) chọn mục download nukeviet để down bản mới nhất.
+
+Sau khi download, giải nén chúng ra được file nukeviet.zip
+
+Hosting BYETHOST.COM chỉ cho upload tối đa 4 Mb 1 lần lên, nên chúng ta phải chia các file trong thư mục NukeViet làm 2 phần để upload lên hosting.
+
+![Hình 12: Giải nén ra file nukeviet.zip](/images/nukeviet/setup/image083.png)
+
+Sau khi giải nén nukeviet.zip được thư mục nukeviet, trong thư mục đó chúng ta chọn và nén 2 thư mục icludes, uploads thành 1 file nén có tên nukeviet_1.zip; các file và thư mục còn lại chúng ta nén thành 1 file nukeviet_2.zip(Xem hình 13).
+
+![Hình 13: Nén các thư mục](/images/nukeviet/setup/image085.png)
+
+Sau khi nén ta được 2 file nukeviet_1.zip và nukeviet_2.zip
+
+![Hình 14: Sau khi nén xong](/images/nukeviet/setup/image087.png)
+
+Tìm đến và chọn mục Online file manager nằm trong phần Site management
+
+![Hình 15: Chọn mục Online file manager](/images/nukeviet/setup/image089.png)
+
+Trong cửa sổ tiếp theo chọn thư mục htdocs
+
+![Hình 16: Chọn thư mục htdocs](/images/nukeviet/setup/image091.png)
+
+Sau đó upload ở cửa sổ kế tiếp ![Hình 17: Chọn mục upload](/images/nukeviet/setup/image093.png)
+
+Chọn nút Brown
+
+![Hình 18: Chọn Brown](/images/nukeviet/setup/image095.png)
+
+Chọn đường dẫn lần lượt đến thư mục nukeviet_1 và nukeviet_2, chọn open
+
+![Hình 19: Chọn đường dẫn](/images/nukeviet/setup/image097.png)
+
+Sau khi đã chọn đường dẫn đến 2 thư mục, trong mục upload to directory chúng ta chọn dường dẫn đến thư mục /htdocs để chứa 2 file sau khi upload. Chọn dấu tích màu xanh lá cây để upload 2 file này (Xem hình 20).
+
+![Hình 20: Chọn upload](/images/nukeviet/setup/image099.png)
+
+Đợi vài phút cho quá trình upload 2 file này xong, chọn dấu tích màu xanh lá cây để kết thúc quá trình upload (Xem hình 21). ![Hình 21: Kết thúc upload](/images/nukeviet/setup/image101.png)
+
+## Tạo cở sở dữ liệu
+
+Trong Database management chọn MySQL Database để bắt đầu tạo database
+
+![Hình 22: Chọn MySQL Database](/images/nukeviet/setup/image103.png)
+
+Tiếp theo ở mục Creat a new database nhập tên database cần tạo sau đó chọn Creat Database
+
+![Hình 23: Creat database](/images/nukeviet/setup/image105.png)
+
+Database được tạo có tên b15_6976685_nv3
+
+![Hình 24: Tạo xong database](/images/nukeviet/setup/image107.png)
+
+## Cài đặt nukeviet
+
+Truy cập đến địa chỉ http://tienbo.byethost15.com(địa chỉ này có trong mail thứ 2 do nhà cung cấp gửi đến lúc đăng ký tài khoản hosting)Khi đó chương trình sẽ tự động chuyển sang bước cài đặt trên địa chỉ: [http://tienbo.byethot.com/install/index.php](http://tienbo.byethot.com/install/index.php)
+
+Khi đó Quá trình cài đặt NukeViet 3 trên byethottương tự như quá trình cài đặt trên localhost.
+
+**Chú ý**: Trong bước cấu hình cơ sở dữ liệu các thông tin điền như sau:
+
+- Tên host: lấy từ MSQL host name nằm trong khu vực Account
+
+- Username, password Chính là tài khoản và mật khẩu đăng nhập
+
+- Tên cơ sở dữ liệu: là tên của Database mà chúng ta tạo ra **b15_6976685_nv3**
+
+![Hình 25](/images/nukeviet/setup/image109.png)

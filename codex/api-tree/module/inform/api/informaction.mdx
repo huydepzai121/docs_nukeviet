@@ -1,0 +1,52 @@
+---
+title: "Hướng dẫn sử dụng API InformAction"
+description: "API dùng để thêm/sửa/xóa thông báo"
+---
+
+## Tác dụng
+
+API dùng để thêm/sửa/xóa thông báo
+
+### Tham số có thể truyền vào:
+
+### Request Parameters
+
+| Tham số | Kiểu dữ liệu | Tính bắt buộc | Mô tả |
+|:---|----|:---|:---|
+| **operation** | string | Bắt buộc | Là một trong các hành động của API: Thêm (add), sửa (edit), xóa (delete) |
+| id | int | Bắt buộc nếu **operation** là edit hoặc delete | ID của thông báo đẩy trong CSDL |
+| sender_role | string | Bắt buộc | Vai trò của người gửi: Hệ thống (system), Quản trị (admin), nhóm (group) |
+| sender_group | int | Bắt buộc nếu \`sender_role\` là group | ID của nhóm người dùng (từ 10 trở lên) |
+| sender_admin | int | Bắt buộc nếu \`sender_role\` là admin | ID của quản trị gửi tin |
+| receiver_type | string | Bắt buộc | Kiểu của đối tượng nhận: người dùng (ids), nhóm (grs) |
+| receiver_grs | array | Bắt buộc nếu \`receiver_type\` là grs | Danh sách ID các nhóm nhận thông báo |
+| receiver_ids | array | Không bắt buộc | Danh sách ID của người dùng nhận thông báo. Giá trị rỗng = gửi thông báo cho tất cả |
+| **isref** | **string** | **Bắt buộc nếu \`operation\` là edit hoặc add** | **Mã ngôn ngữ của message mặc định** |
+| **message** | **array** | **Bắt buộc nếu \`operation\` là edit hoặc add** | **Nội dung thông báo, có dạng cặp key =\> value, kiểu như: \`\['en' =\> 'Content', 'vi' =\> 'Nội dung'\]\` Trong đó phần value của key ngôn ngữ mặc định là bắt buộc. Nó được dùng để thay thế cho message rỗng của các ngôn ngữ khác.** |
+| link | string | Không bắt buộc, \*\*nếu có thì bắt buộc phải có ở ngôn ngữ mặc định \*\* | Liên kết của thông báo, **có dạng cặp key =\> value, kiểu như: \`\['en' =\> 'linken', 'vi' =\> 'linkvi'\]\` Trong đó phần value của key ngôn ngữ mặc định là bắt buộc. Nó được dùng để thay thế cho link rỗng của các ngôn ngữ khác.** |
+| add_time | string | \*\*Bắt buộc nếu **operation** là edit hoặc add\*\* | Ngày/Tháng/Năm bắt đầu hiển thị thông báo (định dạng dd/mm/YYYY) |
+| add_hour | int | Không bắt buộc | Giờ bắt đầu hiện thị thông báo |
+| add_min | int | Không bắt buộc | Phút hiển thị thông báo |
+| exp_time | string | Không bắt buộc | Ngày/Tháng/Năm hết hạn hiển thị thông báo (định dạng dd/mm/YYYY) |
+| exp_hour | int | Không bắt buộc | Giờ kết thúc thông báo |
+| exp_min | int | Không bắt buộc | Phút kết thúc thông báo |
+| **Checkhash** | **string** | **Bắt buộc** | **Là sha1 của chuỗi được tạo từ http_build_query của các tham số trên sau khi áp dụng ksort** |
+
+### Dữ liệu trả về:
+
+#### Nếu truy vấn có lỗi:
+
+| Thuộc tính | Kiểu dữ liệu | Mô tả                      |
+|------------|--------------|:---------------------------|
+| status     | string       | Trạng thái truy vấn: error |
+| code       | int          | Mã lỗi                     |
+| message    | string       | Thông báo lỗi              |
+
+#### Nếu truy vấn thành công:
+
+| Thuộc tính | Kiểu dữ liệu | Mô tả |
+|----|----|:---|
+| status | string | Trạng thái truy vấn: success |
+| code | int | Mã lỗi: 0000 |
+| message | string | Thông báo lỗi: Rỗng |
+| info | array | Mảng dữ liệu là toàn bộ thông tin cụ thể của thông báo đẩy được lấy từ CSDL (\*) |

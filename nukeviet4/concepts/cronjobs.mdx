@@ -1,0 +1,12 @@
+---
+title: "Khái niệm Cronjobs trong NukeViet"
+description: "Lập trình viên có thể bổ sung thêm các tiến trình tự động cho NukeViet bằng cách xây dựng thêm các cronjob."
+---
+
+**Cronjobs** là các tiến trình tự động trong NukeViet, nó sẽ thực hiện một công việc nào đó sau một khoảng thời gian nhất định, các khoảng thời gian cũng như số lần thực hiện được quy định trong phần [cấu hình tiến trình tự động](/nukeviet4/admin/settings/cronjobs).
+
+Lập trình viên có thể bổ sung thêm các tiến trình tự động cho NukeViet bằng cách xây dựng thêm các [cronjob](/programming4/cronjob).
+
+Cronjob của NukeViet chạy dựa vào truy cập của người dùng, ko có truy cập thì Cronjob cũng không chạy được, do đó nếu cần thiết sẽ phải gọi tự động vào url mydomain.com/?second=cronjobs
+
+Nếu có quyền quản lý Server hoặc công cụ hosting cho phép chạy crontab của linux bạn nên 1 chức năng của module sau đó dùng curl của OS gọi vào.

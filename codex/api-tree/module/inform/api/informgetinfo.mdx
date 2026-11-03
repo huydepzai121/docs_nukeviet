@@ -1,0 +1,35 @@
+---
+title: "Hướng dẫn sử dụng API InformGetInfo"
+description: "API dùng để lấy thông tin của thông báo đẩy theo ID"
+---
+
+## Tác dụng
+
+API dùng để lấy thông tin của thông báo đẩy theo ID
+
+### Tham số có thể truyền vào:
+
+### Request Parameters
+
+| Tham số | Kiểu dữ liệu | Tính bắt buộc | Mô tả                           |
+|---------|--------------|---------------|:--------------------------------|
+| id      | int          | Bắt buộc      | ID của thông báo đẩy trong CSDL |
+
+### Dữ liệu trả về
+
+#### Nếu truy vấn có lỗi:
+
+| Thuộc tính | Kiểu dữ liệu | Mô tả                      |
+|------------|--------------|:---------------------------|
+| status     | string       | Trạng thái truy vấn: error |
+| code       | int          | Mã lỗi                     |
+| message    | string       | Thông báo lỗi              |
+
+#### Nếu truy vấn thành công:
+
+| Thuộc tính | Kiểu dữ liệu | Mô tả |
+|----|----|:---|
+| status | string | Trạng thái truy vấn: success |
+| code | int | Mã lỗi: 0000 |
+| message | string | Thông báo lỗi: Rỗng |
+| info | Array | Mảng dữ liệu là toàn bộ thông tin cụ thể của thông báo đẩy được lấy từ CSDL **(\*)** |

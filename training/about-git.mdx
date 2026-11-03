@@ -1,0 +1,67 @@
+---
+title: "Tổng quan về Git"
+description: "Các bạn học viên sẽ được tìm hiểu kiến thức cơ bản liên quan tới Git như:"
+---
+
+## Tóm tắt nội dung
+
+Các bạn học viên sẽ được tìm hiểu kiến thức cơ bản liên quan tới Git như:
+
+- Git là gì?
+- Cách khởi tạo kho code bằng lệnh Git
+- Cách check out kho code
+- Cách pull & push commit code lên kho code Git
+
+### Nguyên tắc làm việc với kho code Git
+
+#### Đặt tên tập tin
+
+- Chỉ gồm chữ thường, chứ hoa, con số, dấu gạch chân, gạch ngang, dấu chấm.
+- Không dùng khoảng trắng, ký tự đặc biệt.
+- Cần đặt tên tập tin là tiếng Anh.
+- Nên chọn tên tập tin ngắn gọn, dễ nhớ, không nên đặt quá 80 ký tự (Tính cả đường dẫn thư mục).
+
+#### Định dạng tên tập tin
+
+Cần cấu hình sao cho, khi đưa lên kho code, định dạng tập tin là unix.
+
+1\. Trong aptana chọn Project, tiếp đến chọn file -\> Convert Line Delimiter To -\> Chọn Unix
+
+2\. Hiển thị ra Popup thì nhấp chuột vào Select All hoặc chọn từng file muốn chuyển sang tập tin unix sau đó nhấn OK và đợi cho quá trình convert thực hiện xong rồi tiến hành commit lên kho code.
+
+#### Khi thực hiện một hành động xong cần commit
+
+- Khi thực hiện xong 1 công việc cần commit để nếu thực hiện các việc khác gây lỗi thì có thể quay lại.
+- Một commit chỉ được commit các file liên quan đến nó, cấm khi commit chọn tất cả các file.
+- Khi thực hiện một site, không được copy các module để cài, mà cần làm theo cách trộn kho code chính với các module. Mục đích của việc này là để khi các module được cập nhật, chỉ cần chạy lệnh là cập nhận, sau này có thể dễ dàng tách các file thay đổi ra.
+- Nếu phát hiện một lỗi của kho code chính, cần sửa vào kho code chính, sau đó cập nhật về site đang thực hiện, để thống nhất việc chỉnh sửa code.
+- Khi Copy giao diện của module từ giao diện mặc định, commit xong mới được sửa tiếp. Mục đích của việc này để khi muốn xem thay đổi so với giao diện mặc định còn có thể tìm.
+
+#### Trước khi tiến hành chỉnh sửa, cần pull về
+
+- Pull trước khi push. Điều này có nghĩa là, nếu bạn không sửa vào kho git trong một thời gian tương đối dài
+- (một ngày chẳng hạn), bạn nên chạy git pull để lấy về các thay đổi mới nhất từ kho trước khi bạn bắt đầu soạn
+- hay chỉnh code.
+- Lý do cho việc này rất đơn giản: Vì kho do nhiều người tham gia chỉnh sửa, nên có khi điều bạn muốn thay đổi
+- đã có người khác làm rồi, và bạn không cần gây thêm rắc rối.
+- Bạn sẽ biết hậu quả thế nào nếu để ra xung đột.
+- Với các kho code không cho bạn commit trực tiếp bạn cần tạo 1 pull resquest. Ví dụ kho code chính của NukeViet
+
+\- Sau khi kiểm tra và vừa ý, bạn có thể xác nhận thay đổi bằng lệnh git commit. và sau đó gửi thay đổi trên máy phục vụ bằng lệnh git push.
+
+\- Nếu xảy ra xung đột, bạn dùng lệnh git pull trước khi thử git push thêm lần nữa. Nếu vẫn có lỗi, hãy liên lạc với người có kinh nghiệm hơn để xử lý xung đột.
+
+[Xem thêm Hướng dẫn xử lý conflic tại](/programming/vcs/git)
+
+#### Làm thế nào để viết một git commit message tốt?
+
+- Subject riêng biệt với 1 dòng trống
+- Giới hạn subject với 50 ký tự
+- Viết in hoa đầu subject
+- Không kết thúc dòng subject với dấu chấm câu
+- Sử dụng body để mô tả how và why của commit
+
+### Tài liệu liên quan nội dung bài học
+
+- [Sổ tay Git - Hướng dẫn đơn giản cho mới học](https://rogerdudler.github.io/git-guide/index.vi.html?fbclid=IwAR3zNYMSGjjH0AoxgQjs7G_6CFm8WLY6-DMmwtAWdYFgL12M0LmxmLm5nLg)
+- [Video từ cơ bản đến nâng cao về Git](https://www.youtube.com/watch?v=sXeiez_SGNI&list=PLjCpH2Qpki-uBzaBg447zIPNKyWJwPXYr&fbclid=IwAR1SaeeKdpXff05Kfh_GClKvEyzlutl_dJos2Vakpof2six_x-Ks1DGX8hg)

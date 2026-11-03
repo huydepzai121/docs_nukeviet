@@ -1,0 +1,73 @@
+---
+title: "Hướng dẫn sử dụng chức năng captcha theo quy cách của giao diện mặc định"
+description: "Mục tiêu của đề tài này: Thêm captcha vào ứng dụng của bạn đang phát triển theo cách mặc định của NukeViet đưa ra."
+---
+
+Mục tiêu của đề tài này: Thêm captcha vào ứng dụng của bạn đang phát triển theo cách mặc định của NukeViet đưa ra.
+
+> Chú ý: Hướng dẫn này được viết ngay tại phiên bản NukeViet 4.1.01, nếu phiên bản NukeViet của bạn khác 4.1.01 một số chi tiết có thể sẽ khác đi.
+
+## Các bước thực hiện
+
+### Bước 1: Gọi hiển thị captcha
+
+Để gọi hiển thị captcha, ứng dụng cần phải kiểm tra được cấu hình loại captcha thông qua biến `$global_config['captcha_type']` nếu giá trị bằng 2 tức đang sử dụng reCAPTCHA, nếu khác 2 tức đang sử dụng captcha dạng nhập mã xác nhận nói chung.
+
+#### Đối với reCAPTCHA
+
+Để hiển thị captcha ứng dụng cần đưa vào HTML xuất ra một đoạn mã như sau:
+
+``` html
+<div id="recaptcha" data-toggle="recaptcha"></div>
+<script type="text/javascript">
+nv_recaptcha_elements.push({
+    id: "recaptcha", // ID của thẻ HTML mà reCAPTCHA sẽ xuất hiện. ID này phải là duy nhất nếu không reCAPTCHA sẽ xuất hiện nhưng không thể ấn chọn.
+    btn: $('[type="submit"]'), // Nút submit của form hệ thống sẽ disable khi load trang và enable khi xác thực thành công.
+    size: "compact", // Bỏ dòng này nếu muốn kiểu captcha hiển thị đầy đủ. Giữ nguyên nếu muốn hiển thị captcha dạng nhỏ
+    pnum: 3, // Số thẻ cha kể từ thẻ #recaptcha sẽ chứa nút submit. Dòng này có thể bỏ
+    btnselector: '[name="submit"]' // selector của Nút submit. Dòng này có thể bỏ
+});
+</script>
+```
+
+> Chú ý: 3 thuộc tính `data-toggle="recaptcha"`, `pnum`, `btnselector` được sử dụng nếu như đoạn mã này xuất hiện trong một khối ẩn, khối này sẽ được nhân lên trong một sự kiện (events) nào đó ví dụ nhuw tooltip, lightbox ... Khi xuất hiện 3 khối này, nếu sử dụng hàm javascript `modalShowByObj` hoặc `modalShow` của giao diện NukeViet mặc định mà có truyền giá trị `callback` bằng `recaptchareset` vào thì sau khi hiển thị modal hệ thống tự động đổi tên ID của thẻ và hiển thị captcha khác nhằm đảm bảo việc ID của thẻ không được trùng lại.
+
+#### Đối với dạng mã xác nhận
+
+Ứng dụng cần xuất được ảnh có chứa mã xác nhận có dạng:
+
+``` html
+<img alt="Mã bảo mật" src="http://domain.com/index.php?scaptcha=captcha&t=1487726078" width="150" height="40">
+```
+
+Trong đó biến t tuyền vào nhằm đảo bảo một thời điểm có thể gọi ra nhiều captcha trên site.
+
+### Bước 2: Lấy mã xác nhận khi submit form
+
+Đối với reCAPTCHA, khi submit form nội dung trả về sẽ ở biến `g-recaptcha-response` đối với captcha dạng mã xác nhận thì tùy thuộc vào giá trị name của ô nhập.
+
+Ví dụ lấy dữ liệu submit:
+
+``` php
+if ($global_config['captcha_type'] == 2) {
+    $fcode = $nv_Request->get_title('g-recaptcha-response', 'post', '');
+} else {
+    $fcode = $nv_Request->get_title('fcode', 'post', '');
+}
+```
+
+### Bước 3: Kiểm tra mã xác nhận
+
+Để kiểm tra mã xác nhận sử dụng hàm `nv_capcha_txt` giá trị trả về `true` nếu mã xác nhận chính xác và `false` nếu mã sai.
+
+Khi giá trị trả về true thì ứng dụng mới thực hiện tiếp các chức năng.
+
+Ví dụ
+
+``` php
+if (!nv_capcha_txt($fcode)) {
+    $error = ($global_config['captcha_type'] == 2 ? $lang_global['securitycodeincorrect1'] : $lang_global['securitycodeincorrect']);
+} else {
+    // Do some thing here
+}
+```

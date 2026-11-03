@@ -1,0 +1,97 @@
+---
+title: "Cấu hình đăng nhập tài khoản thông qua OAuth 2.0 credentials"
+description: "Để đăng ký OAuth 2.0 credentials, xem chi tiết tại: https://developers.google.com/accounts/docs/OpenIDConnect#getcredentials"
+---
+
+## 1) Cấu hình với Oauth Google
+
+Để đăng ký OAuth 2.0 credentials, xem chi tiết tại: [https://developers.google.com/accounts/docs/OpenIDConnect#getcredentials](https://developers.google.com/accounts/docs/OpenIDConnect#getcredentials)
+
+Phần: Obtain OAuth 2.0 credentials
+
+**Bước 1:** click vào link [Google Developers Console](https://console.developers.google.com/project)
+
+**Bước 2:** click vào "Create Project" để tạo 1 project mới
+
+**Bước 3:** sau khi tạo xong nó sẽ tự động chuyển qua url: [https://console.developers.google.com/project/mangvncom-965?authuser=0](https://console.developers.google.com/project/mangvncom-965?authuser=0) hoặc click bằng tay vào project đó. Tìm đếm mục "APIs & auth"
+
+**Bước 4:** Click vào APIs thuộc mục "APIs & auth". Tiếp theo tìm đến "Social APIs" và click vào "Google+ API", sau đó click vào "Enable API" để bật API
+
+**Bước 5:** Click chọn "Credentials" bên dưới mục APIs của mục lớn "APIs & auth"
+
+**Bước 6:** Click chọn "Create new Client ID" thuộc mục "OAuth"
+
+**Bước 7:** chọn "Web application" và tiến hành click "Configure consent screen"
+
+**Bước 8:** Điền đầy đủ thông tin chỗ nào ghi là url thì điền đầy đủ
+
+``` text
+Ví dụ khai báo tại google cho site http://demo.nukeviet.vn
+
+Product name: tên gì bạn tự đặt
+
+Authorized JavaScript origins: http://demo.nukeviet.vn
+
+Authorized redirect URIs : http://demo.nukeviet.vn/index.php?language=vi&nv=users&op=oauth&server=google
+
+Lưu ý, các thông tin khác có thì điền luôn như Google Plus ( Google+ page ID )
+```
+
+**Bước 9:** Sau khi có được thông tin gồm App ID/API Key ( Client ID ) và mã bí mật ( Client secret ) ([http://demo.nukeviet.vn/admin/index.php?language=vi&nv=users&op=config&oauth_config=google](http://demo.nukeviet.vn/admin/index.php?language=vi&nv=users&op=config&oauth_config=google)) thì truy cập vào website tìm đến cấu hình của module user. Tìm đến "Các nhà cung cấp Oauth, OpenID được chấp nhận" và tích vào ô "oauth google".
+
+``` text
+Ví dụ: 95005052-kou7g15jsb1tq2kipixxxxxrvqmje5nc.apps.googleusercontent.com
+
+Mã Bí Mật: Tưng ứng với Client secret do google tạo ra ví dụ: mUScXa7FVgfsxxxxxLAnIs9x
+```
+
+**Bước 10:** click vào "oauth google" (vì có đường link để vào trang trong). Tại đây có 2 form App ID/API Key và mã bí mật, bạn lấy thông tin ở bước trên rồi paste vào 2 form thông tin đó. Tiến theo click vào "save" để lưu
+
+**Bước 11:** Bạn thoát khỏi quản trị và vào trang chính click biểu tượng google ở block login hoặc phần đăng nhập của module user để kiểm tra. Nếu nó chuyển qua google bắt đăng nhập thì được. còn nếu báo lỗi thì bạn kiểm tra lại theo các bước trên.
+
+## 2) Cấu hình với Oauth FaceBook
+
+**Bước 1:** Tạo một Facebook App và Setting
+
+Xem bài : [Quản trị phần comment facebook trên mã nguồn mở NukeViet](/nukeviet/admin/news/facebookapi)
+
+Tạo 1 app mới tại Facebook App Dashboard và điền các thông tin cơ bản:
+
+[https://developers.facebook.com/apps/](https://developers.facebook.com/apps/)
+
+**Bước 2:** Lấy thông số App ID, App Secret
+
+Vào trang: [https://developers.facebook.com/apps/](https://developers.facebook.com/apps/)
+
+chọn App cần dùng
+
+Click vào nút Show tại phần App Secret, điền mật khẩu của Face để hiển thị lên App Secret
+
+**Bước 3:** Sau khi có được thông tin gồm App ID và App Secret thì truy cập vào website tìm đến cấu hình của module user. Tìm đến “Các nhà cung cấp Oauth, OpenID được chấp nhận” và tích vào ô “oauth facebook”.
+
+Ví dụ:
+
+``` text
+App ID:  1014398235245922
+
+App Secret: d7f6ad5e361d26ab097a3b72df4fb684
+```
+
+**Bước 4:** Từ menu trái =\> Sản phẩm =\> Đăng nhập Facebook =\> Cài đặt =\> Cài đặt OAuth ứng dụng
+
+Cấu hình "URI chuyển hướng OAuth hợp lệ" với giá trị: [https://my_domain.com/index.php?language=vi&nv=users&op=oauth&server=facebook](https://my_domain.com/index.php?language=vi&nv=users&op=oauth&server=facebook)
+
+**Bước 5:** click vào “oauth facebook” (vì có đường link để vào trang trong). Tại đây có 2 form App ID/API Key và mã bí mật, bạn lấy thông tin ở bước trên rồi paste vào 2 form thông tin đó. Tiến theo click vào “save” để lưu
+
+**Bước 6:** Bạn thoát khỏi quản trị và vào trang chính click biểu tượng facebook ở block login hoặc phần đăng nhập của module user để kiểm tra. Nếu nó chuyển qua facebook bắt đăng nhập thì được. còn nếu báo lỗi thì bạn kiểm tra lại theo các bước trên.
+
+**Nếu bạn đăng khai báo không được, cần chú ý các mục sau:**
+
+1.  Domain trong cấu hình đầu tiên của app đúng chưa.
+2.  Đã nhập email vào chưa. (Menu Setting: App domain (1), Contact email (2))
+3.  Đã bật app lên chưa hay nó vẫn ở chế độ test. (Menu Status & Review, chọn Yes chỗ khu vực Do you want to make this app and all its live features available to the general public?)
+4.  Đã thêm phần website vào chưa. (Menu Setting, Add platform, tìm thêm website của bạn vào)
+
+Tham khảo: [http://mynukeviet.net/tai-lieu/module-he-thong/cau-hinh-dang-nhap-oauth-facebook-trong-nukeviet-4.html](http://mynukeviet.net/tai-lieu/module-he-thong/cau-hinh-dang-nhap-oauth-facebook-trong-nukeviet-4.html)
+
+**Chú ý: Hiện nay website đăng nhập bắt buộc phải chạy https và phải bật ứng dụng lên thì đăng nhập bằng facebook mới hoạt động, website sử dụng http sẽ ko đăng nhập được**

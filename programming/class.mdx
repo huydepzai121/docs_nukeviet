@@ -1,0 +1,226 @@
+---
+title: "Các class dùng trong lập trình NukeViet"
+description: "Là biến chứa class request"
+---
+
+## Các class được gọi sẵn
+
+### \$nv_Request
+
+Là biến chứa class request
+
+- Lấy mảng:
+  ``` php
+  $nv_Request ->get_typed_array ( $name, $mode = null, $type = null, $default = null );
+  ```
+- Lấy chuỗi kí tự:
+  ``` php
+  $nv_Request ->get_string ( $name, $mode = null, $default = null, $decode = true );
+  ```
+- Lấy số thực:
+  ``` php
+  $nv_Request ->get_float ( $name, $mode = null, $default = null, $decode = true );
+  ```
+- Lấy số nguyên:
+  ``` php
+  $nv_Request ->get_int ( $name, $mode = null, $default = null, $decode = true );
+  ```
+- Lấy giá trị logic:
+  ``` php
+  $nv_Request ->get_bool ( $name, $mode = null, $default = null, $decode = true );
+  ```
+- Kiểm tra tồn tại của một request:
+  ``` php
+  $nv_Request ->isset_request ( $names, $mode, $all = true );
+  ```
+- Xóa bỏ request:
+  ``` php
+  $nv_Request ->unset_request ( $names, $mode );
+  ```
+- Lưu session:
+  ``` php
+  $nv_Request ->set_Session ( $name, $value = '' );
+  ```
+- Lưu cookie:
+  ``` php
+  $nv_Request ->set_Cookie ( $name, $value = '', $expire = 0, $encode = true );
+  ```
+
+### \$db
+
+Là biến chứa class mysql
+
+- Xuất chuỗi trong tìm kiếm:
+  ``` php
+  $db->dblikeescape ( $value );
+  ```
+- Xuất lỗi mysql:
+  ``` php
+  $db->sql_error ( $message = '' );
+  ```
+- Làm trống bộ nhớ
+  ``` php
+  $db->sql_freeresult ( $query_id = 0 );
+  ```
+- Trả về mảng dữ liệu:
+  ``` php
+  $db->sql_fetch_assoc ( $query_id = 0 );
+  ```
+- Trả về mảng dữ liệu kiểu liệt kê:
+  ``` php
+  $db->sql_fetchrow ( $query_id = 0, $type = 0 );
+  ```
+- Trả về số hàng bị thay đổi:
+  ``` php
+  $db->sql_affectedrows ( );
+  ```
+- Trả về số hàng lấy được:
+  ``` php
+  $db->sql_numrows ( $query_id = 0 );
+  ```
+- Chèn dữ liệu và trả về khóa chính:
+  ``` php
+  $db->sql_query_insert_id ( $query = "" );
+  ```
+- Tạo truy vấn:
+  ``` php
+  $db->sql_query ( $query = "" );
+  ```
+
+### \$crypt
+
+Là biến chứa class crypt
+
+- Mã hóa mật khẩu:
+  ``` php
+  $crypt->hash( $password );
+  ```
+- Kiểm tra mật khẩu:
+  ``` php
+  $crypt->validate( $password_in, $pass_check );
+  ```
+
+### \$xtpl
+
+Trong hệ thống NukeViet biến \$xtpl thường được chứa class xtemplate. Tuy nhiên biến này chưa được tạo sẵn.
+
+- Khởi tạo:
+  ``` php
+  $xtpl = new XTemplate( $file_name, $file_location );
+  ```
+
+Trong đó `$file_name` là tên file, `$file_location` là đường dẫn tuyệt đối đến file cần chọn.
+
+- Xuất một biến:
+  ``` php
+  $xtpl->assign( $name, $content );
+  ```
+- Đánh dấu một khối:
+  ``` php
+  $xtpl->parse($bname);
+  ```
+- Trả về toàn bộ dữ liệu:
+  ``` php
+  $xtpl->out($bname);
+  ```
+- Trả về Text:
+  ``` php
+  $xtpl->text($bname);
+  ```
+
+## Các class có thường dùng
+
+### Upload class
+
+Dùng để upload một file lên hệ thống.
+
+- Gọi class:
+  ``` php
+  require_once ( NV_ROOTDIR . "/includes/class/upload.class.php" );
+  ```
+- Khởi tạo:
+  ``` php
+  $upload = new upload( $allow_files_type, $global_config['forbid_extensions'], $global_config['forbid_mimes'],NV_UPLOAD_MAX_FILESIZE, NV_MAX_WIDTH, NV_MAX_HEIGHT );
+  ```
+- Lưu một file tải lên:
+  ``` php
+  $upload ->save_file( $userfile, $savepath, $replace_if_exists = true );
+  ```
+
+  \$userfile là biến \$\_FILE(\$file_upload);
+- Lưu một file từ URL:
+  ``` php
+  $upload ->save_urlfile( $urlfile, $savepath, $replace_if_exists = true );
+  ```
+- Giá trị trả về của việc lưu một file là một mảng bao gồm:
+  - error: Thông tin lỗi.
+  - name: Đường dẫn tuyệt đối đến file.
+  - Basename: Tên file.
+  - Ext: Kiểu file.
+  - Mime: mine-type.
+  - is_img: Có phải là ảnh không.
+
+### Download class
+
+- Gọi class:
+  ``` php
+  require_once ( NV_ROOTDIR . '/includes/class/download.class.php' );
+  ```
+- Khởi tạo:
+  ``` php
+  $download = new download( $file_src, $directory, $file_basename, $is_resume, $max_speed );
+  ```
+
+  Trong đó:
+  - \$file_src là đường dẫn tuyệt đối đến file,
+  - \$directory là thư mục chứa file,
+  - \$file_basename tên file tải về,
+  - \$is_resume cho phép tạm ngừng và download lại,
+  - \$max_speed tốc độ tối đa.
+- Tải file về:
+  ``` php
+  $download->download_file();
+  ```
+
+### Images class
+
+- Gọi class:
+  ``` php
+  require_once(NV_ROOTDIR."/includes/class/image.class.php");
+  ```
+- Khởi tạo:
+  ``` php
+  $image = new image(NV_ROOTDIR."/images/logo.png", $max_width,$max_height);
+  ```
+- Thay đổi kích thước theo tỉ lệ phần trăm:
+  ``` php
+  $image->resizePercent(200);
+  ```
+- Cắt ảnh từ giữa:
+  ``` php
+  $image->cropFromCenter(150,200);
+  ```
+- Cắt ảnh từ trái:
+  ``` php
+  $image->cropFromLeft( $leftX, $leftY, $newwidth, $newheight );
+  ```
+- Chèn text:
+  ``` php
+  $image->addstring( $string, $align = 'right', $valign = 'bottom', $font = "", $fsize = 2 );
+  ```
+- Chèn logo:
+  ``` php
+  $image->addlogo( $logo, $align = 'right', $valign = 'bottom' );
+  ```
+- Xoay ảnh:
+  ``` php
+  $image->rotate(45);
+  ```
+- Lưu ảnh:
+  ``` php
+  $image->save(NV_ROOTDIR.'/'.NV_TEMP_DIR.'/');
+  ```
+- Kết thúc phiên làm việc:
+  ``` php
+  $image->close();
+  ```

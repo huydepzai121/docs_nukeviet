@@ -1,0 +1,148 @@
+---
+title: "Thay đổi từ PHP 8.2 lên 8.5 và cách sửa code tương thích PHP 8.5"
+description: "Đọc tài liệu của PHP"
+---
+
+## Điểm mới
+
+Đọc tài liệu của PHP
+
+- [https://www.php.net/manual/en/migration83.new-features.php](https://www.php.net/manual/en/migration83.new-features.php)
+- [https://www.php.net/manual/en/migration84.new-features.php](https://www.php.net/manual/en/migration84.new-features.php)
+- [https://www.php.net/manual/en/migration85.new-features.php](https://www.php.net/manual/en/migration85.new-features.php)
+
+Tổng hợp những cái NukeViet có thể hữu hiệu:
+
+- Sử dụng hàm `json_validate()` để kiểm tra json có hợp lệ không mà không cần phải decode ra. Lưu ý không dùng json_validate() để kiểm ra rồi json_decode() sau đó vì không cần thiết, bởi chỉ json_decode đã đủ để vừa kiểm tra vừa decode.
+- Một số hàm mới trên php 8.4 có thể hữu ích như array_all(), array_any(), array_find(), array_find_key(). Nhưng cần cẩn thận tính tương thích ngược. Chỉ dùng nếu chắc chắn code yêu cầu chạy trên php 8.4 trở lên.
+- Một số hàm mới trên php 8.5 có thể hữu ích như array_first(), array_last(). Nhưng cần cẩn thận tính tương thích ngược. Chỉ dùng nếu chắc chắn code yêu cầu chạy trên php 8.5 trở lên.
+
+## Thay đổi cần cập nhật
+
+- exit()/die() hai hàm này chỉ nhận vào chuỗi và số nguyên. Truyền sai kiểu dữ liệu sẽ lỗi
+- Tìm chỗ dùng hàm ord(, regex để tìm `(?<![a-z0-9])ord\s*\(` chắc chắn tham số truyền vào phải là 1 byte nếu nhiều hơn sẽ cảnh báo Deprecated Notice. Ví dụ `ord(substr($string, $i)` cần sửa thành `ord($string[$i])` chú ý ví dụ này \$string không được chứa ký tự utf8 nếu chứa có thể bị cắt sai
+
+### trigger_error với tham số thứ 2 là 256 hoặc E_USER_ERROR
+
+Regex để tìm
+
+``` text
+trigger_error\s*\([^,]+,\s*(256|E_USER_ERROR)\s*\)
+```
+
+Cần sửa ví dụ:
+
+``` php
+http_response_code(403);
+trigger_error('error checksess', 256);
+```
+
+Thành
+
+``` php
+throw new \NukeViet\Http\HttpException('error checksess', 403);
+```
+
+Lưu ý: Message trường hợp này là những thông báo chủ đích show ra cho người dùng. Cần phải đảm bảo an toàn. Trong trường hợp chỉ cần dừng chương trình thì bạn sử dụng `throw new RuntimeException(...)` hoặc `throw new InvalidArgumentException(...)` tùy ngữ cảnh. Nếu làm biếng hơn có thể để luôn `throw new Exception(...)`
+
+### Vấn đề với list(...) = và \[...\] =
+
+Regex để tìm
+
+``` text
+\(\s*(?<![a-z0-9\]])\[\s*[^\]]+\]\s*=\s*\$
+list\s*\([^)]+\)\s*=\s*\$
+```
+
+Chắc chắn giá trị sau dấu = phải là array nếu không sẽ có cảnh báo `Warning: Cannot destructure non-array value`
+
+Ví dụ sửa:
+
+``` php
+while ([$layout, $in_module, $func_name] = $result->fetch(3)) {
+```
+
+Thành
+
+``` php
+while ($_scratch = $result->fetch(3)) {
+    [$layout, $in_module, $func_name] = $_scratch;
+    unset($_scratch);
+```
+
+Lưu ý sinh ra biến \$\_scratch cần cần thận xem xét nó không trùng với biến đã có. Trong hướng dẫn này dùng biến \$\_scratch để gần như đảm bảo nó có nghĩa hoàn toàn "tạm" và không có chỗ nào dùng. Nếu được nên viết luôn `$row = $result->fetch()` và dùng biến \$row luôn thay vì chia ra nhiều biến độc lập khó kiểm soát
+
+Sau khi sửa như bên trên xong, nếu bạn cẩn thận hãy dùng regex này để tìm mở rộng và đánh giá lại xem cần thiết sửa hay không `(?<![a-z0-9\]])\[\s*[^\]]+\]\s*=\s*\$`
+
+### Sửa cách giải phóng tài nguyên
+
+Các thư viện liệt kê bên dưới đã thay đổi cách trả dữ liệu từ resource → object. Theo 2 đợt
+
+Đợt 1:
+
+| Thư viện | Hàm init chính | Hàm giải phóng cũ | Từ version object |
+|:---|:---|:---|----|
+| **curl** | curl_init() | curl_close() | **PHP 8.0** |
+| **gd** | imagecreate\*() | imagedestroy() | **PHP 8.0** |
+| **openssl key** | openssl_pkey_get\_\*() | openssl_free_key() / openssl_pkey_free() | **PHP 8.0** |
+| **openssl x509** | openssl_x509_read() | openssl_x509_free() | **PHP 8.0** |
+| **sockets** | socket_create() | socket_close() | **PHP 8.0** |
+
+Đợt 2:
+
+| Thư viện             | Hàm init       | Hàm free cũ      | Từ version object |
+|:---------------------|:---------------|:-----------------|-------------------|
+| **fileinfo**         | finfo_open()   | finfo_close()    | **PHP 8.1**       |
+| **ftp**              | ftp_connect()  | ftp_close()      | **PHP 8.1**       |
+| **imap**             | imap_open()    | imap_close()     | **PHP 8.1**       |
+| **ldap**             | ldap_connect() | ldap_close()     | **PHP 8.1**       |
+| **pgsql connection** | pg_connect()   | pg_close()       | **PHP 8.1**       |
+| **pgsql result**     | pg_query()     | pg_free_result() | **PHP 8.1**       |
+
+Đến php 8.5 việc dùng free nó theo cách cũ sẽ phát ra cảnh báo. Cần cập nhật dạng như sau (bên dưới chỉ liệt kê các hàm mà NukeViet có dùng trong nhân)
+
+- finfo_close( sửa thành unset(
+- curl_close( sửa thành unset(
+- curl_share_close( sửa thành unset(
+- imagedestroy( sửa thành unset(
+- openssl_free_key( =\> Nếu có xóa bỏ dòng này
+- openssl_pkey_free( =\> Nếu có xóa bỏ dòng này (PHPMailer có)
+- openssl_x509_free( =\> Nếu có xóa bỏ dòng này
+
+Chú ý hướng dẫn này ghi gọn cho NukeViet 5.0 vì trên php 8.2 gần như mọi extension đã chuyển từ resource → object rồi. Nếu làm trên NukeViet 4.5 cần phải tùy tình huống vì php hỗ trợ 5.6 trở lên. Tại php \<8 gần như mọi extension đều là resource, lúc đó phải giữ nguyên finfo_close, curl_close, ...
+
+Làm ví dụ như này:
+
+``` php
+if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+    curl_close($curl);
+} else {
+    unset($curl);
+}
+```
+
+### Nên cân nhắc rà soát
+
+- Tìm code ép kiểu dữ liệu (int) hãy chắc chắn biến được ép là chuỗi đúng số nguyên nếu chuỗi float kiểu "12.6" sẽ sinh cảnh báo
+
+## Tính năng không còn cần xóa bỏ / chuyển đổi
+
+- Xóa bỏ hằng E_STRICT những chỗ nào dùng cần bỏ, nếu không sẽ có cảnh báo
+
+## Cách xử lý các lỗi cảnh báo trong error log của hệ thống
+
+**Using null as an array offset is deprecated, use an empty string instead**
+
+Lỗi này do sử dụng null làm key cho 1 mảng hoặc 1 biến để kàm key mà dữ liệu trong đó có thể null. Ví dụ
+
+``` php
+$row = $result->fetch();
+$array[$row['alias']] = 1;
+$array[null] = 1;
+```
+
+Dòng thứ 2 và 3 bên trên đều sinh ra lỗi. Cách xử lý là ép nó về string ví dụ
+
+``` php
+$array[$row['alias'] ?? ''] = 1;
+```

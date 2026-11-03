@@ -1,0 +1,39 @@
+---
+title: "Nâng cấp module chạy trên NukeViet 4.0.23 lên 4.0.24"
+description: "Nếu những chỗ nào dùng $nvCache trong function, thì cần global biến $nvCache Chỗ gọi hàm $nvCache→db() bắt buộc phải truyền vào 3 tham số:(câu lệnh sql, key,..."
+---
+
+**Chỉnh sửa cache.** Nếu module có sử dụng chức năng cache, cần thay đổi như sau:
+
+``` text
+nv_get_cache(  thành: $nv_Cache->getItem(
+nv_set_cache(  thành: $nv_Cache->setItem(
+nv_delete_all_cache(  thành: $nv_Cache->delAll(
+nv_del_moduleCache(  thành: $nv_Cache->delMod(
+nv_db_cache(  thành: $nv_Cache->db(
+```
+
+Nếu những chỗ nào dùng \$nv_Cache trong function, thì cần global biến \$nv_Cache Chỗ gọi hàm \$nv_Cache→db() bắt buộc phải truyền vào 3 tham số:(câu lệnh sql, key, tên module) trong đó key có thể để trống, tên module dùng \$module_name
+
+Tìm kiếm để thay thế các đoạn gọi class của NukeViet
+
+``` text
+new download(   thành:     new NukeViet\Files\Download(
+new image(    thành:   new NukeViet\Files\Image(
+new upload(   thành:   new NukeViet\Files\Upload(
+new UrlGetContents(   thành:  new NukeViet\Client\UrlGetContents(
+new Diagnostic(   thành:  new NukeViet\Client\Diagnostic(
+new Gfonts(     thành:    new NukeViet\Client\Gfonts(
+new NV_Http(   thành:  new NukeViet\Http\Http(
+new NVftp(    thành:   new NukeViet\Ftp\Ftp(
+new PHPMailer;   thành:   new PHPMailer\PHPMailer\PHPMailer();
+new PHPMailer();   thành:   new PHPMailer\PHPMailer\PHPMailer();
+new Array2XML(    thành:  new NukeViet\Xml\Array2XML(
+```
+
+Các class sau mặc định không sử dung, nếu module, gia o diện của bạn còn sử dụng, cần viết lại các class này.
+
+``` text
+Minify_CSS_Compressor
+CheckUrl
+```

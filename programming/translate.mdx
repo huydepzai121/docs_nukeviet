@@ -1,0 +1,57 @@
+---
+title: "Dịch thuật ngôn ngữ giao diện cho hệ thống"
+description: "Một điều dễ thấy là cho dù module của bạn có tỉ lệ đa ngôn ngữ cơ sở dữ liệu là 0% đi chăng nữa thì bạn vẫn nên tách ngôn ngữ khỏi code để dễ dàng tiến hành ..."
+---
+
+Một điều dễ thấy là cho dù module của bạn có tỉ lệ đa ngôn ngữ cơ sở dữ liệu là 0% đi chăng nữa thì bạn vẫn nên tách ngôn ngữ khỏi code để dễ dàng tiến hành dịch thuật cho các gói ngôn ngữ giao diện cũng như dễ dàng đọc code, dễ dàng nâng cấp, bảo trì… sau này.
+
+Ngoài công cu dịch ở trong Admin Control Panel và công cụ được cung cấp ở trung tâm dịch thuật cộng đồng NukeViet ([http://translate.nukeviet.vn](http://translate.nukeviet.vn)), phần này sẽ lưu ý các bạn kỹ thuật dịch thủ công nhằm phục vụ việc lập trình.
+
+\- File ngôn ngữ có cấu trúc giống nhau, trong đó phần cần dịch nằm trong nháy kép, ví dụ file `\language\vi\global.php` dòng 27:
+
+``` php
+$lang_global['Home'] = "Trang nhất";
+```
+
+Bạn chỉ cần dịch nội dung trong nháy kép, cụ thể là phần chữ "Trang nhất".
+
+\- Trong quá trình dịch bạn sẽ thấy một số ký tự lạ mà hệ thống sử dụng để truyền tham số vào ngôn ngữ, các ký tự này bạn phải giữ nguyên trong khi dịch, ví dụ dòng 49:
+
+``` php
+$lang_global['passwordadjective'] = "Mật khẩu &ldquo;<strong>%1\$s</strong>&rdquo; quá ngắn. Ít nhất phải có &ldquo;<strong>%2\$d</strong>&rdquo; ký tự";
+```
+
+Bạn phải giữ lại các đoạn
+
+``` text
+&ldquo;<strong>%1\$s</strong>&rdquo;
+```
+
+và
+
+``` text
+&ldquo;<strong>%2\$d</strong>&rdquo;
+```
+
+để hệ thống truyền tham số vào. Ngoài ra bạn cần lưu ý văn phạm khi dịch các đoạn này. Văn bản xuất ra sau khi được truyền các tham số vào sẽ có dạng:
+
+``` text
+Mật khẩu bạn nhập quá ngắn. Ít nhất phải có 5 ký tự
+```
+
+\- Để chèn các ký tự như dấu ' hoặc " vào trong đoạn văn bản chứa ngôn ngữ mà không gây lỗi, bạn phải thêm ký tự \\ đằng trước các ký tự đó, ví dụ: \\ và \\
+
+\- Đừng quên để lại thông tin của bạn tại các dòng code này:
+
+``` php
+    $lang_translator['author'] = "VINADES.,JSC (contact@vinades.vn)";
+    $lang_translator['createdate'] = "04/03/2010, 15:22";
+    $lang_translator['copyright'] = "@Copyright (C) 2010 VINADES.,JSC. All rights reserved";
+    $lang_translator['info'] = "";
+```
+
+## Xem thêm
+
+- [Dịch thuật ngôn ngữ giao diện cho hệ thống (dịch thuật thủ công)](/programming/translate)
+- [Chọn giải pháp đa ngôn ngữ (dành cho lập trình viên)](/programming/multi_language).
+- [Công cụ dịch thuật dành cho NukeViet](/programming/nvtools/translate)

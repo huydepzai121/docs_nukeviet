@@ -1,0 +1,48 @@
+---
+title: "Hướng dẫn tích hợp diễn đàn phpbb3"
+description: "Bước 1) Cài đặt hoặc sử dụng NukeViet 3 bản mới nhất. (Diễn đàn và portal phải cùng 1 cơ sở dữ liệu)"
+---
+
+Bước 1) Cài đặt hoặc sử dụng NukeViet 3 bản mới nhất. (Diễn đàn và portal phải cùng 1 cơ sở dữ liệu)
+
+Bước 2) Backup lại CSDL các bảng nv3_users, nv3_authors (bởi khi tích hợp toàn bộ các tài khoản các thành viên và quản trị sẽ bị xoá hết.)
+
+Bước 3) Chuyển thư mục của diễn đàn vào trong thư mục của nukeviet. (Diễn đàn và portal phải cùng 1 cơ sở dữ liệu)
+
+Bước 4) Mở file includes/constants.php của NukeViet khai báo lại thông số
+
+//Thu muc chua dien dan define( "DIR_FORUM", "forum" );
+
+Như site nukeviet.vn hiện tại thông số này như sau:
+
+//Thu muc chua dien dan define( "DIR_FORUM", "phpbb" );
+
+Bước 5) Download file nukeviet.zip ([http://forum.nukeviet.vn/download/file.php?id=5810](http://forum.nukeviet.vn/download/file.php?id=5810)) giải nén và copy thư mục NukeViet vào thư mục chứa forum phpbb, Khi đó phải tồn tại các file sau:
+
+- forum/nukeviet/changepass.php
+- forum/nukeviet/editinfo.php
+- forum/nukeviet/is_user.php
+- forum/nukeviet/login.php
+- forum/nukeviet/logout.php
+- forum/nukeviet/lostpass.php
+- forum/nukeviet/register.php
+
+(thư mục chứa forum phải ngang hàng với file index.php và mainfile.php của NukeViet 3)
+
+Bước 6) Download file sau forumphpbb3.zip ([http://forum.nukeviet.vn/download/file.php?id=5811](http://forum.nukeviet.vn/download/file.php?id=5811)) giải nén và được file forumphpbb3.php upload lên thư mục gốc của NukeViet ( file forumphpbb3.php ngang hàng với file index.php và mainfile.php của NukeViet 3)
+
+Bước 7) Nếu bạn đang đăng nhập với tài khoản quản trị hoặc thành viên, cần logout các tài khoản này.
+
+Bước 9) Chạy công cụ tích hợp này bằng cách truy cập đường dẫn sau thoogn qua trình duyệt: [http://your-web.com/forumphpbb3.php](http://your-web.com/forumphpbb3.php)
+
+Nếu gặp một thông báo lỗi nào đó bạn cần kiểm tra lại các bước trên.
+
+Nếu thành công bạn sẽ được thông báo tài khoản quản trị NukeViet (Thường là tài khoản khi cài phpbb3), Mật khẩu chính là mật khẩu của diễn đàn.Sau đó bạn cần xoá ngay lập tức file forumphpbb3.php
+
+Đóng tất cả các sửa sổ sau đó chạy lại trình duyệt bạn thử login ngoài site với bất kỳ thành viên nào hoặc vơi thành viên quản trị tối cao trong admin.
+
+Chú ý: Các thành viên khác muốn thêm vào ban quản trị site của nukviet cần đăng nhập 1 lần trên portal của nukeviet.
+
+### Nguồn
+
+- [Hướng dẫn tích hợp diễn đàn phpbb3 vào NukeViet 3.0 Official](http://forum.nukeviet.vn/viewtopic.php?t=13333)

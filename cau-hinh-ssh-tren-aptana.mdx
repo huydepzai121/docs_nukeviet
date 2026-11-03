@@ -1,0 +1,141 @@
+---
+title: "Cau hinh ssh tren aptana"
+description: "## 1) Cài đặt Aptana trên windows"
+---
+
+\## 1) Cài đặt Aptana trên windows
+
+Cài đặt Java JDK [http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
+
+Windows x86 123.67 MB jdk-7u55-windows-i586.exe
+
+Cài đặt Git SCM to Windows
+
+[http://msysgit.github.io/](http://msysgit.github.io/)
+
+Cài đặt Aptana [http://preview.appcelerator.com/studio/](http://preview.appcelerator.com/studio/)
+
+chọn tab Aptana Studio Release Candidate Installers (3.6.0.201405190650)
+
+Nên cài đặt Egit 3.3 [http://eclipse.org/egit/download/](http://eclipse.org/egit/download/)
+
+``` text
+  http://download.eclipse.org/egit/updates (Recommended)
+```
+
+\## 2) Cài đặt Aptana trên Ubuntu Cai dat Git
+
+``` text
+  sudo apt-get update
+  sudo apt-get dist-upgrade
+  sudo apt-get install git
+```
+
+Cài đặt tương tự, với địa chỉ download
+
+``` text
+  http://preview.appcelerator.com/studio/
+```
+
+chọn tab Aptana Studio
+
+``` text
+  http://preview.appcelerator.com/aptana/studio3/standalone/install/rc/studio3.linux.gtk.x86_64.zip
+```
+
+Nên cài đặt Egit 3.3 [http://download.eclipse.org/egit/updates](http://download.eclipse.org/egit/updates) (Recommended)
+
+\## 3) Cấu hình SSH cho git Cấu hình tài khoản
+
+chạy cấu lệnh sau trên terminal, thay tên và tài khoản cho phù hợp
+
+``` text
+  git config --global user.name "Vu Thao"
+  git config --global user.email "thao@vinades.vn"
+```
+
+Tạo SSH key
+
+Khởi động Gitbash hoặc terminal trên Aptana
+
+``` text
+  cd ~/.ssh
+  ssh-keygen –t rsa –C “youraddress@email.com”
+```
+
+Mở file “id_rsa.pub” trong thư mục “C:\Users\\Tên User\>\\ssh”, copy nội dung vào bộ nhớ, để điền vào form đăng ký trên kho code. Hoặc sử dụng lệnh
+
+\`clip \< ~/.ssh/id_rsa.pub\`
+
+[https://vinades.org/profile/keys](https://vinades.org/profile/keys)
+
+``` text
+(Vào Add SSH key)
+```
+
+\![add-ssh-key\]([https://vinades.org/uploads/vinades/wiki/80344d155e/add-ssh-key.png](https://vinades.org/uploads/vinades/wiki/80344d155e/add-ssh-key.png))
+
+start the ssh-agent in the background
+
+``` text
+  eval `ssh-agent -s`
+```
+
+Agent pid 59566
+
+``` text
+  ssh-add
+```
+
+If your key does not have the default filename (/.ssh/id_rsa), you'll have to pass that path to ssh-add:
+
+start the ssh-agent in the background
+
+``` text
+  eval `ssh-agent -s`
+```
+
+Agent pid 59566
+
+``` text
+  ssh-add ~/.ssh/my_other_key
+```
+
+Test kiểm tra:
+
+``` text
+  ssh –T git@vinades.org
+```
+
+Nếu nhận được dòng thông báo
+
+Welcome to GitLab, username!
+
+quá trình đăng ký thành công
+
+Trên github cũng làm tương tự (Không phải chạy lại ssh-keygen –t rsa –C “youraddress@email.com”)
+
+sau đó vào [https://vinades.org/profile](https://vinades.org/profile) để thay đổi avatar của mình.
+
+\## 4) Thay đổi địa chỉ kho code
+
+Chỉ vào sửa file /.git/config (Thư mục .git là thư mục ẩn ) Sửa lại đoạn:
+
+``` text
+  [remote "origin"]
+      url = xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Thành url git mới
+
+Hoặc sử dụng lệnh
+
+``` text
+  git remote set-url origin git@vinades.org:USERNAME/REPOSITORY2.git
+```
+
+Ví dụ
+
+``` text
+  git remote set-url origin git@vinades.org:vuthao/module-nvtools.git
+```

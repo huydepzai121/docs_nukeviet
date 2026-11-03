@@ -1,0 +1,277 @@
+---
+title: "Hướng dẫn cài đặt Nukeviet trên docker"
+description: "Cài đặt docker và docker-compose thông qua các package manager tương ứng:"
+---
+
+## I. Cài đặt docker
+
+### 1. Đối với Linux:
+
+Cài đặt **docker** và **docker-compose** thông qua các package manager tương ứng:
+
+- Debian, Ubuntu, Pop OS, ...
+
+``` bash
+$ sudo apt update
+$ sudo apt upgrade
+$ sudo apt install docker docker-compose
+```
+
+- Arch Linux, Manjaro,...
+
+``` bash
+$ sudo pacman -Syu
+$ sudo pacman -S docker docker-compose
+```
+
+- Fedora, Red Hat,...
+
+``` bash
+$ sudo dnf update
+$ sudo dnf install docker docker-compose
+```
+
+Hoặc cài đặt Docker Desktop tại đây: [Install Docker Desktop on Linux](https://docs.docker.com/desktop/linux/install/)
+
+Khởi chạy docker:
+
+``` bash
+$ sudo systemctl start docker
+```
+
+Hoặc luôn chạy docker khi khởi động
+
+``` bash
+$ sudo systemctl enable docker
+```
+
+### 2. Đối với Windows:
+
+Sử dụng WSL2 backend (Windows Subsystem for Linux)
+
+Yêu cầu hệ thống:
+
+- Windows 11 64-bit: Home hoặc Pro hoặc Enterprise hoặc Education bản 21H2 hoặc cao hơn.
+- Windows 10 64-bit: Home hoặc Pro 21H1 (build 19043) hoặc cao hơn, hoặc Enterprise hoặc Education 20H2 (build 19042) hoặc cao hơn.
+- Cài đặt và kích hoạt WSL2: từ bước 1 đến hết bước 5: [https://docs.microsoft.com/vi-vn/windows/wsl/install-manual](https://docs.microsoft.com/vi-vn/windows/wsl/install-manual)
+
+Đối với cả 2 loại backend, tải và cài đặt Docker Desktop dành cho Windows tại đây: [Install Docker Desktop on Windows](https://docs.docker.com/desktop/windows/install/)
+
+#### Xử lý một số lỗi
+
+**Mở docker desktop không lên**
+
+Màn hình thông báo
+
+``` text
+Docker Desktop stopped...
+Docker Desktop stopping...
+Docker Desktop quit...
+```
+
+Sau đó tự thoát. Thì check lại 3 case sau xem
+
+- Đảm bảo đã thực hiện bước 1 đến 5 ở đây [https://docs.microsoft.com/vi-vn/windows/wsl/install-manual](https://docs.microsoft.com/vi-vn/windows/wsl/install-manual) . Chú ý bước 5 nếu không chạy được lệnh thì khởi động lại máy trước.
+- Chạy Docker Desktop với quyền Admin (Run As Administrator)
+- Nếu trước đó bạn đã chạy Docker Desktop rồi quit, tốt nhất phải khởi động lại máy tính
+
+**Sau khi quit Docker Desktop vẫn còn tiến trình Vmmem tốn rất nhiều RAM**
+
+Mở PowerShell quyền admin chạy lệnh `wsl --shutdown`
+
+### Dùng cho dự án DauThau
+
+1.  Giải nén đưa vào 1 thư mục, ví dụ D:\Web\dauthau.net
+2.  Sau đó dùng Windows PowerShell (Hoặc cmd) cd vào D:\Web\dauthau.net và chạy lệnh docker-compose up (Chạy lần đầu sẽ khá lâu do docker sẽ phải tải các docker image xuống)
+3.  Nếu cần build lại docker, sử dụng lệnh: docker-compose up -d --build
+
+## II. Xây dựng docker PHP - Apache - MariaDB - PHPMyAdmin
+
+Cây thư mục của dự án. Dấu "." là thư mục hiện tại, chứa file **docker-compose.yml**
+
+``` text
+.
+├── _docker
+│   ├── apache
+│   │   └── Dockerfile
+│   └── mysql
+│       ├── conf
+│       │   └── my.cnf
+│       └── data
+├── docker-compose.yml
+└── src
+```
+
+Chú ý: **Dockerfile** là một file, không phải là thư mục.
+
+File **my.cnf** có thể lấy được bằng cách vào bash của container mariadb, copy nó ra một thư mục được ánh xạ nào đó trên máy host.
+
+### 1. Xây dựng container PHP-Apache:
+
+Vì image php không cài đặt đủ các thư viện, extension để có thể sử dụng cho NukeViet nên cần phải dùng dockerfile để tuỳ biến Image này.
+
+Tạo file **dockerfile** bên trong thư mục dự án, nên đặt nó vào một thư mục riêng biệt.
+
+Nội dung của dockerfile này:
+
+``` text
+FROM php:7.4-apache
+RUN apt-get update && apt-get install -y libpng-dev nano zlib1g-dev libzip-dev --no-install-recommends
+WORKDIR /var/www/html
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+RUN docker-php-ext-install pdo_mysql gd opcache zip
+RUN a2enmod rewrite
+```
+
+Trong đó chú ý dòng đầu tiên: **FROM php:7.4-apache**
+
+- **php** là tên của Image trên docker hub.
+- **7.4-apache** là tên tag chỉ cho php bản 7.4, sử dụng giao thức apache. Truy cập php [Tags](https://hub.docker.com/_/php?tab=tags) để xem các tag (hay các phiên bản image) để sử dụng cho container của PHP.
+
+Tạo file **docker-compose.yml** có nội dung:
+
+``` yaml
+version: '3.8' #Phiên bản docker
+services:
+  web: #tên host của container
+    container_name: phpapache #tên của container
+    build:
+      context: ./_docker/apache #đường dẫn đến thư mục chứa dockerfile. Dấu . là thư mục chứa file docker-compose.yml
+      dockerfile: Dockerfile #tên của dockerfile
+    ports:
+      - 8000:80 #cổng để truy cập đến container
+    volumes: #thư mục ánh xạ
+      - ./src:/var/www/html #ánh xạ thư mục ./scr vào /var/www/html bên trong container, đây là vị trí chứa code để chạy.
+```
+
+### 2. Xây dựng container MariaDB:
+
+Image chuẩn đã có thể sử dụng, không cần phải tuỳ chỉnh bằng dockerfile. Thêm các dòng sau vào file **docker-compose.yml**:
+
+``` yaml
+db: #tên host của container
+  container_name: db_nuke #tên của container
+  image: mariadb:latest #dùng phiên bản mới nhất với tag latest
+  restart: unless-stopped #tự động restart container khi có lỗi, trừ khi đã stop bằng docker-compose stop
+  environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1 #Không cần pass đối với root (chỉ sử dụng khi test trên local, khi đưa lên server cần set pass cho root)
+      MYSQL_USER: user
+      MYSQL_PASSWORD: test
+  volumes:
+      - ./_docker/mysql/data:/var/lib/mysql #ánh xạ thư mục chứa data
+      - ./_docker/mysql/conf/my.cnf:/etc/mysql/my.cnf #ánh xạ file config my.cnf
+  ports:
+      - 9906:3306 #cổng để truy cập container
+```
+
+Chú ý, cần thêm dòng này vào phần cài đặt của **container của PHP** để đảm bảo container MariaDB được khởi chạy trước:
+
+``` yaml
+depends_on:
+   - db #tên host của container mariadb
+```
+
+### 3. Xây dựng container PhpMyAdmin:
+
+Image chuẩn đã có thể sử dụng, không cần phải tuỳ chỉnh bằng dockerfile. Thêm các dòng sau vào file **docker-compose.yml**:
+
+``` yaml
+phpmyadmin: #tên host của container
+  container_name: admin #tên container
+  image: phpmyadmin:latest #dùng phiên bản mới nhất với tag latest
+  ports:
+      - 8080:80 #cổng để truy cập container
+  environment:
+      PMA_HOST: db #tên host của container mariadb
+  depends_on:
+      - db #tên host của container mariadb
+```
+
+Nội dung file **docker-compose.yml** hoàn chỉnh
+
+``` yaml
+version: '3.8'
+services:
+  web:
+    container_name: phpapache
+    build:
+      context: ./_docker/apache
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+  db:
+    container_name: db_nuke
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+        MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+        MYSQL_USER: user
+        MYSQL_PASSWORD: test
+    volumes:
+        - ./_docker/mysql/data:/var/lib/mysql
+        - ./_docker/mysql/conf/my.cnf:/etc/mysql/my.cnf
+    ports:
+        - 9906:3306
+  phpmyadmin:
+    container_name: admin
+    image: phpmyadmin:latest
+    ports:
+        - 8080:80
+    environment:
+        PMA_HOST: db
+    depends_on:
+        - db
+```
+
+\<span style="color:red;"\>**Chú ý:** ngôn ngữ YAML không cho phép ký tự \t (ký tự tab)\</span\>
+
+Một network sẽ tự động xây dựng và kết nối các container được cài đặt trong cùng một file docker-compose (nếu không có cài đặt nào đặc biệt về network)
+
+Mở terminal (hoặc cmd, hoặc powershell) tại vị trí file docker-compose.yml này, chạy lệnh sau:
+
+``` bash
+docker-compose up
+```
+
+Lần đầu tiên docker-compose sẽ pull image về và build container nên sẽ lâu. Những lần sau không cần build nữa thì sẽ nhanh hơn.
+
+Nếu muốn chạy nền docker (có thể tắt cửa sổ terminal) thì chạy bằng:
+
+``` bash
+docker-compose up -d
+```
+
+Nếu muốn chỉnh sửa dockerfile hay đổi tag các image, cần phải xóa các container này đi và build lại bằng các lệnh:
+
+``` bash
+docker-compose down
+docker-compose build
+```
+
+## III. Cài đặt NukeViet lên docker
+
+**Bước 1:** Clone kho code NukeViet vào thư mục ./src (Thư mục được ánh xạ vào /var/www/html trên container php-apache.
+
+**Bước 2:** Truy cập bash của php-apache, chmod nội dung kho code nukeviet vừa clone về.
+
+``` bash
+docker exec -ti phpapache bash
+cd ..
+chmod 777 -R html
+```
+
+Nhấn Ctrl+D để thoát bash của container. Chú ý phpapache là tên của container được khai báo trong docker-compose.yml.
+
+**Bước 3:** thêm domain mong muốn truy cập vào file hosts:
+
+``` text
+127.0.0.1 nuke.my
+```
+
+**Bước 4:** Truy cập **nuke.my:8000** (port đã khai báo trong docker-compose.yml), cài đặt trang web như bình thường. Chú ý, ở bước khai báo thông tin CSDL, nhập tên host là tên của host mariadb đã khai báo trong docker-compose **(tên host, không phải tên container)**, trong trường hợp ví dụ này là db.
+
+Để truy cập PHPMyadmin thì có thể vào địa chỉ **localhost:8080** (port đã khai báo trong docker-compose.yml)

@@ -1,0 +1,30 @@
+---
+title: "get_drag_block_content"
+description: "Dùng để tùy chỉnh giao diện thanh công cụ block khi bật kéo thả block."
+---
+
+Dùng để tùy chỉnh giao diện thanh công cụ block khi bật kéo thả block.
+
+### Tham số
+
+| STT | Tên biến  | Kiểu dữ liệu | Ghi chú |
+|-----|:----------|:-------------|:--------|
+| 0   | \$\_row   |              |         |
+| 1   | \$content |              |         |
+
+### Dữ liệu trả về
+
+Biến `$content` chứa nội dung
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_drag_block_content', $priority, function($vars) {
+    $_row = $vars[0];
+    $content = $vars[1];
+
+    // Thực hiện code hook tại đây...
+
+    return $content;
+});
+```

@@ -1,0 +1,66 @@
+---
+title: "Các lưu ý khi lập trình NukeViet 4.x"
+description: "Ngoài ra có thể chèn trực tiếp vào các file tpl, khi xuất ra trình duyệt hệ thống tự động đưa js và css về vị trí thích hợp."
+---
+
+- Để thêm nội dung vào phần head và footer của site, ta lưu nội dung đó vào hai biến \$my_head và \$my_footer.
+
+Ví dụ:
+
+``` php
+$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/jquery/jquery.imgpreload.min.js\"></script>\n";
+$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "themes/" . $module_info['template'] . "/js/contentslider.js\"></script>\n";
+```
+
+Ngoài ra có thể chèn trực tiếp vào các file tpl, khi xuất ra trình duyệt hệ thống tự động đưa js và css về vị trí thích hợp.
+
+- Để gọi ra editor, thực hiện thao tác:
+
+``` php
+if (defined('NV_EDITOR')) {
+    require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+}
+
+$row['bodytext'] = htmlspecialchars(nv_editor_br2nl($row['bodytext']));
+
+if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
+    $row['bodytext'] = nv_aleditor('bodytext', '100%', '300px', $row['bodytext']);
+} else {
+    $row['bodytext'] = '<textarea style="width:100%;height:300px" name="bodytext">' . $row['bodytext'] . '</textarea>';
+}
+```
+
+- Để mở cửa sổ upload file ta thực hiện:
+
+``` javascript
+$("input[name=selectimg]").click(function() {
+    var area = "image";
+    var alt = "imagealt";
+    var path = uploads_dir_user;
+    var type = "image";
+    nv_open_browse(script_name + "?" + nv_name_variable + "=upload&popup=1&area=" + area + "&alt=" + alt + "&path=" + path + "&type=" + type, "NVImg", 850, 420, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
+    return false;
+});
+```
+
+- Để mở cửa sổ tìm kiếm ID một thành viên ta thực hiện:
+
+``` php
+$("#selecteduid").click( function() {
+    nv_open_browse('{NV_BASE_ADMINURL}index.php?' + nv_name_variable + '=users&' + nv_fc_variable + '=getuserid&area=userid&return=username&filtersql={FILTERSQL}', 'NVImg', 850, 500, 'resizable=no,scrollbars=no,toolbar=no,location=no,status=no');
+});
+```
+
+- NukeViet hỗ trợ các tiến trình tự động, tuy nhiên các tiến trình tự động sẽ không chạy nếu không tồn tại giá trị \$\_GET\['second'\] hoặc \$\_GET\['second'\] != 'crontjobs', vì vậy trong file theme.php của mỗi theme nhất thiết phải có dòng
+
+``` php
+$xtpl->assign('THEME_IMG_CRONJOBS', NV_BASE_SITEURL . "index.php?second=cronjobs&amp;p=" . nv_genpass());
+```
+
+Trong phần cuối của website cần có dòng
+
+``` html
+<img alt="" title="" src="{THEME_IMG_CRONJOBS}" width="1" height="1" />
+```
+
+(Thông thường phần cuối thường do file footer.tpl quyết định).

@@ -1,0 +1,88 @@
+---
+title: "Hướng dẫn cài NukeViet trên localhost"
+description: "Hướng dẫn này dựa trên phiên bản NukeViet 3.4.02,Các phiên bản khác có thể có đôi chút khác biệt."
+---
+
+Hướng dẫn này dựa trên phiên bản NukeViet 3.4.02,Các phiên bản khác có thể có đôi chút khác biệt.
+
+Lưu ý:
+
+- Để tránh bị dính mã độc, người sử dụng chỉ nên tải NukeViet về từ địa chỉ chính thức của NukeViet là www.nukeviet.vn.
+
+Giải thích cho những người lần đầu sử dụng:
+
+- Bởi vì NukeViet là phần mềm chạy trên máy chủ do đó bạn cần cài nó trên một máy chủ mạng (web server hoặc hosting), tuy nhiên nếu bạn không có sẵn máy chủ mạng để làm việc này, bạn có thể thử nghiệm NukeViet trên máy tính của bạn bằng cách cài thêm phần mềm web server phù hợp.
+- Môi trường web server trên chính máy tính của bạn đang sử dựng được gọi là localhost.
+- Một localhost có thể được truy cập thông qua địa chỉ [http://localhost/](http://localhost/) hoặc [http://127.0.0.1/](http://127.0.0.1/)
+
+## Chuẩn bị cho việc cài đặt NukeViet
+
+- Tải NukeViet 3 từ [http://nukeviet.vn](http://nukeviet.vn)
+- Cài đặt **một** trong các phần mềm web server như [Vertrigo](/web_server/vertrigo), [AppServ](/web_server/appserv) (Windows) hoặc [Xampp](/web_server/xampp) (Windows, Linux/Ubuntu)
+
+Lưu ý: Hình minh họa dưới đây được chụp trong môi trường sử dụng hệ điều hành được sử dụng là Windows 7, phần mềm webserver được sử dụng là Vertrigo Version 2.27, trình duyệt FireFox version 17.0.1. Các môi trường khác có thể sẽ có đôi chút khác biệt.
+
+## Cài đặt NukeViet
+
+- Giải nén bộ cài NukeViet vào thư mục **www** trên localhost sao cho thư mục **nukeviet** nằm trong thư mục **www** (trên hosting thì nó là thư mục **public_html**)
+- Tiến hành cài đặt bằng việc mở trình duyệt (FireFox, Chrome, Internet Explorer, Opera..) của bạn lên và truy cập địa chỉ [http://localhost/nukeviet/](http://localhost/nukeviet/) (Bạn cần chắc chắn rằng phần mềm Vertrigo đang chạy bằng cách truy cập địa chỉ [http://localhost/](http://localhost/) xem có được không).
+
+Ghi chú: Hướng dẫn này chỉ dẫn cách cài NukeViet trên localhost Windows sử dụng Vertrigo. Bạn cũng có thể tham khảo [Hướng dẫn cài NukeViet trên hosting](/nukeviet/setup/hosting) và [hướng dẫn cài NukeViet trên localhost Linux (Ubuntu)](/nukeviet/setup/localhost_ubuntu)
+
+Quá trình cài đặt mới 1 website sử dụng NukeViet sẽ qua 07 bước như sau:
+
+### Bước 1: Lựa chọn ngôn ngữ
+
+Ngôn ngữ mặc định khi cài đặt là tiếng Việt, bạn cũng có thể chọn sử dụng tiếng Anh. Lựa chọn xong ngôn ngữ bạn có thể nhấn vào nút “Bước kế tiếp” để chuyển sang bước tiếp theo (Hình 1).
+
+Hình 1: Chọn ngôn ngữ cài đặt. ![](/images/nukeviet/setup/setup-nukeviet3402-01.jpg)
+
+Gợi ý: Bạn có thể chọn cài đặt với ngôn ngữ bất kỳ. Sau khi cài đặt bạn vẫn có thể bổ sung các ngôn ngữ khác tải về từ website nukeviet.vn.
+
+### Bước 2: Kiểm tra việc CHMOD
+
+Hình 2: Kiểm tra điều kiện cài đặt. ![](/images/nukeviet/setup/setup-nukeviet3402-02.png)
+
+- Nếu tất cả các thông số đều đạt yêu cầu như hình 2, bạn có thể chuyển qua bước kế tiếp bằng cách nhấp nút “Bước kế tiếp”.
+- Nếu xảy ra lỗi, hệ thống sẽ yêu cầu bạn phải CHMOD lại thư mục hoặc tập tin cần thiết. Bạn cũng có thể điền thông tin tài khoản FTP máy chủ của bạn vào ô “Cấu hình FTP” – nếu máy chủ của bạn hỗ trợ việc CHMOD thông qua php thì hệ thống sẽ tự động CHMOD những thư mục và tập tin cần thiết sau khi bạn điền đầy đủ thông tin cấu hình FTP và nhấn vào nút “Thực hiện”. Còn không, bạn sẽ phải tự CHMOD bằng tay.
+
+Sau khi hoàn thành quá trình CHMOD bạn có thể nhấn vào nút “Bước kế tiếp” để chuyển qua bước tiếp theo.
+
+### Bước 3: Bản quyền
+
+Hình 3: Thông báo bản quyền. ![](/images/nukeviet/setup/setup-nukeviet3402-03.jpg)
+
+Phần mềm sẽ hiển thị thông tin bản quyền về phần mềm nguồn mở theo giấy phép GNU/GPL và giải thích các điều khoản bạn được phép và không được phép. Bạn nhấp nút “Bước kế tiếp” để chuyển sang bước tiếp theo.
+
+### Bước 4: Kiểm tra máy chủ
+
+Hình 4: Kiểm tra môi trường máy chủ. ![](/images/nukeviet/setup/setup-nukeviet3402-04.png)
+
+Để hệ thống NukeViet có thể chạy được thì yêu cầu máy chủ bắt buộc phải hỗ trợ Phiên bản PHP từ 5.2.0 và MySQL 5.02 trở lên. Nếu hai điều kiện này không thỏa mãn thì quá trình cài đặt không thể tiếp tục. Ngoài ra hệ thống còn đưa ra những khuyến cáo về những tính năng khác của máy chủ. Nếu những yêu cầu thêm này không thỏa mãn bạn vẫn có thể cài đặt NukeViet nhưng hệ thống sẽ mất đi một số chức năng tiện ích.
+
+### Bước 5: Cấu hình cơ sở dữ liệu
+
+Hình 5: Cấu hình cơ sở dữ liệu. ![](/images/nukeviet/setup/setup-nukeviet3402-05.jpg)
+
+Bạn phải điền đầy đủ các thông tin về thông số database của bạn sau đó nhấn vào nút “Thực hiện”. Thông số Username và Mật khẩu do phần mềm Vertrigo quản lý (mặc định Username là **root** và mật khẩu là **vertrigo**). Riêng Tên cơ sở dữ liệu cần được tạo trước bằng cách truy cập địa chỉ: [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/), vào mục Database, tạo cơ sở dữ liệu mới tại ô Creat new database.
+
+Hình 5b: Tạo cơ sở dữ liệu rỗng. ![](/images/nukeviet/setup/phpmyadmin-349-creat-new-database.jpg) Nếu nhập sai bước này, hệ thống sẽ thông báo lỗi và không hiển thị nút “Bước kế tiếp” để bạn có thể tiếp tục quá trình cài đặt. Khi bạn điền chính xác thông tin và việc kết nối tới cơ sở dữ liệu thành công, hệ thống sẽ chuyển bạn sang bước tiếp theo.
+
+### Bước 6: Thông tin website
+
+Hình 6: Khai báo thông tin website. ![](/images/nukeviet/setup/setup-nukeviet3402-06.jpg)
+
+Ở bước này các bạn phải điền đầy đủ thông tin vào những ô được đánh dấu (\*), bên cạnh là cột ghi chú giúp bạn có thể hiểu rõ hơn quá trình nhập thông tin. Sau khi nhập thông tin xong bạn nhấn vào nút “Thực hiện” để hoàn tất.
+
+### Bước 7: Kết thúc
+
+Hình 7: Thông báo cài đặt thành công. ![](/images/nukeviet/setup/setup-nukeviet3402-07.jpg)
+
+Khi hoàn thành 6 bước trên hệ thống sẽ chuyển bạn qua bước cuối cùng. Tại đây bạn sẽ nhìn thấy thông báo chúc mừng bạn đã cài đặt thành công. Đồng thời, hệ thống cũng nhắc bạn hãy CHMOD ngay thư mục uploads trên webroot (thư mục gốc của website) và các thư mục con nằm trong thư mục uploads ở chế độ 777. Bạn chỉ cần làm việc này nếu sử dụng hệ điều hành Linux (kể cả hosting linux). Riêng với Windows, thư mục này cần được loại bỏ thuộc tính (properties) chỉ đọc (Read-only) nếu nó đang có thuộc tính này.
+
+Sau khi xong các bước hệ thống yêu cầu bạn có 2 lựa chọn: *Xem trang chủ* hoặc *Đăng nhập trang quản trị*. Bạn có thể đăng nhập trang quản trị bằng cách gõ thêm /admin/ sau địa chỉ cài đặt NukeViet.
+
+**Chú ý:**
+
+- Nếu bạn muốn cài đặt lại website hãy xóa file **config.php** ở thư mục gốc của NukeViet. Sau đó tiếp tục các bước như trên để cài lại hệ thống NukeViet 3.x
+- Việc cài NukeViet trên máy chủ mạng hoặc hosting cũng hoàn toàn tương tự. Trong trường hợp sử dụng hosting, chúng tôi khuyên bạn hãy sử dụng hosting linux có công cụ quản lý bằng Cpanel, hỗ trợ PHP 5.2 và MySQL 5.2 và một tên miền trỏ sẵn về hosting này. Bạn có thể tìm thấy danh sách các nhà cung cấp hosting tương thích NukeViet tại địa chỉ: [http://nukeviet.vn/vi/partner/hosting/](http://nukeviet.vn/vi/partner/hosting/)

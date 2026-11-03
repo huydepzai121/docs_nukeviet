@@ -1,0 +1,108 @@
+---
+title: "Các lưu ý khi lập trình NukeViet 3.x"
+description: "Trong phần cuối của website cần có dòng"
+---
+
+- Để thêm nội dung vào phần head và footer của site, ta lưu nội dung đó vào hai biến \$my_head và \$my_footer.
+
+Ví dụ:
+
+``` php
+$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/jquery/jquery.imgpreload.min.js\"></script>\n";
+$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "themes/" . $module_info['template'] . "/js/contentslider.js\"></script>\n";
+```
+
+- Để gọi ra editor, thực hiện thao tác:
+
+``` php
+if ( defined( 'NV_EDITOR' ) )
+{
+    require_once ( NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php' );
+}
+if ( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
+{
+    $data = nv_aleditor( 'description', '100%', '200px', $data);
+}
+```
+
+- Để mở cửa sổ upload file ta thực hiện:
+
+``` php
+$("#selectimages").click( function() {
+        nv_open_browse_file( "{NV_BASE_ADMINURL}index.php?{NV_NAME_VARIABLE}=upload&popup=1&area=images&path={IMG_DIR}&type=image", "NVImg", "850", "500", "resizable=no,scrollbars=no,toolbar=no,location=no,status=no" );
+        return false;
+    });
+```
+
+- Để mở cửa sổ tìm kiếm ID một thành viên ta thực hiện:
+
+``` php
+$("#selecteduid").click( function() {
+        nv_open_browse_file( "{NV_BASE_ADMINURL}index.php?" + nv_name_variable + "=users&" + nv_fc_variable + "=getuserid&area=userid", "NVImg", "850", "600", "resizable=no,scrollbars=no,toolbar=no,location=no,status=no" );
+        return false;
+    });
+```
+
+- NukeViet hỗ trợ các tiến trình tự động, tuy nhiên các tiến trình tự động sẽ không chạy nếu không tồn tại giá trị \$\_GET\['second'\] hoặc \$\_GET\['second'\] != 'crontjobs', vì vậy trong file theme.php của mỗi theme nhất thiết phải có dòng
+
+``` php
+$xtpl->assign( 'THEME_IMG_CRONJOBS', NV_BASE_SITEURL . "index.php?second=cronjobs&amp;p=" . nv_genpass() );
+```
+
+Trong phần cuối của website cần có dòng
+
+``` html
+<img alt="" title="" src="{THEME_IMG_CRONJOBS}" width="1" height="1" />
+```
+
+(Thông thường phần cuối thường do file footer.tpl quyết định).
+
+- Đối với các phiên bản NukeViet trước revision 734, các theme không phải của hệ thống khi nâng cấp lên phiên bản cao hơn cần chú ý:
+
+\- Mở file themes/ten_theme_admin/theme.php, tìm đến dòng gần cuối cùng:
+
+``` php
+$xtpl->out( 'main' );
+```
+
+Thay bằng:
+
+``` php
+return $xtpl->text( 'main' );
+```
+
+\- Mở file themes/ten_theme/theme.php, tìm đến dòng gần cuối cùng:
+
+``` php
+echo $sitecontent;
+Thay bằng:
+<code php>
+echo $sitecontent;
+```
+
+\- Gọi thêm biến global \$client_info cho function nv_site_theme trong file theme.php.  
+- Trong file theme.php thay dòng:
+
+``` php
+$xtpl->assign( 'THEME_SEARCH_SUBMIT_ONCLICK', "nv_search_submit('topmenu_search_query', 'topmenu_search_submit', " . NV_MIN_SEARCH_LENGTH . ", " . NV_MAX_SEARCH_LENGTH . ");" );
+```
+
+Bằng dòng:
+
+``` php
+$xtpl->assign( 'THEME_SEARCH_SUBMIT_ONCLICK', "nv_search_submit('topmenu_search_query', 'topmenu_search_checkss', 'topmenu_search_submit', " . NV_MIN_SEARCH_LENGTH . ", " . NV_MAX_SEARCH_LENGTH . ");" );
+$xtpl->assign( 'CHECKSS', md5( $client_info['session_id'] . $global_config['sitekey'] ) ); 
+```
+
+\- Trong /themes/default/layout/header.tpl thay dòng (nếu có):
+
+``` php
+<form action="" method="get" class="search fr" onsubmit="return {THEME_SEARCH_SUBMIT_ONCLICK}">
+```
+
+Bằng dòng:
+
+``` php
+<form action="{NV_BASE_SITEURL}" method="get" class="search fr" onsubmit="return {THEME_SEARCH_SUBMIT_ONCLICK}">
+<input type="hidden" id="topmenu_search_checkss" value="{CHECKSS}" /> 
+```

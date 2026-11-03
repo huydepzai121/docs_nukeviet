@@ -1,0 +1,1182 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "NukeViet Docs",
+  "colors": {
+    "primary": "#0B6EC1",
+    "light": "#3AA0F0",
+    "dark": "#0A5A9C"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Tổng quan",
+        "groups": [
+          {
+            "group": "Bắt đầu",
+            "pages": [
+              "index"
+            ]
+          },
+          {
+            "group": "Ngôn ngữ khác (Other languages)",
+            "pages": [
+              {
+                "group": "English",
+                "pages": [
+                  "en/start",
+                  "en/nukeviet/concepts/structure",
+                  "en/user_manual"
+                ]
+              },
+              {
+                "group": "ພາສາລາວ (Lao)",
+                "pages": [
+                  "lo/start",
+                  "lo/user_manual",
+                  "lo/nukeviet/concepts/structure"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "NukeViet 5",
+        "groups": [
+          {
+            "group": "Mục lục",
+            "pages": [
+              "technical_manual5"
+            ]
+          },
+          {
+            "group": "Hướng dẫn sử dụng NukeViet 5",
+            "pages": [
+              "nukeviet5",
+              {
+                "group": "Codex",
+                "pages": [
+                  "nukeviet5/codex/directory-structure",
+                  "nukeviet5/codex/auto-test",
+                  {
+                    "group": "Tham chiếu Hooks",
+                    "pages": [
+                      "nukeviet5/codex/hooks-reference",
+                      "nukeviet5/codex/hooks-reference/after_clear_cache_manually",
+                      "nukeviet5/codex/hooks-reference/after_clear_ip_logs",
+                      "nukeviet5/codex/hooks-reference/after_module_deleted",
+                      "nukeviet5/codex/hooks-reference/change_site_buffer",
+                      "nukeviet5/codex/hooks-reference/db_slave_connect",
+                      "nukeviet5/codex/hooks-reference/emailtemplates_after_delete",
+                      "nukeviet5/codex/hooks-reference/emailtemplates_content_after_save",
+                      "nukeviet5/codex/hooks-reference/emailtemplates_content_correct_before_save",
+                      "nukeviet5/codex/hooks-reference/emailtemplates_content_from_db",
+                      "nukeviet5/codex/hooks-reference/emailtemplates_on_emailtemplate_save_error",
+                      "nukeviet5/codex/hooks-reference/event_before_sending_test_mail",
+                      "nukeviet5/codex/hooks-reference/force_ssl_redirect",
+                      "nukeviet5/codex/hooks-reference/get_drag_block_content",
+                      "nukeviet5/codex/hooks-reference/get_email_content_before_send",
+                      "nukeviet5/codex/hooks-reference/get_email_data_before_fetch",
+                      "nukeviet5/codex/hooks-reference/get_email_data_before_fetch_test",
+                      "nukeviet5/codex/hooks-reference/get_email_merge_fields",
+                      "nukeviet5/codex/hooks-reference/get_global_admin_theme",
+                      "nukeviet5/codex/hooks-reference/get_module_admin_theme",
+                      "nukeviet5/codex/hooks-reference/get_qr_code",
+                      "nukeviet5/codex/hooks-reference/get_rewrite_domain",
+                      "nukeviet5/codex/hooks-reference/override_sendmail",
+                      {
+                        "group": "Emailtemplates",
+                        "pages": [
+                          "nukeviet5/codex/hooks-reference/emailtemplates/content_correct_before_save",
+                          "nukeviet5/codex/hooks-reference/emailtemplates/content_from_db",
+                          "nukeviet5/codex/hooks-reference/emailtemplates/on_emailtemplate_save_error"
+                        ]
+                      },
+                      {
+                        "group": "Page",
+                        "pages": [
+                          "nukeviet5/codex/hooks-reference/page/after_change_post_status"
+                        ]
+                      },
+                      {
+                        "group": "Thành viên",
+                        "pages": [
+                          "nukeviet5/codex/hooks-reference/users/new_registered_user",
+                          "nukeviet5/codex/hooks-reference/users/new_user_waiting",
+                          "nukeviet5/codex/hooks-reference/users/new_user_waiting_by_openid",
+                          "nukeviet5/codex/hooks-reference/users/user_add",
+                          "nukeviet5/codex/hooks-reference/users/user_add_by_openid",
+                          "nukeviet5/codex/hooks-reference/users/user_add_in_admin",
+                          "nukeviet5/codex/hooks-reference/users/user_delete",
+                          "nukeviet5/codex/hooks-reference/users/user_waiting_active_in_admin",
+                          "nukeviet5/codex/hooks-reference/users/user_waiting_active_self"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Cài đặt",
+                "pages": [
+                  "nukeviet5/setup/requirements"
+                ]
+              },
+              {
+                "group": "Thiết lập nâng cao",
+                "pages": [
+                  "nukeviet5/advanced_setting/file_config",
+                  "nukeviet5/advanced_setting/security"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Lập trình NukeViet 5",
+            "pages": [
+              "programming5/function",
+              "programming5/other_constants",
+              "programming5/hooks",
+              {
+                "group": "Chuyên đề",
+                "pages": [
+                  "programming5/thematic",
+                  "programming5/thematic/site-form-validate",
+                  "programming5/thematic/language",
+                  "programming5/thematic/structured-data"
+                ]
+              },
+              {
+                "group": "Giao diện (Theme)",
+                "pages": [
+                  "programming5/theme/meo-chen-css-js-trong-tpl",
+                  "programming5/theme/copy-from-deault-theme"
+                ]
+              },
+              {
+                "group": "Module",
+                "pages": [
+                  "programming5/module",
+                  "programming5/module/api",
+                  "programming5/module/file-manager"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "NukeViet 4",
+        "groups": [
+          {
+            "group": "Mục lục",
+            "pages": [
+              "technical_manual4",
+              "user_manual_4",
+              "mysql_nv4"
+            ]
+          },
+          {
+            "group": "Hướng dẫn sử dụng NukeViet 4",
+            "pages": [
+              "nukeviet4",
+              "nukeviet4/composer",
+              "nukeviet4/anti_ddos",
+              "nukeviet4/about",
+              "nukeviet4/security",
+              "nukeviet4/users",
+              "nukeviet4/feature",
+              {
+                "group": "Codex",
+                "pages": [
+                  {
+                    "group": "Tham chiếu Hooks",
+                    "pages": [
+                      "nukeviet4/codex/hooks-reference",
+                      "nukeviet4/codex/hooks-reference/change_site_buffer",
+                      "nukeviet4/codex/hooks-reference/check_server",
+                      "nukeviet4/codex/hooks-reference/db_slave_connect",
+                      "nukeviet4/codex/hooks-reference/get_qr_code",
+                      "nukeviet4/codex/hooks-reference/get_rewrite_domain",
+                      "nukeviet4/codex/hooks-reference/modify_sso_login_url",
+                      {
+                        "group": "Thành viên",
+                        "pages": [
+                          "nukeviet4/codex/hooks-reference/users/user_delete"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Cài đặt",
+                "pages": [
+                  "nukeviet4/setup",
+                  "nukeviet4/setup/security",
+                  "nukeviet4/setup/change_host",
+                  "nukeviet4/setup/localhost",
+                  "nukeviet4/setup/hosting",
+                  "nukeviet4/setup/upload_file_setting_hosting",
+                  "nukeviet4/setup/requirements",
+                  "nukeviet4/setup/creat_database"
+                ]
+              },
+              {
+                "group": "Khái niệm",
+                "pages": [
+                  "nukeviet4/concepts/block_template",
+                  "nukeviet4/concepts/block",
+                  "nukeviet4/concepts/cronjobs",
+                  "nukeviet4/concepts/layout",
+                  "nukeviet4/concepts/module",
+                  "nukeviet4/concepts/language",
+                  "nukeviet4/concepts/theme",
+                  "nukeviet4/concepts/plugins"
+                ]
+              },
+              {
+                "group": "Quản trị",
+                "pages": [
+                  "nukeviet4/admin",
+                  "nukeviet4/admin/webtools",
+                  "nukeviet4/admin/menu",
+                  "nukeviet4/admin/news",
+                  "nukeviet4/admin/contact",
+                  "nukeviet4/admin/download",
+                  "nukeviet4/admin/voting",
+                  "nukeviet4/admin/about",
+                  "nukeviet4/admin/feeds",
+                  "nukeviet4/admin/banners",
+                  "nukeviet4/admin/videoclips",
+                  "nukeviet4/admin/laws",
+                  "nukeviet4/admin/manage",
+                  "nukeviet4/admin/authors",
+                  "nukeviet4/admin/siteinfo",
+                  {
+                    "group": "Comment",
+                    "pages": [
+                      "nukeviet4/admin/comment",
+                      "nukeviet4/admin/comment/config",
+                      "nukeviet4/admin/comment/edit"
+                    ]
+                  },
+                  {
+                    "group": "Cấu hình",
+                    "pages": [
+                      "nukeviet4/admin/settings",
+                      "nukeviet4/admin/settings/cronjobs",
+                      "nukeviet4/admin/settings/smtp",
+                      "nukeviet4/admin/settings/http",
+                      "nukeviet4/admin/settings/plugin",
+                      {
+                        "group": "Security",
+                        "pages": [
+                          "nukeviet4/admin/settings/security",
+                          "nukeviet4/admin/settings/security/security-flood",
+                          "nukeviet4/admin/settings/security/security-csp",
+                          "nukeviet4/admin/settings/security/security-rp",
+                          "nukeviet4/admin/settings/security/security-captcha",
+                          "nukeviet4/admin/settings/security/security-ip",
+                          "nukeviet4/admin/settings/security/security-admin"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Database",
+                    "pages": [
+                      "nukeviet4/admin/database",
+                      "nukeviet4/admin/database/setting",
+                      "nukeviet4/admin/database/save",
+                      "nukeviet4/admin/database/file"
+                    ]
+                  },
+                  {
+                    "group": "Freecontent",
+                    "pages": [
+                      "nukeviet4/admin/freecontent",
+                      "nukeviet4/admin/freecontent/list"
+                    ]
+                  },
+                  {
+                    "group": "Language",
+                    "pages": [
+                      "nukeviet4/admin/language",
+                      "nukeviet4/admin/language/setting",
+                      "nukeviet4/admin/language/check",
+                      "nukeviet4/admin/language/interface"
+                    ]
+                  },
+                  {
+                    "group": "Quản lý giao diện",
+                    "pages": [
+                      "nukeviet4/admin/themes",
+                      "nukeviet4/admin/themes/autoinstall",
+                      "nukeviet4/admin/themes/blocks",
+                      "nukeviet4/admin/themes/xcopyblock",
+                      "nukeviet4/admin/themes/setuptheme",
+                      "nukeviet4/admin/themes/config",
+                      "nukeviet4/admin/themes/setuplayout"
+                    ]
+                  },
+                  {
+                    "group": "Quản lý module",
+                    "pages": [
+                      "nukeviet4/admin/modules/autoinstall",
+                      "nukeviet4/admin/modules/modules",
+                      "nukeviet4/admin/modules/setup",
+                      "nukeviet4/admin/modules/vmodule"
+                    ]
+                  },
+                  {
+                    "group": "Seotools",
+                    "pages": [
+                      "nukeviet4/admin/seotools",
+                      "nukeviet4/admin/seotools/rpc",
+                      "nukeviet4/admin/seotools/robots",
+                      "nukeviet4/admin/seotools/metatags",
+                      "nukeviet4/admin/seotools/pagetitle",
+                      "nukeviet4/admin/seotools/googleplus",
+                      "nukeviet4/admin/seotools/sitemapping"
+                    ]
+                  },
+                  {
+                    "group": "Shops",
+                    "pages": [
+                      "nukeviet4/admin/shops",
+                      "nukeviet4/admin/shops/block",
+                      "nukeviet4/admin/shops/shipping_config",
+                      "nukeviet4/admin/shops/setting",
+                      "nukeviet4/admin/shops/list",
+                      "nukeviet4/admin/shops/cat",
+                      "nukeviet4/admin/shops/coupons",
+                      "nukeviet4/admin/shops/group",
+                      "nukeviet4/admin/shops/warehouse",
+                      "nukeviet4/admin/shops/docpay",
+                      "nukeviet4/admin/shops/discount",
+                      "nukeviet4/admin/shops/tabs",
+                      "nukeviet4/admin/shops/tags",
+                      "nukeviet4/admin/shops/download",
+                      "nukeviet4/admin/shops/content",
+                      "nukeviet4/admin/shops/payport",
+                      "nukeviet4/admin/shops/template",
+                      "nukeviet4/admin/shops/point",
+                      "nukeviet4/admin/shops/review",
+                      "nukeviet4/admin/shops/shipping",
+                      "nukeviet4/admin/shops/weight",
+                      "nukeviet4/admin/shops/unit",
+                      "nukeviet4/admin/shops/money",
+                      "nukeviet4/admin/shops/order"
+                    ]
+                  },
+                  {
+                    "group": "Statistics",
+                    "pages": [
+                      "nukeviet4/admin/statistics",
+                      "nukeviet4/admin/statistics/allos",
+                      "nukeviet4/admin/statistics/allbots",
+                      "nukeviet4/admin/statistics/allcountries",
+                      "nukeviet4/admin/statistics/allbrowsers",
+                      "nukeviet4/admin/statistics/allreferers"
+                    ]
+                  },
+                  {
+                    "group": "Thành viên",
+                    "pages": [
+                      "nukeviet4/admin/users",
+                      "nukeviet4/admin/users/oauth"
+                    ]
+                  },
+                  {
+                    "group": "Upload",
+                    "pages": [
+                      "nukeviet4/admin/upload",
+                      "nukeviet4/admin/upload/config",
+                      "nukeviet4/admin/upload/uploadconfig",
+                      "nukeviet4/admin/upload/thumbconfig"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Thiết lập nâng cao",
+                "pages": [
+                  "nukeviet4/advanced_setting/file_config",
+                  "nukeviet4/advanced_setting/oauth",
+                  "nukeviet4/advanced_setting/constants",
+                  "nukeviet4/advanced_setting/security"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Lập trình NukeViet 4",
+            "pages": [
+              "programming4",
+              "programming4/variables",
+              "programming4/lib",
+              "programming4/function",
+              "programming4/other_constants",
+              "programming4/note",
+              "programming4/moduleupdate",
+              "programming4/structure",
+              "programming4/translate",
+              "programming4/api",
+              "programming4/optimize_javascript",
+              "programming4/git",
+              "programming4/multi_language",
+              "programming4/template-engine",
+              "programming4/rule",
+              "programming4/optimize",
+              "programming4/block",
+              "programming4/cronjob",
+              "programming4/plugin",
+              "programming4/mobile_theme",
+              {
+                "group": "Chuyên đề",
+                "pages": [
+                  "programming4/thematic",
+                  "programming4/thematic/debugsql",
+                  "programming4/thematic/captchathemedefault",
+                  "programming4/thematic/packageextensions",
+                  "programming4/thematic/emailcheck"
+                ]
+              },
+              {
+                "group": "Class",
+                "pages": [
+                  "programming4/class",
+                  "programming4/class/image",
+                  "programming4/class/upload",
+                  "programming4/class/botmanager"
+                ]
+              },
+              {
+                "group": "Giao diện (Theme)",
+                "pages": [
+                  "programming4/theme",
+                  "programming4/theme/items",
+                  "programming4/theme/them-khoi-block-giao-dien-nukeviet",
+                  "programming4/theme/layout",
+                  "programming4/theme/copy-from-deault-theme"
+                ]
+              },
+              {
+                "group": "Module",
+                "pages": [
+                  "programming4/module",
+                  "programming4/module/security",
+                  "programming4/module/funcs-required",
+                  "programming4/module/emailtemplates",
+                  "programming4/module/rss",
+                  "programming4/module/modblocks",
+                  "programming4/module/notification",
+                  "programming4/module/framework",
+                  "programming4/module/sitemap",
+                  "programming4/module/sitemap41",
+                  "programming4/module/menu",
+                  "programming4/module/comment",
+                  "programming4/module/submit_form_nukeviet",
+                  "programming4/module/plugin",
+                  "programming4/module/gitupdate",
+                  "programming4/module/file-manager"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Codex (API & Hooks)",
+            "pages": [
+              "codex/auto-test",
+              "codex/directory-structure",
+              {
+                "group": "Cây API",
+                "pages": [
+                  "codex/api-tree",
+                  {
+                    "group": "Module",
+                    "pages": [
+                      {
+                        "group": "Inform",
+                        "pages": [
+                          {
+                            "group": "API",
+                            "pages": [
+                              "codex/api-tree/module/inform/api/informaction",
+                              "codex/api-tree/module/inform/api/informgetinfo",
+                              "codex/api-tree/module/inform/api/informgetlist"
+                            ]
+                          },
+                          {
+                            "group": "API người dùng",
+                            "pages": [
+                              "codex/api-tree/module/inform/uapi/informaction",
+                              "codex/api-tree/module/inform/uapi/informcheck",
+                              "codex/api-tree/module/inform/uapi/informgetlist",
+                              "codex/api-tree/module/inform/uapi/informgroupaction",
+                              "codex/api-tree/module/inform/uapi/informgroupgetinfo",
+                              "codex/api-tree/module/inform/uapi/informgroupgetlist"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Tham chiếu Hooks",
+                "pages": [
+                  "codex/hooks-reference",
+                  "codex/hooks-reference/after_clear_cache_manually",
+                  "codex/hooks-reference/after_clear_ip_logs",
+                  "codex/hooks-reference/after_module_deleted",
+                  "codex/hooks-reference/change_site_buffer",
+                  "codex/hooks-reference/db_slave_connect",
+                  "codex/hooks-reference/get_qr_code",
+                  "codex/hooks-reference/get_rewrite_domain",
+                  {
+                    "group": "Page",
+                    "pages": [
+                      "codex/hooks-reference/page/after_change_post_status"
+                    ]
+                  },
+                  {
+                    "group": "Thành viên",
+                    "pages": [
+                      "codex/hooks-reference/users/new_registered_user",
+                      "codex/hooks-reference/users/new_user_waiting",
+                      "codex/hooks-reference/users/new_user_waiting_by_openid",
+                      "codex/hooks-reference/users/user_add",
+                      "codex/hooks-reference/users/user_add_by_openid",
+                      "codex/hooks-reference/users/user_add_in_admin",
+                      "codex/hooks-reference/users/user_delete",
+                      "codex/hooks-reference/users/user_waiting_active_in_admin",
+                      "codex/hooks-reference/users/user_waiting_active_self"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Codex NukeViet 4",
+            "pages": [
+              "codex4/api-tree"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "NukeViet 3 (Lưu trữ)",
+        "groups": [
+          {
+            "group": "Mục lục",
+            "pages": [
+              "technical_manual",
+              "user_manual"
+            ]
+          },
+          {
+            "group": "Hướng dẫn sử dụng NukeViet 3",
+            "pages": [
+              "nukeviet",
+              "nukeviet/htaccess_and_redirect_301",
+              "nukeviet/admin_control_panel",
+              "nukeviet/anti_ddos",
+              "nukeviet/security",
+              "nukeviet/phpbb3",
+              "nukeviet/vbulletin",
+              "nukeviet/anti_hack",
+              "nukeviet/note_creat_theme",
+              "nukeviet/upgrade4",
+              {
+                "group": "Cài đặt",
+                "pages": [
+                  "nukeviet/setup",
+                  "nukeviet/setup/localhost_linux",
+                  "nukeviet/setup/iis7",
+                  "nukeviet/setup/change_host",
+                  "nukeviet/setup/localhost",
+                  "nukeviet/setup/localhost_ubuntu",
+                  "nukeviet/setup/localhost_mac",
+                  "nukeviet/setup/byethost",
+                  "nukeviet/setup/hosting",
+                  "nukeviet/setup/locahost",
+                  "nukeviet/setup/requirements",
+                  "nukeviet/setup/replace_code"
+                ]
+              },
+              {
+                "group": "Giới thiệu",
+                "pages": [
+                  "nukeviet/about",
+                  "nukeviet/about/nukeviet3"
+                ]
+              },
+              {
+                "group": "Khái niệm",
+                "pages": [
+                  "nukeviet/concepts",
+                  "nukeviet/concepts/block_template",
+                  "nukeviet/concepts/localhost",
+                  "nukeviet/concepts/god_admin",
+                  "nukeviet/concepts/block",
+                  "nukeviet/concepts/cronjobs",
+                  "nukeviet/concepts/layout",
+                  "nukeviet/concepts/module",
+                  "nukeviet/concepts/language",
+                  "nukeviet/concepts/theme",
+                  "nukeviet/concepts/structure",
+                  "nukeviet/concepts/plugins",
+                  "nukeviet/concepts/function"
+                ]
+              },
+              {
+                "group": "Nâng cấp",
+                "pages": [
+                  "nukeviet/upgrade",
+                  "nukeviet/upgrade/from3.4.02-3.5"
+                ]
+              },
+              {
+                "group": "Quản trị",
+                "pages": [
+                  "nukeviet/admin",
+                  "nukeviet/admin/webtools",
+                  "nukeviet/admin/download",
+                  "nukeviet/admin/faq",
+                  "nukeviet/admin/contact",
+                  "nukeviet/admin/banners",
+                  "nukeviet/admin/voting",
+                  "nukeviet/admin/users",
+                  "nukeviet/admin/weblinks",
+                  "nukeviet/admin/language",
+                  "nukeviet/admin/database",
+                  "nukeviet/admin/authors",
+                  "nukeviet/admin/shops4",
+                  {
+                    "group": "Cấu hình",
+                    "pages": [
+                      "nukeviet/admin/settings",
+                      "nukeviet/admin/settings/system",
+                      "nukeviet/admin/settings/robots",
+                      "nukeviet/admin/settings/ftp",
+                      "nukeviet/admin/settings/metatags",
+                      "nukeviet/admin/settings/bots",
+                      "nukeviet/admin/settings/settings",
+                      "nukeviet/admin/settings/smtp",
+                      "nukeviet/admin/settings/statistics",
+                      "nukeviet/admin/settings/pagetitle",
+                      "nukeviet/admin/settings/uploadconfig",
+                      "nukeviet/admin/settings/banip",
+                      "nukeviet/admin/settings/cronjobs"
+                    ]
+                  },
+                  {
+                    "group": "Quản lý giao diện",
+                    "pages": [
+                      "nukeviet/admin/themes",
+                      "nukeviet/admin/themes/autoinstall",
+                      "nukeviet/admin/themes/blocks",
+                      "nukeviet/admin/themes/xcopyblock",
+                      "nukeviet/admin/themes/setuplayout"
+                    ]
+                  },
+                  {
+                    "group": "Quản lý module",
+                    "pages": [
+                      "nukeviet/admin/modules",
+                      "nukeviet/admin/modules/autoinstall",
+                      "nukeviet/admin/modules/modules",
+                      "nukeviet/admin/modules/vmodule",
+                      "nukeviet/admin/modules/setup"
+                    ]
+                  },
+                  {
+                    "group": "Shops",
+                    "pages": [
+                      "nukeviet/admin/shops",
+                      "nukeviet/admin/shops/danhsachsanpham",
+                      "nukeviet/admin/shops/payport"
+                    ]
+                  },
+                  {
+                    "group": "Tin tức",
+                    "pages": [
+                      "nukeviet/admin/news",
+                      "nukeviet/admin/news/facebookapi"
+                    ]
+                  },
+                  {
+                    "group": "Upload",
+                    "pages": [
+                      "nukeviet/admin/upload",
+                      "nukeviet/admin/upload/config"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Thiết lập nâng cao",
+                "pages": [
+                  "nukeviet/advanced_setting/constants",
+                  "nukeviet/advanced_setting/openid",
+                  "nukeviet/advanced_setting/security"
+                ]
+              },
+              {
+                "group": "Vấn đề phát sinh",
+                "pages": [
+                  "nukeviet/arising",
+                  "nukeviet/arising/errormessage",
+                  "nukeviet/arising/emailnotice",
+                  "nukeviet/arising/workunusual"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Lập trình NukeViet 3",
+            "pages": [
+              "programming",
+              "programming/cvs",
+              "programming/variables",
+              "programming/class",
+              "programming/function",
+              "programming/other_constants",
+              "programming/note",
+              "programming/moduleupdate",
+              "programming/structure",
+              "programming/translate",
+              "programming/optimize_javascript",
+              "programming/connect_nukeviet_openid",
+              "programming/multi_language",
+              "programming/github_rule",
+              "programming/code_statistic_rule",
+              "programming/rule",
+              "programming/lib",
+              "programming/optimize",
+              "programming/block",
+              "programming/cronjob",
+              "programming/mobile_theme",
+              {
+                "group": "Giao diện (Theme)",
+                "pages": [
+                  "programming/theme",
+                  "programming/theme/xay-dung-giao-dien-bang-cach-copy-theme-mac-dinh"
+                ]
+              },
+              {
+                "group": "Module",
+                "pages": [
+                  "programming/module",
+                  "programming/module/security",
+                  "programming/module/submit_form",
+                  "programming/module/gitupdate"
+                ]
+              },
+              {
+                "group": "Module nv4",
+                "pages": [
+                  "programming/module_nv4/plugin"
+                ]
+              },
+              {
+                "group": "NVTools",
+                "pages": [
+                  "programming/nvtools/translate",
+                  "programming/nvtools/csscompiler",
+                  "programming/nvtools/jscompiler",
+                  "programming/nvtools/theme",
+                  "programming/nvtools/module",
+                  "programming/nvtools/tao-website-bang-cach-tron-cac-kho-code-tu-git",
+                  {
+                    "group": "Eclipse",
+                    "pages": [
+                      "programming/nvtools/eclipse",
+                      "programming/nvtools/eclipse/2021-06",
+                      "programming/nvtools/eclipse/2023-06"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Quản lý phiên bản (VCS)",
+                "pages": [
+                  "programming/vcs",
+                  "programming/vcs/git",
+                  "programming/vcs/subversion"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Hỗ trợ & Hosting",
+        "groups": [
+          {
+            "group": "Chung",
+            "pages": [
+              "html5"
+            ]
+          },
+          {
+            "group": "Hỗ trợ",
+            "pages": [
+              "support/save_file_as_unicode",
+              "support/php_and_vietnamese_characters",
+              "support/domain",
+              "support/php_software",
+              {
+                "group": "Hosting",
+                "pages": [
+                  "support/hosting/chmod",
+                  {
+                    "group": "Cpanel",
+                    "pages": [
+                      "support/hosting/cpanel",
+                      "support/hosting/cpanel/domain",
+                      "support/hosting/cpanel/file_manager",
+                      "support/hosting/cpanel/ftp",
+                      "support/hosting/cpanel/ssl",
+                      "support/hosting/cpanel/mysql"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Phần mềm FTP",
+                "pages": [
+                  "support/ftp_client",
+                  "support/ftp_client/filezilla",
+                  "support/ftp_client/flash_fxp",
+                  "support/ftp_client/leapftp",
+                  "support/ftp_client/web2ftp"
+                ]
+              },
+              {
+                "group": "Trình duyệt",
+                "pages": [
+                  "support/browser/enable_javascript"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Máy chủ web",
+            "pages": [
+              "web_server/hosting",
+              "web_server/cai-dat-lemp-cho-centos6",
+              "web_server/cai-dat-lemp-cho-centos7",
+              "web_server/cai-dat-server-chi-tai-cao",
+              "web_server/vertrigo",
+              "web_server/appserv",
+              "web_server/xampp",
+              "web_server/use-elasticsearch-in-nukeviet",
+              "web_server/install-and-configure-elasticsearch-on-centos-7",
+              "web_server/virtual_domain",
+              {
+                "group": "Khái niệm",
+                "pages": [
+                  "web_server/concepts/dedicated_server",
+                  "web_server/concepts/share_hosting",
+                  "web_server/concepts/shell",
+                  "web_server/concepts/virtual_private_server",
+                  "web_server/concepts/hack_local"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "PHP",
+            "pages": [
+              "php/start",
+              {
+                "group": "Phiên bản PHP",
+                "pages": [
+                  "php/version",
+                  "php/version/80-81",
+                  "php/version/81-82",
+                  "php/version/82-85",
+                  {
+                    "group": "7 8",
+                    "pages": [
+                      "php/version/7-8",
+                      "php/version/7-8/new"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "MySQL",
+            "pages": [
+              {
+                "group": "phpMyAdmin",
+                "pages": [
+                  "mysql/phpmyadmin/backup_and_restore",
+                  "mysql/phpmyadmin/faq",
+                  "mysql/phpmyadmin/import"
+                ]
+              },
+              {
+                "group": "SQLDumpSplitter",
+                "pages": [
+                  "mysql/sqldumpsplitter",
+                  "mysql/sqldumpsplitter/backup_and_restore"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Nhà phát triển",
+            "pages": [
+              {
+                "group": "Máy chủ",
+                "pages": [
+                  "developer/server/setup-local-server-multi-php-version"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Tên miền phụ",
+            "pages": [
+              "subdomains/them_ten_mien_cap_con_cho_1_ten_mien_co_san"
+            ]
+          },
+          {
+            "group": "Cài đặt",
+            "pages": [
+              "install/iis7"
+            ]
+          },
+          {
+            "group": "Google",
+            "pages": [
+              {
+                "group": "API",
+                "pages": [
+                  "google/api/creat-google-map-apikey"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Cộng đồng",
+        "groups": [
+          {
+            "group": "Mục lục",
+            "pages": [
+              "quydinh"
+            ]
+          },
+          {
+            "group": "Đào tạo",
+            "pages": [
+              "training",
+              "training/install-nukeviet",
+              "training/desgin-database",
+              "training/git",
+              "training/create-module",
+              "training/template-nukeviet",
+              "training/about",
+              "training/template-copy-nukeviet",
+              "training/nukeviet-docker",
+              "training/func-cache",
+              "training/template-block-nukeviet",
+              "training/func-upload-module",
+              "training/request-module",
+              "training/func-edit-module",
+              "training/func-module",
+              "training/func-delete-module",
+              "training/about-git",
+              "training/func-other-module",
+              "training/exam-knowledge"
+            ]
+          },
+          {
+            "group": "Mùa hè sáng tạo (MHST)",
+            "pages": [
+              "mhst",
+              {
+                "group": "Ý tưởng 2011",
+                "pages": [
+                  "mhst/idea2011/manthesis",
+                  "mhst/idea2011/emreport"
+                ]
+              },
+              {
+                "group": "Ý tưởng 2012",
+                "pages": [
+                  "mhst/idea2012",
+                  "mhst/idea2012/vfossa_member",
+                  "mhst/idea2012/regular_reports",
+                  "mhst/idea2012/myu_management_youth_union_members",
+                  "mhst/idea2012/motcua",
+                  "mhst/idea2012/school_network"
+                ]
+              },
+              {
+                "group": "Ý tưởng 2013",
+                "pages": [
+                  "mhst/idea2013",
+                  "mhst/idea2013/sso-cas",
+                  "mhst/idea2013/yms",
+                  "mhst/idea2013/edudata",
+                  "mhst/idea2013/estudent"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Thư viện ý tưởng",
+            "pages": [
+              "ideas",
+              "ideas/donate"
+            ]
+          },
+          {
+            "group": "Quy chế",
+            "pages": [
+              "rules/charset",
+              "rules/mysql",
+              "rules/teams",
+              "rules/spelling",
+              "rules/glossary",
+              {
+                "group": "Nhóm",
+                "pages": [
+                  "rules/groups",
+                  "rules/groups/clb-nukeviet-hcmc"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "NukeViet Store",
+            "pages": [
+              "store/start",
+              "store/faq",
+              "store/rules",
+              {
+                "group": "Trợ giúp",
+                "pages": [
+                  "store/help/submit"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Ví tiền (Wallet)",
+            "pages": [
+              {
+                "group": "Hướng dẫn sử dụng",
+                "pages": [
+                  {
+                    "group": "Quản trị",
+                    "pages": [
+                      "wallet/user-manual/admin/payport"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Giao diện",
+            "pages": [
+              "themes/autoinstall"
+            ]
+          },
+          {
+            "group": "cPanel & quản trị hosting",
+            "pages": [
+              "addons_domain",
+              "backup_csdl",
+              "backup_va_restore_dung_mysqldumer",
+              "cac_cong_cu_quan_ly_ftp_khac",
+              "cai_dat_nukeviet_4",
+              "cau-hinh-ssh-tren-aptana",
+              "chinh_sua_thong_tin_cua_mot_tai_khoan_ftp",
+              "cong_cu_quan_ly_tap_tin_file_manager_cua_cpanel",
+              "cau_hinh_chung",
+              "cau_hinh_ftp",
+              "cau_hinh_site",
+              "gioi_thieu_chung_ve_quan_tri_co_so_du_lieu",
+              "cau_hinh_smtp",
+              "ngon_ngu",
+              "parket_domain",
+              "cau_hinh_cookie_session",
+              "tien_trinh_tu_dong",
+              "quan_ly_cac_co_so_du_lieu_va_user_tuong_ung",
+              "restore_csdl",
+              "thiet_lap_an_ninh",
+              "thiet_lap_tieu_de_http",
+              "truy_xuat_co_so_du_lieu_tu_xa",
+              "tao_1_co_so_du_lieu_moi_bang_wizard",
+              "tao_mot_tai_khoan_ftp_su_dung_cpanel"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "NukeViet.vn",
+          "href": "https://nukeviet.vn",
+          "icon": "globe"
+        },
+        {
+          "anchor": "Diễn đàn",
+          "href": "https://forum.nukeviet.vn",
+          "icon": "comments"
+        },
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/nukeviet",
+          "icon": "github"
+        }
+      ]
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Wiki cũ",
+        "href": "https://wiki.nukeviet.vn"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/nukeviet",
+      "website": "https://nukeviet.vn"
+    }
+  },
+  "search": {
+    "prompt": "Tìm kiếm tài liệu NukeViet..."
+  },
+  "seo": {
+    "indexing": "navigable"
+  },
+  "redirects": [
+    {
+      "source": "/start",
+      "destination": "/"
+    }
+  ],
+  "logo": {
+    "light": "/logo.png",
+    "dark": "/logo.png"
+  }
+}

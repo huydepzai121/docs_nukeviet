@@ -1,0 +1,2168 @@
+---
+title: "Các hàm được xây dựng trong NukeViet 4"
+description: "Nằm ở file assets/editors/ckeditor/nv.php"
+---
+
+## nv_aleditor
+
+Nằm ở file assets/editors/ckeditor/nv.php
+
+Chức năng: Gọi ra trình soạn thảo Ckeditor
+
+Cú pháp:
+
+``` php
+nv_aleditor($textareaname, $width = '100%', $height = '450px', $val = '', $customtoolbar = '', $path = '', $currentpath = '')
+```
+
+Trong đó:
+
+- `$textareaname` là ID của trình soạn thảo
+- `$width` là chiều rộng trình soạn thảo ví dụ 100%, 100px
+- `$height` là chiều cao trình soạn thảo ví dụ 300px
+- `$val` là nội dung soạn thảo
+- `$customtoolbar` là giá trị tùy chỉnh các công cụ soạn thảo, để trống nếu mặc định hoặc tùy chỉnh theo [https://ckeditor.com/latest/samples/old/toolbar/toolbar.html](https://ckeditor.com/latest/samples/old/toolbar/toolbar.html)
+- `$path` là đường dẫn upload được phép khi duyệt file, có thể để trống
+- `$currentpath` là đường dẫn upload hiện tại khi duyệt file, có thể để trống
+
+## nv_admin_checkip
+
+Nằm ở file includes/core/admin_access.php
+
+Chức năng: Kiểm tra xem IP có bị cấm truy cập vào khu vực admin không. Trả về true nếu không bị cấm và false nếu bị cấm
+
+Cú pháp:
+
+``` php
+nv_admin_checkip()
+```
+
+## nv_admin_checkfirewall
+
+Nằm ở file includes/core/admin_access.php
+
+Chức năng: Kiểm tra và hiển thị tường lửa truy cập khu vực admin
+
+Cú pháp:
+
+``` php
+nv_admin_checkfirewall()
+```
+
+## nv_admin_checkdata
+
+Nằm ở file includes/core/admin_access.php
+
+Chức năng: Kiểm tra dữ liệu admin
+
+Cú pháp:
+
+``` php
+nv_admin_checkdata($adm_session_value)
+```
+
+Trong đó:
+
+- `$adm_session_value` mảng chứa các field được lấy từ bảng users
+
+> Đây là hàm chỉ để sử dụng trong hệ thống
+
+## nv_base64_encode
+
+Hàm này dùng để mã hóa một chuỗi. Cú pháp:
+
+``` php
+nv_base64_encode ($input)
+```
+
+Ví dụ:
+
+``` php
+nv_base64_encode("http://nukeviet.vn") ;
+```
+
+Kết quả: `aHR0cDovL251a2V2aWV0LnZu`
+
+## nv_base64_decode
+
+Ngược với hàm `nv_base64_encode ( $input )` Cú pháp:
+
+``` php
+nv_base64_decode ($input)
+```
+
+Ví dụ:
+
+``` php
+nv_base64_decode("aHR0cDovL251a2V2aWV0LnZu") ;
+```
+
+Kết quả: http://nukeviet.vn
+
+## nv_check_valid_email
+
+Cú pháp:
+
+``` php
+nv_check_valid_email ($mail, $return = false)
+```
+
+> `$return` được thêm vào kể từ phiên bản 4.3.08
+
+Trả về giá trị rỗng nếu email hợp lệ và trả về thông báo lỗi nếu email không hợp lệ. Thường dùng để kiểm tra tính hợp lệ của email khi nhập vào.
+
+Nếu tham số \$return được đặt lên khác false thì dữ liệu trả về là mảng một chiều gồm hai phần tử 0 là giá trị kiểm tra trong trường hợp `$return = false` và phần tử 1 là email đã được chuyển từ Unicode sang ASCII
+
+## nv_set_allow
+
+Cú pháp:
+
+``` php
+nv_set_allow ($who, $groups)
+```
+
+> **Hàm này đã bị loại khỏi NukeViet 4**
+
+## nv_date
+
+Cú pháp:
+
+``` php
+nv_date ($format, $time = 0)
+```
+
+- \$format là định dạng ngày tương tự cú pháp của hàm date trong php xem tại [http://php.net/manual/en/function.date.php](http://php.net/manual/en/function.date.php).
+- \$time là giá trị của ngày.
+
+Cần biết thêm hằng `NV_CURRENTTIME` Ví dụ
+
+``` php
+nv_date("H:i d/m/Y", NV_CURRENTTIME)
+```
+
+Kết quả:
+
+``` text
+20:10 06/05/2011
+```
+
+## nv_htmlspecialchars
+
+Cú pháp:
+
+``` php
+nv_htmlspecialchars ($string)
+```
+
+Chuyển đổi các ký tự đặc biệt thành chuỗi:
+
+``` text
+&     =>    &amp;  
+\     =>    &#039;  
+"     =>    &quot;  
+<     =>    &lt;  
+>     =>    &gt;  
+\\    =>    &#x005C;  
+/     =>    &#x002F;  
+(     =>    &#40;  
+)     =>    &#41;  
+*     =>    &#42;  
+[     =>    &#91;  
+]     =>    &#93;  
+!     =>    &#33;  
+=     =>    &#x3D;  
+#     =>    &#x23;  
+%     =>    &#x25;  
+^     =>    &#x5E;  
+:     =>    &#x3A;  
+{     =>    &#x7B;  
+}     =>    &#x7D;  
+`     =>    &#x60;  
+~     =>    &#x7E;  
+```
+
+Trong đó:
+
+- \$string có thể là một chuỗi kí tự hoặc một mảng một chiều chứa các chuỗi kí tự.
+
+Tham khảo bảng mã hóa các ký tự đặc biệt: [http://htmlhelp.com/reference/html40/entities/special.html](http://htmlhelp.com/reference/html40/entities/special.html)
+
+## nv_unhtmlspecialchars
+
+Ngược lại với hàm `nv_htmlspecialchars`
+
+Cú pháp:
+
+``` php
+nv_unhtmlspecialchars ($string)
+```
+
+## nv_nl2br
+
+Cú pháp:
+
+``` php
+nv_nl2br ($text, $replacement = '<br />')
+```
+
+Dùng để chuyển các kí tự xuống dòng thành `<br />` (trong HTML), thường dùng để xuống dòng khi lấy dữ liệu từ textarea. Ví dụ:
+
+``` php
+nv_nl2br("Nuke\nViet")
+```
+
+Kết quả:
+
+``` text
+Nuke<br />Viet
+```
+
+## nv_br2nl
+
+Cú pháp:
+
+``` php
+nv_br2nl ($text)
+```
+
+Ngược lại với hàm `nv_nl2br`
+
+## nv_editor_nl2br
+
+Cú pháp:
+
+``` php
+nv_editor_nl2br ($text)
+```
+
+Tương tự `nv_nl2br` nhưng dùng trong trường hợp dữ liệu lấy từ EDITOR.
+
+## nv_editor_br2nl
+
+Cú pháp:
+
+``` php
+nv_editor_br2nl ($text)
+```
+
+Ngược lại với `nv_editor_nl2br ($text)`
+
+Các hàm `nv_editor_br2nl ($text), nv_editor_nl2br ($text), nv_br2nl ($text), nv_nl2br` thường được dùng trong khi lấy dữ liệu từ EDITOR hay textarea rồi lưu vào cơ sở dữ liệu rồi đưa ngược từ CSDL ra EDITOR hay textarea (Ví dụ viết một bài viết và sửa một vài viết nào đó).
+
+## filter_text_input
+
+Lấy dữ liệu được submit.
+
+Ví dụ:
+
+``` php
+filter_text_input( 'alias', 'post', 'GIA TRI MAC DINH' )
+```
+
+> **Hàm này đã bị loại khỏi NukeViet 4**
+
+## filter_text_textarea
+
+### nv_editor_filter_textarea
+
+> **Các hàm này đã bị loại khỏi NukeViet 4**
+
+### nv_editor_filter_textarea
+
+> **Hàm này đã bị loại khỏi NukeViet 4**
+
+## nv_sendmail
+
+Gửi email.
+
+Cú pháp:
+
+``` php
+nv_sendmail ($from, $to, $subject, $message, $files = '', $AddEmbeddedImage = false)
+```
+
+- \$from xem thêm cách dùng bên dưới
+- \$to là địa chỉ email nhận,
+- \$subject tiêu đề của email,
+- \$message là nội dung email có thể có định dạng HTML,
+- \$files là địa chỉ tập tin đính kèm (có thể bỏ trống)
+- \$AddEmbeddedImage nếu khác false hệ thống sẽ tự động thêm logo của site vào cuối email như là chữ ký. File logo này được cấu hình tại phần Cấu hình site.
+
+Ví dụ:
+
+``` php
+nv_sendmail(array("VINADES", "contact@vinades.vn"), "admin@nukeviet.vn", "Tiêu đề", "<strong>Nội dung</strong>");
+```
+
+Cách sử dụng biến `$from`
+
+- \$from là string thì string đó là địa chỉ email reply
+- \$from là mảng có 2 phần tử
+
+``` php
+$from = [
+    'Tên người reply',
+    'emailrelpy@domain.com'
+];
+```
+
+- \$from là mảng có 4 phần tử: Khả dụng từ bản 4.4.00 về sau
+
+``` php
+$from = [
+    'Tên người reply',
+    'emailrelpy@domain.com',
+    'Tên người gửi',
+    'emailsend@domain.com'
+];
+```
+
+Lưu ý:
+
+- Thông số email người gửi có thể không có tác dụng khi gửi tới Gmail và một số máy chủ khác. Trường hợp đó máy chủ tự tìm ra email gửi chính xác để hiển thị.
+- Từ bản 4.4.00 về sau có thể bỏ trống biến `$from`, hệ thống sẽ tự lấy từ email, tên của site
+
+## nv_generate_page
+
+Xuất số trang.
+
+Cú pháp:
+
+``` php
+nv_generate_page($base_url, $all_page, $per_page, $page);
+```
+
+trong đó
+
+- `$base_url` là link cơ bản khi ấn vào một trang ví dụ nukeviet.vn/ khi ấn vào trang link sẽ thêm `page=So-trang` dùng `$nv_Request->get_int('page', 'get', 1);` để lấy,
+- `$all_page` tổng số phần tử ví dụ hai mươi bài hát,
+- `$per_page` số phần tử trên một trang ví dụ 5 bài trên một trang,
+- `$page` Trang thứ mấy ví dụ trang 2. Dữ liệu xuất sẽ là một đoạn mã HTML bao gồm các link để ấn vào chỉ cần xuất ra trình duyệt trực tiếp. Giá trị này nhỏ nhất là 1.
+
+Nâng cao:
+
+``` php
+nv_generate_page ($base_url, $num_items, $per_page, $on_page, $add_prevnext_text = true, $onclick = false, $js_func_name = 'nv_urldecode_ajax', $containerid = 'generate_page')
+```
+
+Trong đó:
+
+- \$base_url là đường dẫn cơ bản khi ấn vào một liên kết.
+- \$num_items: Tổng số mục cần phân trang.
+- \$per_page: số mục trên một trang.
+- \$on_page: Trang hiện tại (Nhỏ nhất là 1).
+- \$add_prevnext_text: Mang giá trị true, false, bật hoặc tắt hai liên kết “ttang trước” và “trang sau”.
+- \$onclick: Mang giá trị true, false. Nếu giá trị là true thì liên kết sẽ được thêm onclick=“\$js_func_name”;
+- \$js_func_name: tên hàm được gọi khi ấn vào liên kết.
+- \$containerid: ID của đối tương được truyền vào hàm `$js_func_name`
+
+## nv_is_url
+
+Cú pháp:
+
+``` php
+nv_is_url ($url)
+```
+
+Kiểm tra một địa chỉ có phải là địa chỉ web đúng hay không, giá trị trả về là true nếu đúng và false nếu sai .
+
+Ví dụ:
+
+``` php
+nv_is_url ("http://nukeviet.vn")
+```
+
+kết quả: true
+
+## nv_check_url
+
+Cú pháp:
+
+``` php
+nv_check_url ($url, $is_200 = 0)
+```
+
+Kiểm tra sự tồn tại của địa chỉ \$url sau thời gian hết hạn thực thi, giá trị trả về là true hoặc false.
+
+Ví dụ:
+
+``` php
+nv_check_url ("http://nukeviet.vn")
+```
+
+kết quả: true.
+
+## nv_insert_logs
+
+Dùng để lưu lại lịch sử một công việc nào đó.
+
+Ví dụ câu lệnh lưu lại là đã có một quản trị viên xóa một chuyên mục sẽ viết như sau:
+
+``` php
+nv_insert_logs(NV_LANG_DATA[Ngôn ngữ], $module_name[tên module hiện đang dùng], $lang_module['file_addfile'][Tên công việc], $array['title'][Nội dung công việc], $admin_info['userid'][ID của thành viên], $link[Link để truy cập nếu có]);
+```
+
+## nv_site_mods
+
+Cú pháp:
+
+``` php
+nv_site_mods()
+```
+
+Trả về danh sách cấu hình các module hiện đang sử dụng giá trị trả về có dạng:
+
+``` php
+Array
+(
+    [about] => Array
+        (
+            [module_file] => page
+            [module_data] => about
+            [module_upload] => about
+            [custom_title] => Giới thiệu
+            [admin_title] => Giới thiệu
+            [admin_file] => 1
+            [main_file] => 1
+            [theme] => 
+            [mobile] => 
+            [description] => 
+            [keywords] => 
+            [groups_view] => 6
+            [is_modadmin] => 
+            [admins] => 
+            [rss] => 1
+            [gid] => 0
+            [funcs] => Array
+                (
+                    [sitemap] => Array
+                        (
+                            [func_id] => 2
+                            [func_name] => sitemap
+                            [show_func] => 0
+                            [func_custom_name] => Sitemap
+                            [in_submenu] => 0
+                        )
+
+                    [rss] => Array
+                        (
+                            [func_id] => 3
+                            [func_name] => rss
+                            [show_func] => 0
+                            [func_custom_name] => Rss
+                            [in_submenu] => 0
+                        )
+
+                    [main] => Array
+                        (
+                            [func_id] => 1
+                            [func_name] => main
+                            [show_func] => 1
+                            [func_custom_name] => Main
+                            [in_submenu] => 0
+                        )
+
+                )
+
+            [alias] => Array
+                (
+                    [sitemap] => sitemap
+                    [rss] => rss
+                    [main] => main
+                )
+
+        )
+
+    [news] => Array
+        (
+
+…
+```
+
+## nv_groups_list
+
+Cú pháp:
+
+``` php
+nv_groups_list($mod_data = 'users')
+```
+
+Trả về danh sách các nhóm thành viên trong hệ thống. Mặc định sẽ trả về của module users, thay đổi \$mod_data bằng module ảo của module users để trả về nhóm của module đó.
+
+## nv_info_die
+
+Cú pháp:
+
+``` php
+nv_info_die ($page_title = ""[Tiêu đề], $info_title[Thông tin1], $info_content[Thông tin2], $error_code[Mã lỗi HTTP], $adminlink = 0[Cho phép hiển thị link đến khu vực quản trị])
+```
+
+Thường dùng để thông báo lỗi và kết thúc ví dụ báo lỗi 404 - trang web bạn cố gắng truy cập hiện không tồn tại.
+
+## nv_ImageInfo
+
+Hàm tạo ảnh thumb.
+
+Cú pháp:
+
+``` php
+nv_ImageInfo($original_name, $width = 0, $is_create_thumb = false, $thumb_path = '')
+```
+
+Trong đó:
+
+- \$original_name: Đường dẫn tuyệt đối đến file ảnh.
+- \$width: chiều rộng ảnh thumb.
+- \$is_create_thumb: Nếu có giá trị true thì hệ thống sẽ tạo ảnh thumb nếu ảnh gốc có kích thước lớn hơn ảnh thumb.
+- \$thumb_path: Đường dẫn tuyệt đối đến thư mục chứa ảnh thumb.
+
+## change_alias
+
+Tạo liên kết tĩnh .
+
+Cú pháp:
+
+``` php
+change_alias($title)
+```
+
+Ví dụ:
+
+``` php
+change_alias("Tiêu đề")
+```
+
+Kết quả: Tieu-de
+
+## nv_clean60
+
+Cắt ngắn một chuỗi.
+
+Cú pháp:
+
+``` php
+nv_clean60 ($string, $num = 60, $specialchars = false)
+```
+
+- \$string là chuỗi cần cắt
+- \$num là số ký tự
+- Nếu \$specialchars là tre thì chuỗi trả về sẽ được xử lý qua hàm `nv_htmlspecialchars`
+
+Ví dụ:
+
+``` php
+nv_clean60 ("Nukeviet là phần mềm nguồn mở được nhiều người ưa thích", 10)
+```
+
+Kết quả:
+
+``` text
+Nukeviet là phần ...
+
+```
+
+## nv_db_cache
+
+> **Hàm này đã bị loại khỏi NukeViet 4 tham khảo `$nv_Cache->db`**
+
+## nv_del_moduleCache
+
+> **Hàm này đã bị loại khỏi NukeViet 4 tham khảo \$nv_Cache→delMod**
+
+## nv_loadUploadDirList
+
+> **Hàm này đã bị loại khỏi NukeViet 4**
+
+## nv_url_rewrite
+
+Cú pháp:
+
+``` php
+nv_url_rewrite($buffer, $is_url = false)
+```
+
+Trả về đường dẫn rewrite từ đường dẫn chưa rewrite nếu giá trị \$is_url là true.
+
+## nv_get_keywords
+
+Cú pháp:
+
+``` php
+nv_get_keywords ($content, $keyword_limit = 20)
+```
+
+Trả về từ khóa từ \$content, giới hạn tối đa bởi \$keyword_limit
+
+## nv_genpass
+
+Cú pháp:
+
+``` php
+nv_genpass ($length = 8, $type = 0)
+```
+
+Trả về một đoạn mã ngẫu nhiên có \$length kí tự. Giá trị của `$type` quy định phạm vi ký tự
+
+- 0: Chữ cái thường và số
+- 2: Chữ cái thường, chữ in hoa và số
+- 3: Chữ cái thường, ký tự đặc biệt và số
+- 4: Chữ cái thường, chữ in hoa, số và ký tự đặc biệt
+
+## nv_capcha_txt
+
+Cú pháp:
+
+``` php
+nv_capcha_txt ($seccode)
+```
+
+Trả về true nếu mã capcha \$seccode là hợp lệ, ngược lại trả về false.
+
+## nv_get_cache
+
+> **Hàm này đã bị loại khỏi NukeViet 4. Tham khảo `$nv_Cache->getItem`**
+
+## nv_set_cache
+
+> **Hàm này đã bị loại khỏi NukeViet 4. Tham khảo \$nv_Cache→setItem**
+
+## nv_scandir
+
+Cú pháp:
+
+``` php
+nv_scandir($directory, $pattern, $sorting_order = 0)
+```
+
+tương tự hàm scandir.
+
+## nv_getextension
+
+Cú pháp:
+
+``` php
+nv_getextension ($filename)
+```
+
+Trả về kiểu file của \$filename.
+
+## nv_mkdir
+
+Cú pháp:
+
+``` php
+nv_mkdir($path, $dir_name)
+```
+
+tạo thư mục \$dir_name trong thư mục \$path.
+
+## nv_deletefile
+
+Cú pháp:
+
+``` php
+nv_deletefile ($file, $delsub = false)
+```
+
+Xóa file hoặc thư mục \$file. Nếu đối tượng xóa là thư mục và giá trị \$delsub là true thì hàm chỉ xóa các thư mục rỗng.
+
+## nv_copyfile
+
+Cú pháp:
+
+``` php
+nv_copyfile ($file, $newfile)
+```
+
+Copy \$file sang \$newfile.
+
+## nv_renamefile
+
+Cú pháp:
+
+``` php
+nv_renamefile ($file, $newname)
+```
+
+Đổi tên file \$file thành \$newname.
+
+## nv_chmod_dir
+
+Cú pháp:
+
+``` php
+nv_chmod_dir ($conn_id, $dir, $subdir = false)
+```
+
+CHMOD thư mục \$dir và các thu mục con nếu \$subdir có giá trị true. \$conn_id là connection FTP (ft_connect());
+
+## nv_error_info
+
+Cú pháp:
+
+``` php
+nv_error_info()
+```
+
+Trả về các thông báo lỗi hệ thống.
+
+## nv_rss_generate
+
+Cú pháp:
+
+``` php
+nv_rss_generate ($channel, $items)
+```
+
+Xuất RSS.
+
+## nv_html_meta_tags
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Xuất các meta tags của site
+
+Cú pháp:
+
+``` php
+nv_html_meta_tags($html = true)
+```
+
+Trong đó:
+
+- `$html` nếu đặt là true nội dung xuất ra sẽ được chuyển thành chuỗi, ngược lại dữ liệu trả về là mảng chứa các meta tags
+
+## nv_is_file
+
+Cú pháp:
+
+``` php
+nv_is_file ($file_fullpath, $array_allow_dirs)
+```
+
+Kiểm tra một file `$file_fullpath` có tồn tại hay không tồn tại trong một hoặc nhiều thư mục cho phép `$array_allow_dirs`. Kết quả trả về true nếu file tồn tại và false nếu file không tồn tại. Trong đó chú ý hai tham số `$file_fullpath` và `$file_fullpath`, `$file_fullpath` là đường dẫn tới file cần kiểm tra được lấy trực tiếp từ giá trị trả về của hàm javascript `nv_open_browse()`, đường dẫn này có dạng:
+
+``` php
+NV_BASE_SITEURL . $folders . '/' . $filename
+```
+
+Ví dụ một số đường dẫn file:
+
+``` text
+/uploads/news/2015_12/image.jpg
+/assets/images/loading.png
+/modules/news/data/jquery.custom.js
+```
+
+`$array_allow_dirs` là thư mục cho phép của `$file_fullpath`, có thể là một thư mục, hoặc là mảng một chiều gồm nhiều thư mục cho phép. Nếu tham số này để trống trong lệnh gọi hàm, giá trị mặc định gồm hai thư mục cơ bản:
+
+``` php
+uploads // Thư mục chứ file upload
+assets/images // Thư mục ảnh 
+```
+
+> Chú ý: Nếu giá trị là thư mục A thì tất cả các thư mục con của thư mục A cũng được xem là thư mục cho phép.
+
+Trong ví dụ về đường dẫn file ở trên thì thư mục truyền vào sẽ như sau:
+
+``` text
+/uploads/news/2015_12/image.jpg      => uploads/news/2015_12
+/assets/images/loading.png           => assets/images
+/modules/news/data/jquery.custom.js  => modules/news/data
+```
+
+## nv_alias_page
+
+Phân trang có hỗ trợ rewrite. Chú pháp cơ bản
+
+``` php
+nv_alias_page($title, $base_url, $num_items, $per_page, $on_page)
+```
+
+Trong đó:
+
+- \$title là nội dung tiêu đề của liên kết
+- \$base_url là đường dẫn cơ bản cho mỗi liên kết
+- \$num_items tổng số kết quả
+- \$per_page số kết quả 1 trang
+- \$on_page trang hiện tại, tối thiểu là 1.
+
+Nâng cao:
+
+``` php
+nv_alias_page($title, $base_url, $num_items, $per_page, $on_page, $add_prevnext_text = true, $full_theme = true)
+```
+
+Trong đó:
+
+- \$add_prevnext_text xác định có hay không việc thêm vào nút trang trước, trang sau
+- \$full_theme nếu mang giá trị false hàm sẽ trả về chỉ các thẻ `<li>`, nếu là true hàm trả về cả `<ul>`
+
+## nv_object2array
+
+Chuyển từ kiểu `object` sang kiểu `array`
+
+Cú pháp
+
+``` php
+nv_object2array($a)
+```
+
+## nv_convertfromBytes
+
+Chuyển từ đơn vị byte sang đơn vị lớn hơn thích hợp.
+
+Cú pháp
+
+``` php
+nv_convertfromBytes($size)
+```
+
+Ví dụ:
+
+``` php
+nv_convertfromBytes(1024); // 1,024.00 bytes
+nv_convertfromBytes(65464654); // 62.43 MB
+nv_convertfromBytes(65464654188); // 60.97 GB
+nv_convertfromBytes(6546465418865464654188); // 5.55 ZB
+```
+
+## nv_convertfromSec
+
+Chuyển từ số giây sang thời gian đọc được thích hợp.
+
+Cú pháp
+
+``` php
+nv_convertfromSec($sec = 0)
+```
+
+Ví dụ:
+
+``` php
+nv_convertfromSec(61); // 1 phút 1 giây
+nv_convertfromSec(3600); // 1 giờ
+nv_convertfromSec(86450); // 1 ngày 50 giây
+nv_convertfromSec(869751); // 10 ngày 1 giờ 35 phút 51 giây
+```
+
+## nv_converttoBytes
+
+Ngược lại với hàm `nv_convertfromBytes`
+
+Cú pháp
+
+``` php
+nv_convertfromSec($string)
+```
+
+## nv_check_valid_login
+
+Kiểm tra giá trị username có hợp lệ hay không
+
+Cú pháp
+
+``` php
+nv_check_valid_login($login, $max, $min)
+```
+
+Trong đó:
+
+- \$login là username cần kiểm tra
+- \$max số ký tự tối đa cho phép
+- \$min số ký tự tối thiểu cho phép
+
+Trả về chuỗi rỗng nếu hợp lệ và chuỗi thể hiện lỗi nếu không hợp lệ
+
+## nv_check_valid_pass
+
+Kiểm tra mật khẩu có hợp lệ hay không
+
+Cú pháp
+
+``` php
+nv_check_valid_pass($pass, $max, $min)
+```
+
+Trong đó:
+
+- \$pass là mật khẩu cần kiểm tra
+- \$max số ký tự tối đa cho phép
+- \$min số ký tự tối thiểu cho phép
+
+Trả về chuỗi rỗng nếu hợp lệ và chuỗi thể hiện lỗi nếu không hợp lệ
+
+## nv_check_valid_email
+
+Kiểm tra email có hợp lệ hay không
+
+Cú pháp
+
+``` php
+nv_check_valid_email($mail)
+```
+
+Trả về chuỗi rỗng nếu hợp lệ và chuỗi thể hiện lỗi nếu không hợp lệ
+
+## nv_user_in_groups
+
+Kiểm tra thành viên có thuộc **ít nhất một** trong các nhóm được chỉ định hay không.
+
+Cú pháp
+
+``` php
+nv_user_in_groups($groups_view)
+```
+
+Giá trị trả về là true hoặc false
+
+Ví dụ
+
+``` php
+nv_user_in_groups("4,6,1,15")
+```
+
+## nv_groups_add_user
+
+Thêm thành viên vào nhóm
+
+Cú pháp
+
+``` php
+nv_groups_add_user($group_id, $userid, $approved = 1, $mod_data = 'users')
+```
+
+Trong đó:
+
+- \$group_id là ID của nhóm
+- \$userid là ID của thành viên
+- \$approved mang giá trị 0 hoặc 1 có nghĩa là thành viên chưa được xác nhận hay đã được xác nhận vào nhóm.
+- \$mod_data là giá trị `$module_data` của module chưa CSDL thành viên, mặc định là module users.
+
+Trả về true nếu thành công và false nếu thất bại.
+
+## nv_groups_del_user
+
+Loại thành viên khỏi nhóm
+
+Cú pháp
+
+``` php
+nv_groups_del_user($group_id, $userid, $mod_data = 'users')
+```
+
+Trong đó:
+
+- \$group_id là ID của nhóm
+- \$userid là ID của thành viên
+- \$mod_data là giá trị `$module_data` của module chưa CSDL thành viên, mặc định là module users.
+
+Trả về true nếu thành công và false nếu thất bại.
+
+## nv_show_name_user
+
+Lấy tên đầy đủ của thành viên
+
+Cú pháp
+
+``` php
+nv_show_name_user($first_name, $last_name,  $user_name = '')
+```
+
+## nv_get_redirect
+
+Lấy link chuyển hướng từ \$\_GET\['nv_redirect'\] hoặc \$\_POST\['nv_redirect'\]
+
+Cú pháp
+
+``` php
+nv_get_redirect($mode = 'post,get', $decode = false)
+```
+
+Trả về link chuyển hướng thực nếu nv_redirect hợp lệ hoặc rỗng nếu không hợp lệ
+
+## nv_redirect_decrypt
+
+Giải mã link chuyển hướng
+
+Cú pháp
+
+``` php
+nv_redirect_decrypt($string, $insite = true)
+```
+
+Trả về link chuyển hướng thực nếu redirect được mã hóa đúng kiểu, hoặc rỗng nếu không hợp lệ.
+
+## nv_redirect_encrypt
+
+Mã hóa link chuyển hướng.
+
+Cú pháp
+
+``` php
+nv_redirect_encrypt($url)
+```
+
+## nv_insert_notification
+
+Lưu một thông báo vào CSDL. Thông báo này sẽ hiển thị cho admin biết lúc truy cập vào khu vực quản trị.
+
+Cú pháp cho bản trước 4.3.09
+
+``` php
+nv_insert_notification($module, $type, $content = array(), $obid = 0, $send_to = 0, $send_from = 0, $area = 1)
+```
+
+Trong đó:
+
+- `$module` là tên module đưa ra thông báo. Thường là biến `$module_name`
+- `$type` là chuỗi ký tự bất kỳ để tạo khóa cho thông báo. Ví dụ, thông báo khi có liên hệ mới, có thể dùng là "new_contact". Hay bình luận mới, dùng "new_comment",....
+- `$content` là mảng một chiều chứa các thông tin do người lập trình quy định, các thông tin này sẽ được lấy ra khi hiển thị thông báo.
+- `$obid` là ID của hành động được thực hiện. Ví dụ: sau khi gửi 1 thư liên hệ, thư này sẽ được ghi vào CSDL với một ID. Hay sau khi bình luận, bình luận này sẽ được ghi vào CSDL với một ID,....
+- `$send_to` giá trị userID của người nhận, bằng 0 nếu muốn thông báo cho tất cả
+- `$send_from` giá trị userID của người gửi thông báo, bằng 0 nếu là thông báo từ hệ thống
+- `$area` là khu vực thông báo: 0 là ngoài site, 1 là quản trị và 2 là ở các hai khu vực.
+
+Cú pháp từ bản 4.3.09 về sau
+
+``` php
+nv_insert_notification($module, $type, $content = [], $obid = 0, $send_to = 0, $send_from = 0, $area = 1, $admin_view_allowed = 0, $logic_mode = 0)
+```
+
+Trong đó:
+
+- `$module` là tên module đưa ra thông báo. Thường là biến `$module_name`
+- `$type` là chuỗi ký tự bất kỳ để tạo khóa cho thông báo. Ví dụ, thông báo khi có liên hệ mới, có thể dùng là "new_contact". Hay bình luận mới, dùng "new_comment",....
+- `$content` là mảng một chiều chứa các thông tin do người lập trình quy định, các thông tin này sẽ được lấy ra khi hiển thị thông báo.
+- `$obid` là ID của hành động được thực hiện. Ví dụ: sau khi gửi 1 thư liên hệ, thư này sẽ được ghi vào CSDL với một ID. Hay sau khi bình luận, bình luận này sẽ được ghi vào CSDL với một ID,....
+- `$send_to` giá trị userID của người nhận, để trống nếu muốn thông báo cho tất cả. Nếu có nhiều người nhận thì giá trị này để là mảng một chiều chứa ID người nhận.
+- `$send_from` giá trị userID của người gửi thông báo, bằng 0 nếu là thông báo từ hệ thống
+- `$area` là khu vực thông báo: 0 là ngoài site, 1 là quản trị và 2 là ở các hai khu vực.
+- `$admin_view_allowed` có giá trị 0, 1, 2. 0 tức là gửi cho toàn bộ, 1 là gửi cho quản trị tối cao, 2 là gửi cho điều hành chung.
+- `$logic_mode` có giá trị 0 hoặc 1. 0 thì quản trị cấp trên sẽ thấy thông báo quản trị cấp dưới. 1 thì chỉ có cấp đó mới được thấy thông báo
+
+**Lưu ý:**
+
+- Quản trị cấp trên sẽ xem được thông báo của quản trị cấp dưới nếu logic_mode = 0.
+- Nếu giá trị `$send_to` được chỉ định thì chỉ có những ngược nhận được chỉ định trong cấp đó và cấp trên (nếu logic_mode = 0) xem được.
+
+## nv_status_notification
+
+Cập nhật trạng thái thông báo.
+
+Cú pháp
+
+``` php
+nv_status_notification($language, $module, $type, $obid, $status = 1, $area = 1)
+```
+
+Trong đó:
+
+- `$module, $type, $obid, $area` là khóa của thông báo
+- `$language` là ngôn ngữ chứa thông báo. Mang giá trị của NV_LANG_DATA
+- `$status` trạng thái thông báo: 0 là chưa xem, 1 là đã xem
+
+## nv_delete_notification
+
+Xóa thông báo.
+
+Cú pháp
+
+``` php
+nv_delete_notification($language, $module, $type, $obid)
+```
+
+Trong đó: `$module, $type, $obid` là khóa của thông báo, `$language` là ngôn ngữ chứa thông báo
+
+## nv_groups_post
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Kiểm tra logic phân quyền các nhóm, loại bỏ các nhóm không cần thiết và trả về các nhóm cần thiết
+
+Cú pháp:
+
+``` php
+nv_groups_post($groups_view)
+```
+
+Trong đó:
+
+- `$groups_view` mảng chứa ID các nhóm phân quyền
+
+> Chỉ dùng hàm này trong khu vực quản trị.
+
+## nv_var_export
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Đưa tất cả chuỗi trả về của hàm var_export về một dòng
+
+Cú pháp:
+
+``` php
+nv_var_export($var_array)
+```
+
+Trong đó:
+
+- `$var_array` biến cần xuất
+
+> Chỉ dùng hàm này đối với admin.
+
+## nv_save_file_config_global
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Xuất cấu hình trong CSDL ra file config_global.php
+
+Cú pháp:
+
+``` php
+nv_save_file_config_global()
+```
+
+> Chỉ dùng hàm này đối với admin.
+
+## nv_geVersion
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Kiểm tra phiên bản NukeViet, trả về dữ liệu XML thông tin kiểm tra phiên bản
+
+Cú pháp:
+
+``` php
+nv_geVersion($updatetime = 3600)
+```
+
+Trong đó:
+
+- `$updatetime` thời gian hết hạn để thực hiện load mới dữ liệu.
+
+> Hàm này chỉ sử dụng trong hệ thống NukeViet
+
+## nv_version_compare
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Tương đương hàm version_compare
+
+Cú pháp:
+
+``` php
+nv_version_compare($version1, $version2)
+```
+
+> Chỉ sử dụng hàm này cho admin
+
+## nv_check_rewrite_file
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Kiểm tra hệ thống có hỗ trợ rewrite không. Trả về true nếu có và false nếu không.
+
+Cú pháp:
+
+``` php
+nv_check_rewrite_file()
+```
+
+> Chỉ sử dụng cho admin
+
+## nv_rewrite_change
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Ghi lại thông tin rewrite vào file .htaccess hoặc .webconfig
+
+Cú pháp:
+
+``` php
+nv_rewrite_change($array_config_global)
+```
+
+Trong đó:
+
+- `$array_config_global` có dạng
+
+``` php
+$array_config_rewrite = array(
+    'rewrite_enable' => $global_config['rewrite_enable'],
+    'rewrite_optional' => $global_config['rewrite_optional'],
+    'rewrite_endurl' => $global_config['rewrite_endurl'],
+    'rewrite_exturl' => $global_config['rewrite_exturl'],
+    'rewrite_op_mod' => $global_config['rewrite_op_mod'],
+    'ssl_https' => 0
+);
+```
+
+> Chỉ sử dụng cho admin
+
+## nv_server_config_change
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Ghi lại thông tin cấu hình ErrorDocument, Access-Control-Allow-Origin, X-Frame-Options, X-XSS-Protection, X-Content-Type-Options, Cache-Control, X-Robots-Tag vào file .htaccess
+
+Cú pháp:
+
+``` php
+nv_server_config_change($array_config)
+```
+
+Trong đó:
+
+- `$array_config` có dạng
+
+``` php
+$array_config_define = array();
+$array_config_define['nv_anti_agent'] = NV_ANTI_AGENT;
+$array_config_define['nv_gfx_num'] = NV_GFX_NUM;
+$array_config_define['nv_gfx_width'] = NV_GFX_WIDTH;
+$array_config_define['nv_gfx_height'] = NV_GFX_HEIGHT;
+$array_config_define['nv_anti_iframe'] = NV_ANTI_IFRAME;
+$array_config_define['nv_allowed_html_tags'] = NV_ALLOWED_HTML_TAGS;
+```
+
+> Hàm này được thêm vào từ NukeViet 4.3.00  
+> Chỉ sử dụng cho admin
+
+## nv_rewrite_rule_iis7
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Lưu thông tin cấu hình tra file web.config
+
+Cú pháp:
+
+``` php
+nv_rewrite_rule_iis7($rewrite_rule = '')
+```
+
+Trong đó:
+
+- `$rewrite_rule` là giá trị config cần lưu
+
+> Chỉ sử dụng cho admin
+
+## nv_getExtVersion
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Trả về dữ liệu kiểm tra phiên bản các ứng dung
+
+Cú pháp:
+
+``` php
+nv_getExtVersion($updatetime = 3600)
+```
+
+Trong đó:
+
+- `$updatetime` thời gian (giây) hết hạn cache
+
+> Hàm này chỉ sử dụng trong hệ thống NukeViet
+
+## nv_http_get_lang
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Trả về ngôn ngữ lỗi từ error code class HTTP của NukeViet
+
+Cú pháp:
+
+``` php
+nv_http_get_lang($input)
+```
+
+Trong đó:
+
+- `$input` là error code
+
+> Chỉ sử dụng cho admin
+
+## nv_parse_ini_file
+
+Nằm ở file includes/core/filesystem_functions.php
+
+Chức năng: Đọc file ini và trả về mảng dữ liệu
+
+Cú pháp:
+
+``` php
+nv_parse_ini_file($filename, $process_sections = false)
+```
+
+Trong đó:
+
+- `$filename` là file cần đọc
+- `$process_sections` nếu đặt là tru thì các section sẽ được chọn làm key của mảng trả về.
+
+## nv_get_mime_type
+
+Nằm ở file includes/core/filesystem_functions.php
+
+Chức năng: Xác định mime type của \$filename
+
+Cú pháp:
+
+``` php
+nv_get_mime_type($filename, $magic_path = '', $default_mime = 'application/octet-stream')
+```
+
+## nv_get_allowed_ext
+
+Nằm ở file includes/core/filesystem_functions.php
+
+Chức năng: Trả về mảng một chiều chứa các key là kiểu file, value là mime của file được phép.
+
+Cú pháp:
+
+``` php
+nv_get_allowed_ext($allowed_filetypes, $forbid_extensions, $forbid_mimes)
+```
+
+Trong đó:
+
+- `$allowed_filetypes` là loại file, được xác định trong file includes/ini/mime.ini
+- `$forbid_extensions` là các kiểu file bị cấm
+- `$forbid_mimes` là các mime bị cấm
+
+## nv_string_to_filename
+
+Nằm ở file includes/core/filesystem_functions.php
+
+Chức năng: Chuyển một chuỗi bất kỳ sang tên file hợp lệ
+
+Cú pháp:
+
+``` php
+nv_string_to_filename($word)
+```
+
+Trong đó:
+
+- `$word` là chuỗi cần chuyển
+
+## nv_pathinfo_filename
+
+Nằm ở file includes/core/filesystem_functions.php
+
+Chức năng: Trả về thư mục chứa file
+
+Cú pháp:
+
+``` php
+nv_pathinfo_filename($file)
+```
+
+Trong đó:
+
+- `$file` là full path tới file
+
+## nv_ftp_del_dir
+
+Nằm ở file includes/core/filesystem_functions.php
+
+Chức năng: Sử dụng FTP để xóa thư mục
+
+Cú pháp:
+
+``` php
+nv_ftp_del_dir($ftp, $dst_dir, $delsub)
+```
+
+Trong đó:
+
+- `$ftp` là biến Class FTP
+- `$dst_dir` là thư mục cần xóa
+- `$delsub` nếu đặt là false thì sẽ không xóa nếu thư mục có chứa thư mục con
+
+> Hàm này chỉ sử dụng trong hệ thống
+
+## nv_is_image
+
+Nằm ở file includes/core/filesystem_functions.php
+
+Chức năng: Kiểm tra file có phải là ảnh không và trả về thông tin nếu file là ảnh. Nếu file không phải là ảnh thì trả về array()
+
+Cú pháp:
+
+``` php
+nv_is_image($img)
+```
+
+Trong đó:
+
+- `$img` là full path tới file cần kiểm tra
+
+Dữ liệu trả về có dạng
+
+``` php
+$imageinfo['src'] = 
+$imageinfo['width'] = 
+$imageinfo['height'] = 
+$imageinfo['mime'] = 
+$imageinfo['type'] = 
+$imageinfo['ext'] = 
+$imageinfo['bits'] = 
+$imageinfo['channels'] = 
+```
+
+## nv_imageResize
+
+Nằm ở file includes/core/filesystem_functions.php
+
+Chức năng: Trả về kích thước ảnh đúng tỉ lệ từ tham số \$maxX, \$maxY
+
+Cú pháp:
+
+``` php
+nv_imageResize($origX, $origY, $maxX, $maxY)
+```
+
+Trong đó:
+
+- `$origX` là chiều rộng thực
+- `$origY` là cao thực
+- `$maxX` là chiều rộng tối đa cần resize
+- `$maxY` làchiều cao tối đa cần resize
+
+## nv_htmlOutput
+
+Nằm ở file includes/core/theme_functions.php
+
+Chức năng: Sử dụng thay cho die(\$content)
+
+Cú pháp:
+
+``` php
+nv_htmlOutput($html)
+```
+
+## nv_jsonOutput
+
+Nằm ở file includes/core/theme_functions.php
+
+Chức năng: Sử dụng thay cho die(json_encode())
+
+Cú pháp:
+
+``` php
+nv_jsonOutput($array_data)
+```
+
+## nv_xmlOutput
+
+Nằm ở file includes/core/theme_functions.php
+
+Chức năng: Xuất ra trình duyệt file XML
+
+Cú pháp:
+
+``` php
+nv_xmlOutput($content, $lastModified)
+```
+
+Trong đó:
+
+- `$content` là nội dung file xml
+- `$lastModified` là thời gian thay đổi của file xml
+
+## nv_xmlSitemap_generate
+
+Nằm ở file includes/core/theme_functions.php
+
+Chức năng: Xuất file xml sitemap
+
+Cú pháp:
+
+``` php
+nv_xmlSitemap_generate($url)
+```
+
+Trong đó:
+
+- `$url` là mảng chứa dữ liệu sitemap
+
+## nv_xmlSitemapIndex_generate
+
+Nằm ở file includes/core/theme_functions.php
+
+Chức năng: Xuất file xml sitemap của trang chính
+
+Cú pháp:
+
+``` php
+nv_xmlSitemapIndex_generate()
+```
+
+> Hàm này chỉ sử dụng trong hệ thống
+
+## nv_css_setproperties
+
+Nằm ở file includes/core/theme_functions.php
+
+Chức năng: Trả về định dạng CSS nằm trên một hàng từ các thuộc tính \$property_array
+
+Cú pháp:
+
+``` php
+nv_css_setproperties($tag, $property_array)
+```
+
+Trong đó:
+
+- `$tag` là đối tượng ví dụ .classname, \#idname
+- `$property_array` là mảng chứa các thuộc tính key là tên thuộc tính value là dữ liệu
+
+## nv_theme_alert
+
+Nằm ở file includes/core/theme_functions.php
+
+Chức năng: Xuất ra nội dung thông báo lỗi cho site dựa theo mẫu của giao diện
+
+Cú pháp:
+
+``` php
+nv_theme_alert($message_title, $message_content, $type = 'info', $url_back = '', $lang_back = '', $time_back = 5)
+```
+
+Trong đó:
+
+- `$message_title` là tiêu đề thông báo
+- `$message_content` là nội dung thông báo
+- `$type` là kiểu với info = thông báo, danger = lỗi, success = thành công, warning = cảnh cáo
+- `$url_back` là đường dẫn click vào liên kết quay lại
+- `$lang_back` là ngôn ngữ cho liên kết quay lại
+- `$time_back` là thời gian tự động quay lại
+
+> Hàm này được thêm vào kể từ NukeViet 4.2
+
+## nv_create_submenu
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Đưa các function hiển thị ngoài site của các module vào biến \$nv_vertical_menu
+
+Cú pháp:
+
+``` php
+nv_create_submenu()
+```
+
+> Hàm này chỉ sử dụng trong hệ thống
+
+## nv_blocks_content
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Đưa nội dung các block vào mã HTML của site
+
+Cú pháp:
+
+``` php
+nv_blocks_content($sitecontent)
+```
+
+Trong đó:
+
+- `$sitecontent` full mã HTML xuất ra cho trình duyệt
+
+> Hàm này chỉ sử dụng trong hệ thống
+
+## nv_html_links
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Lấy tất cả dữ liệu của site để xuất ra các thẻ \<link\> cho trình duyệt
+
+Cú pháp:
+
+``` php
+nv_html_links($html = true)
+```
+
+Trong đó:
+
+- `$html` nếu là true thì nội dung sẽ chuyển thành chuỗi, ngược lại trả về mảng
+
+## nv_html_page_title
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Lấy tiêu đề của site theo cấu hình
+
+Cú pháp:
+
+``` php
+nv_html_page_title($html = true)
+```
+
+Trong đó:
+
+- `$html` nếu là true thì nội dung sẽ chuyển thành chuỗi, ngược lại trả về mảng
+
+## nv_html_css
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Trả về CSS của hệ thống và module
+
+Cú pháp:
+
+``` php
+nv_html_css($html = true)
+```
+
+Trong đó:
+
+- `$html` nếu là true thì nội dung sẽ chuyển thành chuỗi, ngược lại trả về mảng
+
+## nv_html_site_rss
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Trả về các link rss của module
+
+Cú pháp:
+
+``` php
+nv_html_site_rss($html = true)
+```
+
+Trong đó:
+
+- `$html` nếu là true thì nội dung sẽ chuyển thành chuỗi, ngược lại trả về mảng
+
+## nv_html_site_js
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Trả về các file js của site và module
+
+Cú pháp:
+
+``` php
+nv_html_site_js($html = true)
+```
+
+Trong đó:
+
+- `$html` nếu là true thì nội dung sẽ chuyển thành chuỗi, ngược lại trả về mảng
+
+## nv_admin_menu
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Lấy nội dung HTML menu của admin ngoài site
+
+Cú pháp:
+
+``` php
+nv_admin_menu()
+```
+
+## nv_groups_list_pub
+
+Nằm ở file includes/core/user_functions.php
+
+Chức năng: Lấy các nhóm thành viên tham gia tự do trong hệ thống
+
+Cú pháp:
+
+``` php
+nv_groups_list_pub($mod_data = 'users')
+```
+
+Trong đó:
+
+- `$mod_data` là module lấy dữ liệu, để trống là module users của hệ thống
+
+## nv_getCountry_from_file
+
+Nằm ở file includes/countries.php
+
+Chức năng: Xác định quốc gia từ địa chỉ IP, dữ liệu lấy từ file
+
+Cú pháp:
+
+``` php
+nv_getCountry_from_file($ip)
+```
+
+Trong đó:
+
+- `$ip` là IP cần xác định quốc gia
+
+## nv_getCountry_from_cookie
+
+Nằm ở file includes/countries.php
+
+Chức năng: Xác định quốc gia từ địa chỉ IP, dữ liệu lấy từ cookie
+
+Cú pháp:
+
+``` php
+nv_getCountry_from_cookie($ip)
+```
+
+Trong đó:
+
+- `$ip` là IP cần xác định quốc gia
+
+## nv_getenv
+
+Nằm ở file includes/functions.php
+
+Chức năng: Tương tự hàm getenv
+
+Cú pháp:
+
+``` php
+nv_getenv($a)
+```
+
+Trong đó:
+
+- `$a` là khóa
+
+## nv_preg_quote
+
+Nằm ở file includes/functions.php
+
+Chức năng: Là hàm preg_quote với tham số thứ 2 là /
+
+Cú pháp:
+
+``` php
+nv_preg_quote($a)
+```
+
+## nv_is_myreferer
+
+Nằm ở file includes/functions.php
+
+Chức năng: Kiểm tra \$referer có phải là của chính website hay không
+
+Cú pháp:
+
+``` php
+nv_is_myreferer($referer = '')
+```
+
+## nv_is_banIp
+
+Nằm ở file includes/functions.php
+
+Chức năng: Kiểm tra xem địa chỉ IP có bị cấm truy cập website hay không
+
+Cú pháp:
+
+``` php
+nv_is_banIp($ip)
+```
+
+Trong đó:
+
+- `$ip` là IP cần kiểm tra
+
+## nv_checkagent
+
+Nằm ở file includes/functions.php
+
+Chức năng: Kiểm tra tính hợp lệ của User Agent, trả về none nếu User Agent không hợp lệ
+
+Cú pháp:
+
+``` php
+nv_checkagent($a)
+```
+
+Trong đó:
+
+- `$a` là User Agent cần kiểm tra
+
+## nv_function_exists
+
+Nằm ở file includes/functions.php
+
+Chức năng: Tương tự hàm function_exists
+
+Cú pháp:
+
+``` php
+nv_function_exists($funcName)
+```
+
+## nv_class_exists
+
+Nằm ở file includes/functions.php
+
+Chức năng: Tương tự hàm class_exists
+
+Cú pháp:
+
+``` php
+nv_class_exists($clName, $autoload = true)
+```
+
+## nv_md5safe
+
+Nằm ở file includes/functions.php
+
+Chức năng: Lấy mã MD5 của một chuỗi sau khi đã đưa chuỗi đó về lowercase
+
+Cú pháp:
+
+``` php
+nv_md5safe($username)
+```
+
+Trong đó:
+
+- `$username` là chuỗi cần lấy MD5
+
+## nv_EncodeEmail
+
+Nằm ở file includes/functions.php
+
+Chức năng: Mã hóa email để xuất ra trình duyệt tránh các máy chủ tự bóc email
+
+Cú pháp:
+
+``` php
+nv_EncodeEmail($strEmail, $strDisplay = '', $blnCreateLink = true)
+```
+
+Trong đó:
+
+- `$strEmail` là email cần mã hóa
+- `$strDisplay` là nội dung hiển thị
+- `$blnCreateLink` đặt là true thì dữ liệu trả về dạng liên kết
+
+## nv_user_groups
+
+Nằm ở file includes/functions.php
+
+Chức năng: Kiểm tra và trả về các nhóm của thành viên
+
+Cú pháp:
+
+``` php
+nv_user_groups($in_groups, $res_2step = false, $manual_groups = array())
+```
+
+Trong đó:
+
+- `$in_groups` là các nhóm trong CSDL
+- `$res_2step` nếu đặt là true thì dữ liệu trả về là một mảng phần tử 0 là các nhóm, phần tử 1 (true\|false) biểu thị có yêu cầu xác thực hai bước hay không
+- `$manual_groups` là các nhóm thêm thủ công vào
+
+## nv_monthname
+
+Nằm ở file includes/functions.php
+
+Chức năng: Lấy tên tháng (theo ngôn ngữ) từ tháng dạng số
+
+Cú pháp:
+
+``` php
+nv_monthname($i)
+```
+
+Trong đó:
+
+- `$i` là tháng
+
+## nv_check_domain
+
+Nằm ở file includes/functions.php
+
+Chức năng: Kiểm tra domain hợp lệ, nếu hợp lệ trả về domain, nếu không trả về chuỗi rỗng
+
+Cú pháp:
+
+``` php
+nv_check_domain($domain)
+```
+
+Trong đó:
+
+- `$domain` là domain cần kiểm tra
+
+## nv_redirect_location
+
+Nằm ở file includes/functions.php
+
+Chức năng: Chuyển hướng trình duyệt tới URL, url sẽ được rewrite nếu có thể
+
+Cú pháp:
+
+``` php
+nv_redirect_location($url, $error_code = 301)
+```
+
+Trong đó:
+
+- `$url` là url cần chuyển hướng
+- `$error_code` là HTTP code chuyển hướng
+
+## nv_strlen
+
+Nằm ở file includes/utf8/iconv_string_handler.php
+
+Chức năng: Là làm strlen hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_strlen($string)
+```
+
+Trong đó:
+
+- `$string` là chuỗi cần xác định độ dài
+
+## nv_substr
+
+Nằm ở file includes/utf8/iconv_string_handler.php
+
+Chức năng: Là hàm substr hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_substr($string, $start, $length)
+```
+
+## nv_substr_count
+
+Nằm ở file includes/utf8/iconv_string_handler.php
+
+Chức năng: Là hàm substr_count hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_substr_count($haystack, $needle)
+```
+
+## nv_strpos
+
+Nằm ở file includes/utf8/iconv_string_handler.php
+
+Chức năng: Là hàm strpos hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_strpos($haystack, $needle, $offset = 0)
+```
+
+## nv_strrpos
+
+Nằm ở file includes/utf8/iconv_string_handler.php
+
+Chức năng: Là hàm strrpos hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_strrpos($haystack, $needle, $offset = 0)
+```
+
+## nv_strtolower
+
+Nằm ở file includes/utf8/iconv_string_handler.php
+
+Chức năng: Là hàm strtolower hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_strtolower($string)
+```
+
+## nv_strtoupper
+
+Nằm ở file includes/utf8/iconv_string_handler.php
+
+Chức năng: Là hàm strtoupper hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_strtoupper($string)
+```
+
+## utf8_to_unicode
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Chuyển mã UTF-8 sang Unicode
+
+Cú pháp:
+
+``` php
+utf8_to_unicode($str)
+```
+
+Trong đó:
+
+- `$str` là mảng cần chuyển
+
+## unicode_to_entities
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Chuyển mã Unicode sang mã hiển trị trên trình duyệt
+
+Cú pháp:
+
+``` php
+unicode_to_entities($unicode)
+```
+
+Trong đó:
+
+- `$unicode` là mảng cần chuyển
+
+## unicode_to_utf8
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Chuyển mã Unicode sang UTF-8
+
+Cú pháp:
+
+``` php
+unicode_to_utf8($str)
+```
+
+Trong đó:
+
+- `$str` là mảng cần chuyển
+
+## nv_str_split
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Là hàm str_split hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_str_split($str, $split_len = 1)
+```
+
+## nv_strspn
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Là hàm strspn hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_strspn($str, $mask, $start = null, $length = null)
+```
+
+## nv_ucfirst
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Là hàm ucfirst hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_ucfirst($str)
+```
+
+## nv_ltrim
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Là hàm ltrim hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_ltrim($str, $charlist = false)
+```
+
+## nv_rtrim
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Là hàm rtrim hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_rtrim($str, $charlist = false)
+```
+
+## nv_trim
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Là hàm trim hỗ trợ UTF-8
+
+Cú pháp:
+
+``` php
+nv_trim($str, $charlist = false)
+```
+
+## nv_EncString
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Chức năng: Lọc dấu tiếng Việt
+
+Cú pháp:
+
+``` php
+nv_EncString($string)
+```
+
+Trong đó:
+
+- `$string` là chuỗi cần lọc dấu
+
+## nv_save_file_ips
+
+Nằm ở file includes/core/admin_functions.php
+
+Chức năng: Ghi cấu hình chặn IP và cấu hình IP loại trừ Flood ra file.
+
+Cú pháp:
+
+``` php
+nv_save_file_ips($type)
+```
+
+Trong đó:
+
+- `$type` 0 thì lưu Ban IP, 1 thì lưu IP loại trừ Flood
+
+## change_alias_tags
+
+Nằm ở file includes/utf8/utf8_functions.php
+
+Được bổ sung kể từ NukeViet 4.3.03
+
+Chức năng: Chuyển chuỗi thành liên kết tĩnh hợp lệ của tags
+
+Cú pháp:
+
+``` php
+change_alias_tags($alias)
+```
+
+Trong đó:
+
+- `$alias` là chuỗi cần chuyển

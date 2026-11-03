@@ -1,0 +1,179 @@
+---
+title: "Tối ưu khi lập trình"
+description: "(Tức là thay dấu chấm bằng dấu phẩy). Kết quả sẽ nhanh hơn."
+---
+
+- Nếu có thể, thay print bằng echo vì echo nhanh hơn print
+- Thay vì viết:
+
+``` text
+ <code php>echo "abcd" . $var . "fdfdfdf";</code>Nên viết:
+ <code php>echo "abcd", $var, "fdfdfdf";</code>
+```
+
+(Tức là thay dấu chấm bằng dấu phẩy). Kết quả sẽ nhanh hơn.
+
+- Nên sử dụng unset đối với các biến tạm thời đã xử lý xong để giải phóng bộ nhớ (Chỉ áp dụng cho các biến toàn cục. Các biến cục bộ được xóa tự động). unset chỉ giải phóng bộ nhớ khi biến không bận. Còn null (\$variable = null) ngay lập tức giải phóng bộ nhớ, nhưng biến thì vẫn được giữ lại với giá trị null (chỉ chiếm 72bytes của bộ nhớ).
+- Nếu biết chắc 1 file nào đó chưa được kết nối và muốn được kết nối thì nên dùng require thay vì dùng require_once (vì require_once đòi hỏi PHP kiểm tra xem file đã kết nối hay chưa nên tốn thêm thời gian đợi).
+- Đường dẫn đến file muốn kết nối qua require hay include phải là đường dẫn đầy đủ, không phải đường dẫn tính từ thư mục gốc của site (nghĩa là phải tương tự như:
+  ``` php
+  require ( NV_ROOTDIR . "/includes/constants.php" );
+  ```
+- Thay vì dùng time() để xác định thời gian thực, có thể dùng \$\_SERVER\[’REQUEST_TIME’\] hoặc NV_CURRENTTIME trong NukeViet.
+- Hạn chế dùng dấu @ để ẩn lỗi (vì nó sẽ tiêu tốn thêm thời gian xử lý).
+- \$row\['id'\] (có dấu nháy đơn) nhanh hơn là \$row\[id\] (không có dấu) 7 lần vì nếu không hệ thống sẽ mất thêm công kiểm tra xem id có phải là 1 hằng hay không.
+- Không chèn hàm vào vòng for kiểu như:
+  ``` php
+  for( $x=0; $x < count( $array ); $x ++ )
+  ```
+
+  , thay vào đó nên viết là:
+  ``` php
+  for( $x=0, $count = count( $array ); $x < $count; ++ $x )
+  ```
+
+``` text
+Vì nếu để như phương án đầu thì trong mỗi vòng quay của for, hệ thống sẽ lại thực thi hàm  count($array) thêm 1 lần nữa (trong khi đó giá trị của nó là bất biến)
+```
+
+Tương tự, thay vì viết:
+
+``` php
+foreach ( array_keys( $new_funcs ) as $func )
+```
+
+Hãy viết
+
+``` php
+$array_keys = array_keys( $new_funcs );
+foreach ( $array_keys as $func )
+```
+
+- Trong 1 hàm, không nên gọi các biến bằng global nếu như không sử dụng đến. Hay nói cách khác, càng nhiều biến được gọi qua global thì quá trình thực thi càng chậm, không quan trọng là ta có dùng đến nó hay không. Ví dụ:
+
+``` php
+function abc()
+{
+    global $a, $b, $c;
+    return $a + $b;
+}
+
+$a = 3;
+$b = 9;
+$c = 12;
+
+abc();
+```
+
+(thừa \$c)
+
+- Hạn chế truyền dữ liệu bằng global, ví dụ: thay vì viết:
+
+``` php
+function abc()
+{
+    global $a;
+    echo $a;
+}
+
+$a = "abc"; 
+abc();
+```
+
+Nên viết:
+
+``` php
+function abc( $a )
+{
+    echo $a;
+}
+$a = "abc"; 
+abc($a);
+```
+
+- Nếu có thể, thay vì viết \$i ++ thì viết ++ \$i (không áp dụng khi echo \$i ++ hay echo ++ \$i).
+- Thay vì viết echo "abc \$a"; nên viết echo "abc ", \$a; hoặc echo "abc " . \$a;
+- Thay vì viết:
+
+``` php
+if( strlen( $foo ) < 5 ) echo "Foo is too short";
+```
+
+nên viết:
+
+``` php
+if( ! isset( $foo{4} ) ) echo "Foo is too short";
+```
+
+(nhỏ hơn 1 đơn vị, vì tính từ 0)
+
+- count( \$array ) chậm hơn sizeof( \$array ), nhưng kết quả là như nhau.
+- Các chuyên gia của php.net phân tích: các comment trong file php không ảnh hưởng đến tốc độ xử lý, nhưng file càng lớn thì tốc độ càng chậm =\> tạo ra sự khó hiểu. Chúng ta thống nhất từ NukeViet 3.3: comment càng nhiều càng tốt. Nhưng chúng chỉ được lưu trong bản DEV. Trong bản phát hành sẽ xóa sạch comment và nối các dòng code lại (giống như javascript).
+- Trước khi viết một function mới, hãy suy nghĩ xem trong PHP có hàm tương tự hay không. Hạn chế viết hàm mới được bao nhiêu tốt bấy nhiêu (cả cho người viết code lẫn người dùng). Mặt khác, như ví dụ dưới đây thì nên viết 1 hàm phụ:
+
+Thay vì viết:
+
+``` php
+echo( substr( chop( stripslashes( trim( str_replace( "\r", ' ', str_replace( "\n", ' ', $string1) ) ) ) ), 0, 1024 ) );
+echo( substr( chop( stripslashes( trim( str_replace( "\r", ' ', str_replace( "\n", ' ', $string2) ) ) ) ), 0, 1024 ) );
+```
+
+Nên viết:
+
+``` php
+function format( $string )
+{
+    echo( substr( chop( stripslashes( trim( str_replace( "\r", ' ', str_replace( "\n", ' ', $string ) ) ) ) ), 0, 1024 ) );
+}
+
+format( $string1 );
+format( $string2 );
+```
+
+- Ngoài việc đặt tên dễ nhớ cho các biến, các hằng, các hàm..., còn phải tính đến yếu tố ngắn gọn. Tên càng ngắn gọn càng cải thiện tốc độ xử lý của php.
+- Trước khi sử dụng biến nào đó, hãy chắc chắn rằng nó đã tồn tại. Để kiểm tra, hãy dùng isset. Các cảnh báo lỗi thể hiện hay không thể hiện ra bên ngoài đều ảnh hưởng đến tốc độ load.
+- Dấu nháy đơn tốt hơn dấu nháy kép vì trong trường hợp sử dụng dấu nháy kép, php sẽ mất công tìm kiếm các biến bên trong nó.
+
+Ví dụ minh họa:
+
+``` php
+$a = "bcbv";
+echo 'abc $a'; //ket qua: abc $a
+echo "abc $a"; //ket qua: abc bcbv
+```
+
+- Nên sử dụng các biến lồng nhau.
+
+Ví dụ, thay vì viết:
+
+``` php
+$string = str_replace( "\n", ' ', $string );
+$string = str_replace( "\r", ' ', $string );
+$string = trim( $string );
+$string = stripslashes( $string );
+$string = chop( $string );
+$string = substr( $string, 0, 1024 );
+echo ( $string );
+```
+
+Nên viết:
+
+``` php
+echo ( substr( chop( stripslashes( trim( str_replace( "\r", ' ', str_replace( "\n", ' ', $string ) ) ) ) ), 0, 1024 ) );
+```
+
+- Dùng file() nhanh hơn fopen.
+
+Thay vì viết:
+
+``` php
+$fp = fopen( 'database.txt', 'r' );
+while( $array[] = fgets( $fp, 1024 ) );
+fclose( $fp );
+```
+
+nên viết:
+
+``` php
+file( 'database.txt' );
+```

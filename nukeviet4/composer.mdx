@@ -1,0 +1,79 @@
+---
+title: "Bước 1: Cài đặt Composer?"
+description: "– Chuyển tới thư mục project của bạn và gõ lệnh"
+---
+
+## \#Trên Unix (Mac OSX và Linux)
+
+– Chuyển tới thư mục project của bạn và gõ lệnh
+
+``` text
+cd /path/to/my/project
+curl -s http://getcomposer.org/installer | php
+```
+
+Phiên bản composer mới nhất sẽ được tải về máy bạn. Để kiểm tra hãy gõ
+
+``` text
+php composer.phar
+```
+
+Danh sách các lệnh có sẵn sẽ hiển thị. Thật dễ dàng phải không nào. Tuy nhiên để tiện dùng thì các bạn gõ thêm lệnh sau:
+
+``` text
+sudo mv composer.phar /usr/bin/composer
+```
+
+Từ nay để sử dụng composer ở bất kì thư mục nào, bạn chỉ cần gõ composer Thay vì php composer.phar
+
+## \#Trên Windows
+
+Đơn giản là tải và cài đặt phiên bản Composer mới nhất tại [https://getcomposer.org/Composer-Setup.exe](https://getcomposer.org/Composer-Setup.exe)
+
+Sau đó bạn có thể dùng composer qua lệnh composer trong CMD hoặc PowerShell
+
+Lưu ý: Composer được viết bằng PHP nên bạn phải cài PHP trước khi cài Composer
+
+## Bước 2 : File composer.json
+
+File composer.json cũng có cấu trúc tương tự như file package.json của npm hay Gemfile của Ruby
+
+Đây là cấu trúc cơ bản nhất của một file composer.json "require":
+
+``` text
+ {
+   "phpoffice/phpexcel": "^1.8.0"
+ }
+```
+
+Trong ví dụ trên chúng ta đang yêu cầu gói code phpexcel và chúng ta có thể dùng bất cứ phiên bản nào. Để xác định rõ phiên bản, chúng ta có thể thêm vào:
+
+"phpoffice/phpexcel": "^1.8.0"
+
+hoặc kết hợp cả 2
+
+"phpoffice/phpexcel": "^1.8.\*"
+
+1.8.\* có nghĩa là ta chấp nhận cái bản vá lỗi nhỏ như 1.8.2, 1.8.3 nhưng không nâng cấp lên bản 1.9
+
+## Bước 3: Cài đặt các package đã yêu cầu
+
+Sau khi đã thiết lập các package cần thiết trong file composer.json. Hãy mở Terminal/CommandPrompt lên và gõ lệnh
+
+``` text
+composer install
+```
+
+Đợt 1 tí để Composer tải và cài đặt các package bạn đã yêu cầu (kèm với các package đi kèm). Tất cả các package được tải về sẽ nằm trong thư mục vendor/ (thư mục nằm cùng cấp với file composer.json).
+
+## Bước 4 : Cập nhật package
+
+Việc cập nhật rất đơn giản, bạn chỉ cần gõ
+
+``` text
+composer update 
+```
+
+, Composer sẽ tự động cập nhật các package cho bạn. Nếu muốn cập nhật lên các phiên bản mới hơn hoặc các bản release, hãy chỉnh sửa file composer.json
+
+Chú ý: Không bao giờ chạy lệnh composer update trong môi trường thực tế (production) mà hãy kiểm tra trên máy để tránh tình trạng không tương thích.

@@ -1,0 +1,30 @@
+---
+title: "new_user_waiting_by_openid"
+description: "Khi một thành viên mới chờ kích hoạt bằng việc đăng nhập qua OpenID."
+---
+
+Khi một thành viên mới chờ kích hoạt bằng việc đăng nhập qua OpenID.
+
+### Tham số
+
+| STT | Tên biến         | Kiểu dữ liệu | Ghi chú |
+|-----|:-----------------|:-------------|:--------|
+| 0   | \$userid         | Integer      |         |
+| 1   | \$array_register | Array        |         |
+| 2   | \$server         | String       |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'new_user_waiting_by_openid', $priority, function($vars) {
+    $userid = $vars[0];
+    $array_register = $vars[1];
+    $server = $vars[2];
+
+    // Thực hiện code hook tại đây...
+});
+```

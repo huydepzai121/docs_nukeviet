@@ -1,0 +1,178 @@
+---
+title: "Thêm dữ liệu có cấu trúc vào website"
+description: "Xem thêm về dữ liệu có cấu trúc tại đây https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data?hl=vi"
+---
+
+Xem thêm về dữ liệu có cấu trúc tại đây [https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data?hl=vi](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data?hl=vi)
+
+NukeViet 5 có sẵn một biến array \`\$nv_schemas\` thông qua đó, lập trình viên có thể thêm vào mảng đó dữ liệu [JSON-LD](https://json-ld.org/) của các loại dữ liệu cấu trúc khác nhau. Hệ thống sẽ tự động xuất ra mã vào HTML của trang.
+
+Ví dụ một số loại dữ liệu có cấu trúc và cách thêm như sau
+
+## Bài viết
+
+``` php
+$nv_schemas[] = [
+    "@context" => "https://schema.org",
+    "@type" => "Article",
+    "mainEntityOfPage" => [
+        "@type" => "WebPage",
+        "@id" => "https://example.com/bai-viet-cua-ban"
+    ],
+    "headline" => "Tiêu đề bài viết của bạn",
+    "alternativeHeadline" => "Tiêu đề phụ hoặc tiêu đề rút gọn",
+    "image" => [
+        "https://example.com/uploads/thumb1.jpg",
+        "https://example.com/uploads/thumb2.jpg"
+    ],
+    "author" => [
+        "@type" => "Person",
+        "name" => "Tên tác giả",
+        "url" => "https://example.com/tac-gia"
+    ],
+    "editor" => "Tên người biên tập (nếu có)",
+    "genre" => "Thể loại hoặc chuyên mục bài viết",
+    "keywords" => "từ khóa, bài viết, liên quan",
+    "wordcount" => 850,
+    "publisher" => [
+        "@type" => "Organization",
+        "name" => "Tên tổ chức xuất bản",
+        "logo" => [
+            "@type" => "ImageObject",
+            "url" => "https://example.com/uploads/logo.png"
+        ]
+    ],
+    "url" => "https://example.com/bai-viet-cua-ban",
+    "datePublished" => "2024-05-01T08:00:00+07:00",
+    "dateModified" => "2024-05-05T15:30:00+07:00",
+    "description" => "Mô tả ngắn gọn về nội dung bài viết (dưới 160 ký tự).",
+    "articleBody" => "Đây là nội dung đầy đủ của bài viết có thể dài hơn nhiều."
+];
+```
+
+## Breadcrumb
+
+``` php
+$nv_schemas[] = [
+    "@context" => "https://schema.org",
+    "@type" => "BreadcrumbList",
+    "itemListElement" => [
+        [
+            "@type" => "ListItem",
+            "position" => 1,
+            "name" => "Trang chủ",
+            "item" => "https://example.com/"
+        ],
+        [
+            "@type" => "ListItem",
+            "position" => 2,
+            "name" => "Tin tức",
+            "item" => "https://example.com/tin-tuc"
+        ],
+        [
+            "@type" => "ListItem",
+            "position" => 3,
+            "name" => "Tiêu đề bài viết",
+            "item" => "https://example.com/tin-tuc/bai-viet"
+        ]
+    ]
+];
+```
+
+## Organization
+
+``` php
+$nv_schemas[] = [
+    "@context" => "https://schema.org",
+    "@type" => "Organization",
+    "name" => "Tên doanh nghiệp",
+    "url" => "https://example.com",
+    "logo" => [
+        "@type" => "ImageObject",
+        "url" => "https://example.com/uploads/logo.png"
+    ],
+    "contactPoint" => [
+        [
+            "@type" => "ContactPoint",
+            "telephone" => "+84-123-456-789",
+            "contactType" => "customer service",
+            "areaServed" => "VN",
+            "availableLanguage" => ["Vietnamese", "English"]
+        ]
+    ],
+    "sameAs" => [
+        "https://www.facebook.com/yourpage",
+        "https://www.youtube.com/channel/yourchannel"
+    ]
+];
+```
+
+## Website
+
+``` php
+$nv_schemas[] = [
+    "@context" => "https://schema.org",
+    "@type" => "WebSite",
+    "name" => "Tên website của bạn",
+    "url" => "https://example.com",
+    "potentialAction" => [
+        "@type" => "SearchAction",
+        "target" => "https://example.com/search?q={search_term_string}",
+        "query-input" => "required name=search_term_string"
+    ]
+];
+```
+
+## FAQPage
+
+``` php
+$nv_schemas[] = [
+    "@context" => "https://schema.org",
+    "@type" => "FAQPage",
+    "mainEntity" => [
+        [
+            "@type" => "Question",
+            "name" => "Làm thế nào để đăng ký tài khoản?",
+            "acceptedAnswer" => [
+                "@type" => "Answer",
+                "text" => "Bạn chỉ cần nhấp vào nút Đăng ký và điền đầy đủ thông tin cá nhân."
+            ]
+        ],
+        [
+            "@type" => "Question",
+            "name" => "Tôi có thể thay đổi mật khẩu không?",
+            "acceptedAnswer" => [
+                "@type" => "Answer",
+                "text" => "Có, bạn vào phần Cài đặt tài khoản và chọn mục Đổi mật khẩu."
+            ]
+        ]
+    ]
+];
+```
+
+## Product
+
+``` php
+$nv_schemas[] = [
+    "@context" => "https://schema.org/",
+    "@type" => "Product",
+    "name" => "Tên sản phẩm",
+    "image" => [
+        "https://example.com/uploads/sp1.jpg"
+    ],
+    "description" => "Mô tả ngắn về sản phẩm.",
+    "sku" => "MÃ-SP001",
+    "brand" => [
+        "@type" => "Brand",
+        "name" => "Tên thương hiệu"
+    ],
+    "offers" => [
+        "@type" => "Offer",
+        "url" => "https://example.com/san-pham/ten-san-pham",
+        "priceCurrency" => "VND",
+        "price" => "199000",
+        "itemCondition" => "https://schema.org/NewCondition",
+        "availability" => "https://schema.org/InStock"
+    ]
+];
+```

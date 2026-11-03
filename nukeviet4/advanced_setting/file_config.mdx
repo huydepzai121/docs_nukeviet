@@ -1,0 +1,81 @@
+---
+title: "Cấu hình các tham số trong file config"
+description: "Trong file config.php quản trị có thể tùy chỉnh một số chức năng cố định như sau:"
+---
+
+Trong file config.php quản trị có thể tùy chỉnh một số chức năng cố định như sau:
+
+## Thiết lập mã hóa dữ liệu
+
+Tại dòng
+
+``` php
+$global_config['hashprefix'] = '{SSHA512}';
+```
+
+Có thể đổi kiểu mã hóa mật khẩu mặc định sang các kiểu sau:
+
+1.  SSHA512: mã hóa theo SSHA512 tương tự như mã hóa SSHA512 của OpenLDAP
+2.  SSHA256: mã hóa theo SSHA256 tương tự như mã hóa SSHA256 của OpenLDAP
+3.  SSHA: mã hóa theo SSHA tương tự như mã hóa SSHA của OpenLDAP
+4.  MD5: mã hóa theo MD5 tương tự như mã hóa MD5 của OpenLDAP
+
+## Thiết lập kiểu quản lý ứng dụng
+
+Tại dòng
+
+``` php
+$global_config['extension_setup'] = 3; // 0: No, 1: Upload, 2: NukeViet Store, 3: Upload + NukeViet Store
+```
+
+Hãy đổi số 3 thành số khác tương ứng như sau:
+
+- 0: Không cho cài đặt mới ứng dụng
+- 1: Cho cài đặt mới từ các gói cài đặt
+- 2: Cho cài đặt mới trực tiếp từ NukeViet Store
+- 3: Cho cài đặt mới từ các gói cài đặt và NukeViet Store
+
+## Thiết lập các ứng dụng bỏ qua kiểm tra phiên bản
+
+Một số ứng dụng nếu cảm thấy không cần thiết hiển thị tại phần kiểm tra phiên bản ứng dụng, quản trị có thể cấu hình bỏ qua bằng cách thêm vào cuối file config một biến có dạng
+
+``` php
+$global_config['static_exts'] = array(
+    'module' => array('news', 'banners', 'comment', 'users', 'voting', 'two-step-verification'),
+    'theme' => array('default', 'admin_default', 'mobile_default')
+);
+```
+
+## Thiết lập khi website chạy port không phải 80 hay 443
+
+Trong trường hợp bạn thiết lập Reverse Proxy dẫn đến site của bạn. Trong khi bên ngoài dùng cổng 80 hoặc 443 còn nội bộ website bạn dùng cổng khác thì có thể hệ thống hoạt động không bình thường.
+
+Trong trường hợp này hãy thêm `$global_config['nat_ports'] = ['port_1', 'port_2'];` vào file config.php, trong đó port_1, port_2 là ký hiệu bằng số của các cổng cần thêm vào.
+
+Nếu website của bạn chưa cài đặt, để cài đặt được hay thêm vào install/config.php
+
+Đồng thời config của nginx thêm
+
+``` text
+proxy_set_header X-Forwarded-Port 80;
+```
+
+Cho phiên bản http và thêm
+
+``` text
+proxy_set_header X-Forwarded-Port 443;
+```
+
+Cho phiên bản https
+
+Trong trường hợp không có khả năng sửa đổi cấu hình của nginx thì mở config.php tại thư mục gốc thêm vào cuối đoạn này
+
+``` php
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+    if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+        $_SERVER['HTTP_X_FORWARDED_PORT'] = 443;
+    } else {
+        $_SERVER['HTTP_X_FORWARDED_PORT'] = 80;
+    }
+}
+```

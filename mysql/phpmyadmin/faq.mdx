@@ -1,0 +1,58 @@
+---
+title: "Hướng dẫn trích xuất và phục hồi 1 phần dữ liệu Backup"
+description: "Sau khi cài lại NukeViet, nhiều khi bạn chỉ có nhu cầu Backup một phần dữ liệu. Sau đây là cách làm:"
+---
+
+Sau khi cài lại NukeViet, nhiều khi bạn chỉ có nhu cầu Backup một phần dữ liệu. Sau đây là cách làm:
+
+## Trích 1 phần dữ liệu
+
+- Kiểm tra phần tiền tố trong tên table của CSDL web hiện tại là gì bằng cách dùng Emeditor mở một trong những file SQL đã Backup của trang web hiện tại, bạn sẽ thấy ngay phần đầu file có đoạn:
+
+Code:
+
+\# --------------------------------------------------------
+
+\#
+
+\# Cau truc Bang 'nukeviet_users'
+
+\#
+
+Hãy chú ý phần tên trong nháy đơn, phía trước "\_" là "nukeviet" đây chính là phần tiền tố trong tên table của bạn (Table prefix)
+
+- Bây giờ mở file dữ liệu SQL cần trích một phần nội dung. Nhấp Ctrl+F, tìm với cụm từ \_music bạn sẽ thấy một đoạn tương tự thế này
+
+Code:
+
+\# --------------------------------------------------------
+
+\#
+
+\# Cau truc Bang 'xdcd_music'
+
+\#
+
+Hãy copy từ đoạn đó đến trước đoạn:
+
+Code:
+
+\# --------------------------------------------------------
+
+\#
+
+\# Cau truc Bang 'xdcd_newsletter'
+
+\#
+
+- Dùng EmEditor tạo một file mới, dán đoạn dữ liệu vào đó. Nhấp CTRL+H, thay thế các chữ xdcd_music thành mangvn_music. Lưu thành file trichxuat.SQL theo bảng mã Utf-8 (chú ý bỏ tùy chọn BOM).
+
+## Restore (phục hồi) phần dữ liệu đã trích xuất.
+
+- Vào PHPmyAdmin: [http://localhost/phpMyAdmin/](http://localhost/phpMyAdmin/)
+
+- Mở cơ sở dữ liệu ra, **Drop** 3 table là **nukeviet_music, nukeviet_music_cats và nukeviet_music_singer**
+
+- Sau đó import nội dung file **trichxuat.SQL** vừa tạo khi trước vào!
+
+Bây giờ bạn hãy mở trang web ra xem sao! Nếu bạn làm đúng bảng mã UTF-8 và bỏ BOM sẽ không bị trục trặc khi inport SQL cũng như không bị lỗi font chữ sau khi import.

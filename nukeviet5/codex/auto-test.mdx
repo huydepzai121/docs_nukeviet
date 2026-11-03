@@ -1,0 +1,82 @@
+---
+title: "Thiết lập hệ thống auto test"
+description: "Mở CMD lên kiểm tra PHPUnit đã cài đặt thành công chưa bằng lệnh phpunit --version. Nếu kết quả là"
+---
+
+**Bước 1.** Clone kho code về.
+
+**Bước 2.** Dùng composer cài đặt PHPUnit `composer require --dev phpunit/phpunit ^7`
+
+**Bước 3.** Copy file `vendor\bin\phpunit.bat` thành `phpunit.bat` (Chạy trên window). Mở phpunit.bat sửa
+
+``` text
+/../phpunit/phpunit/phpunit
+```
+
+Thành
+
+``` text
+/vendor/phpunit/phpunit/phpunit
+```
+
+Mở CMD lên kiểm tra PHPUnit đã cài đặt thành công chưa bằng lệnh `phpunit --version`. Nếu kết quả là
+
+``` text
+PHPUnit 7.0.0 by Sebastian Bergmann and contributors.
+```
+
+Tức đã thành công.
+
+**Bước 4.** Copy file `tests-config-sample.php` thành `tests-config.php`. Tạo một CSDL để test sau đó mở file `tests-config.php` chỉnh sửa thông số
+
+``` php
+define('NV_DB_TESTS_DBNAME', 'nv4_test');
+define('NV_DB_TESTS_DBUNAME', 'root');
+define('NV_DB_TESTS_DBPASS', '');
+```
+
+Và các thông số khác nếu cần thiết.
+
+**Bước 5.** Thực hiện test: Mở CMD lên và chạy lệnh `phpunit`
+
+# Viết các test-case
+
+Test case là các file php đặt vào thư mục `tests/phpunit/tests`. Nội dung file là một class test, extends từ class `NukeViet\Test\TestCase`
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC <contact@vinades.vn>
+ * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate 31/05/2010, 00:36
+ */
+
+use \NukeViet\Test\TestCase;
+
+class HelloWorld extends TestCase
+{
+    public function testPushAndPop()
+    {
+        $this->assertTrue(TRUE);
+    }
+
+    public function connectDB()
+    {
+        //
+    }
+}
+
+```
+
+# Một số quy định của PHPUnit
+
+- Mỗi phương thức test phải là public và bắt đầu bằng test. Ví dụ
+  ``` php
+  public function testConnectDB()
+  ```
+- Nếu không bắt đầu bằng test thì hãy sử dụng document của hàm bằng `@test`
+- Trong mỗi phương thức test cần sử dụng `assertion methods` nếu không sẽ sinh cảnh báo `risky test`.
+- Sử dụng phương thức `setUp()` và `tearDown()` để xử lý khi bắt đầu và kết thúc test nếu cần thiết

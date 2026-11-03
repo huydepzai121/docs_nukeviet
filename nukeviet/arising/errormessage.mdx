@@ -1,0 +1,68 @@
+---
+title: "Các cảnh báo lỗi"
+description: "và thay lại thành"
+---
+
+## Xuất hiện ngoài site trên toàn bộ các trang
+
+``` text
+Lỗi cảnh báo: preg_match() expects parameter 2 to be string, array given in file /includes/core/user_functions.php
+```
+
+- Xảy ra khi phần **tên gọi của site** bị bỏ trống.
+- Cách khắc phục: Vào **Cấu hình** =\> **Cấu hình site**, nhập thông tin cho ô **Tên gọi của site** sau đó lưu lại.
+
+## Xuất hiện tất cả các khu vực
+
+``` text
+User Error
+ERROR: You are behind a proxy server. Please disconnect and come again!
+(Code: fc8753fe8cebb59dc47471bdf7aa4012)
+```
+
+- Chức năng kiểm tra và chặn các máy dùng proxy được kích hoạt dẫn đến không truy cập và website và khu vực quản trị được.
+- Khắc phục: Mở file /data/config_global.php tìm
+  ``` php
+  $global_config['proxy_blocker'] = 1;
+  ```
+
+  và thay lại thành
+  ``` php
+  $global_config['proxy_blocker'] = 0;
+  ```
+- Đăng nhập quản trị và vào **Cấu hình** =\> **Cấu hình chung** để tiết lập lại cấu hình sau đó lưu lại.
+
+## Xuất hiện khu vực quản lý giao diện
+
+``` text
+Lỗi cảnh báo: simplexml_load_file() [function.simplexml-load-file]: I/O warning : failed to load external entity "C:/AppServ/www/home_nukeviet/themes/themes/config.ini" in file /admin/modules/themes/main.php on line 26
+```
+
+- Xảy ra khi cài đặt theme mà layout mặc định được thiết lập trong file config.ini của theme không tồn tại trong thư mục layout của theme.
+- Hoặc do theme được cảnh báo đã được xóa khỏi hệ thống bằng tay mà không phải xóa trong quản trị của hệ thống do csdl vẫn còn lưu thông tin về theme này
+- Khắc phục: thay đổi thiết lập mặc định của file config.ini đó bằng tên file layout tồn tại trong theme đó hoặc tạo layout mới có tên phù hợp với layout được thiết lập mặc định đó. Với lỗi số 2 bạn cần tạo nhân bản theme defalult lên sau đó đổi thành tên theme mà bạn đã xóa khỏi hệ thống(thủ công) rồi vào quản lý giao diện và xóa giao diện đó.
+
+## Xuất hiện ở khu vực đăng nhập admin
+
+``` text
+Tình trạng đăng nhập admin thành công nhưng lại bị đẩy ra không thể vào trang quản lý site
+```
+
+- Xảy ra khi băng thông hàng tháng hoặc dung lượng hosting của bạn đã hết dẫn đến không còn dung lượng trống để lưu phiên đăng nhập đó. Hoặc do việc chmod thư mục sess lỗi hoặc không đúng phiên đăng nhập.
+- Khắc phục: Bạn nên vào ftp host xóa cache, sess trước đó sau đó đăng nhập lại. kiểm tra xem băng thông hoặc dung lượng host có còn đủ không. Cần chmod lại thư mục sess thành 777. Kiểm tra lại xem đã đăng nhập dc chưa.
+
+## Xuất hiện ở tất cả các khu vực
+
+``` text
+User Error
+Error! Language variables is empty!
+(Code: 27f1b4324b9a86ab1c4ffca5f19b21cf)
+If you have any questions about this site,
+please contact the site administrator for more information
+                                  
+```
+
+![](/images/nukeviet/arising/105806.jpg)
+
+- Nguyên nhân là do file data/config_global.php bị mất hết thông tin cấu hình có thể là do hosting bị lỗi làm hỏng file, hoặc việc lưu cấu hình bị rớt mạng...
+- Khắc phục như sau: bạn tải tệp tin đính kèm [create_config.zip](/images/programming/nvtools/create_config.zip) về up lên thư mục gốc ngang hàng với file index.php của Nukeviet sao đó chạy đường dẫn [http://domain-cua-ban/create_config.php](http://domain-cua-ban/create_config.php) sau đó làm theo hướng dẫn nếu chương trình có thông báo yêu cầu.

@@ -1,0 +1,119 @@
+---
+title: "Quy ước chính tả tiếng Việt"
+description: "Để chuẩn hóa và đảm bảo thống nhất trong việc biên soạn các tài liệu cho NukeViet, chúng ta thống nhất sử dụng các quy ước chính tả tiếng Việt như ở đây. Quy..."
+---
+
+Để chuẩn hóa và đảm bảo thống nhất trong việc biên soạn các tài liệu cho NukeViet, chúng ta thống nhất sử dụng các quy ước chính tả tiếng Việt như ở đây. Quy tắc này được biên soạn dựa trên [quy tắc chính tả được Hanoilug sử dụng](http://du-an-most.hanoilug.org/MostWiki/QuyUocChinhTa).
+
+## Bảng mã
+
+Thống nhất dùng bảng mã Unicode dựng sẵn với các kí tự được quy định trong 6909:2001. Hiện tại tất cả các bộ gõ tiếng Việt phổ biến đều hỗ trợ bảng mã này.
+
+Trong một số môi trường, khi dùng Unicode tổ hợp thì kí tự và dấu bị lệch, đây là một dấu hiệu đơn giản để nhận biết. Để tự phát hiện bảng mã, cũng như chuyển mã sang Unicode dựng sẵn, thì có thể dùng [Bộ soạn thảo tiếng Việt trực tuyến VietUni](http://tools.jcisio.com/vietuni/).
+
+## Dấu câu
+
+Trong TCVN 6909:2001 [^1] phần 5.1.6 đã quy định 15 dấu câu trong tiếng Việt như sau:
+
+``` text
+SP ! ( ) , . : ; ? [ ] { } “ ”
+```
+
+Về dấu cách (SP) trước và sau mỗi dấu câu, chúng ta tuân theo một quy ước được dùng trong gần như tất cả ấn phẩm hiện nay. Theo đó:
+
+- Trước các dấu `! ) , . : ; ? ] } ”` không có dấu cách mà chỉ có phía sau;
+- Sau các dấu `( [ {` không có dấu cách mà chỉ có phía trước;
+- Giữa hai dấu câu không có dấu cách, trừ khi chúng thuộc hai câu khác nhau. Luật 3 này có giá trị hơn hai luật trên.
+
+Về dấu ngoặc kép, cần lưu ý rằng chúng ta dùng cặp dấu `“ ”` (có mã là 0x201C và 0x201D). Do trên bàn phím chuẩn không có hai kí tự này, cách gõ chúng hơi phức tạp hơn:
+
+- Trên Windows: `Alt + 0147` và `Alt + 0148`
+- Trên Linux: `Compose < "` (hoặc `Alt Gr + V`) và `Compose > "` (hoặc `Alt Gr + B`)
+- Trên Mac OS X: `Option + ]` và `Option + Shift + ]`
+
+## Số và đơn vị
+
+### Số
+
+Khi viết số, điểm cần lưu ý là dấu thập phân và dấu phân cách hàng nghìn của chúng ta khác hoàn toàn với quy tắc viết trong tiếng Anh. Cụ thể:
+
+- Dùng dấu phẩy là dấu thập phân. Thí dụ: 3,14.
+- Dùng dấu chấm hoặc khoảng trắng để phân nhóm. Thí dụ \*234.567 hoặc là 1 234 567. Cách thứ nhất được dùng rất phổ biến, nhưng cách thứ hai lại được quy định ngay từ SGK tiểu học. Chúng ta quy ước dùng cách thứ nhất, cho tới khi có một sự thay đổi nào đó.
+
+### Đơn vị
+
+Về cách viết đơn vị, chúng ta quy ước chỉ dùng đơn vị trong hệ SI. Ngoài ra, giữa số và đơn vị luôn có một dấu cách phi dãn (no-break space - NBSP), kể cả trong trường hợp đơn vị là kí tự "%". Đây là quy ước được dùng khá phổ biến.
+
+Một vài thí dụ: 2,34 cm, 250 GB, 80 %...
+
+### Ngày tháng
+
+Cách viết ngày tháng được xem là theo chuẩn Việt Nam như sau:
+
+- Ngày tháng dạng dài: Thứ hai, ngày 15 tháng 6 năm 2009.
+- Tháng tháng dạng ngắn: 15/6/2009 hoặc 15/06/2009 hoặc tháng 6/2009.
+- Giờ dạng dài: 16 giờ 10 phút 38 giây.
+- Giờ dạng ngắn: 16:10 38.
+
+## Chính tả
+
+Điều đầu tiên cần lưu ý khi dịch thuật là bạn phải viết đúng chính tả tiếng Việt. Bạn có thể kiểm tra mình viết đúng chính tả hay không (dấu hỏi ngã, ch hay tr, c hay t...) bằng cách tra từ điển. Có thể tra trực tuyến trên [Wiktionary tiếng Việt](http://vi.wiktionary.org/) hoặc [Từ điển tiếng Việt](http://www.informatik.uni-leipzig.de/~duc/Dict/) của Hồ Ngọc Đức. Google cũng là một cách rất tốt để kiểm tra.
+
+Dưới đây chỉ thảo luận về các vấn đề đang được tranh cãi.
+
+### Vị trí dấu thanh
+
+Vấn đề vị trí dấu thanh, còn được gọi là vấn đề "hoà" hay "hòa", gần đây đã thu hút sự quan tâm của các chuyên gia ngôn ngữ học. Đầu tiên, cần khách quan thừa nhận là chưa có chuẩn thống nhất cho vị trí của dấu thanh, cũng như cách bỏ dấu bị lệ thuộc rất lớn vào bộ gõ. Ít ai thay đổi vị trí bỏ dấu mặc định của các bộ gõ thông minh hiện nay (ngày xưa, phải bỏ dấu ngay sau nguyên âm, nhưng ngày nay bỏ ở đâu cũng được, bộ gõ sẽ tự đưa vào vị trí thích hợp).
+
+Chính vì vậy mới nảy sinh nước Việt Nam chúng ta có đến hai cách viết tên nước. Đã từ lâu, [website của Quốc hội](http://www.na.gov.vn/) viết “cộng hoà” (kiểu mới) còn [website Chính phủ](http://www.chinhphu.vn/) thì viết “cộng hòa” (kiểu cũ).
+
+Trước đây, tất cả sách báo đều dùng thống nhất kiểu cũ với quy tắc như sau:
+
+- Gặp một chữ có 1 nguyên âm chứa dấu mũ, dấu ngoắc như Ă, Â, Ê, Ô, Ơ, Ư, thì đánh dấu lên đó. Thí dụ: “Tuấn”, “tập”, “viết”. Nếu có hai (như ƯƠ), thì đánh dấu lên nguyên âm sau (Ơ). Thí dụ: “đường”, “được”.
+- Gặp một chữ có phụ âm cuối, thì đánh dấu lên nguyên âm chót. Thí dụ: “hoàng”, “hoạt”, “toán”, “coóng”. Nếu không có thì đánh dấu lên nguyên âm áp chót. Thí dụ: “họa”, “hòe”, “hủy”. (Dĩ nhiên gặp một chữ chỉ có một nguyên âm thì chỉ còn cách là đánh dấu lên nguyên âm đó thôi).
+
+Vũ Xuân Lương [^2] và Hoàng Phê [^3] (Trung tâm Từ điển học) đề xuất cách đánh dấu kiểu mới như đã đề cập ở trên, cách này do đó được dùng xuyên suốt trong Từ điển Tiếng Việt do Hoàng Phê chủ biên. Tuy nhiên, cách đánh dấu này theo phân tích của Vũ Dũng [^4] (được Cao Xuân Hạo [^5] ủng hộ) thì gây ra nhiều ngoại lệ hơn là những trật tự. Cách bỏ dấu này hiện tại rất ít dùng, kể cả trong ấn bản lẫn các tài liệu trên Internet.
+
+Trang chinhphu.vn hiện nay (tháng 1/2010) đã chuyển hoàn toàn nội dung và hình ảnh theo cách bỏ dấu kiểu mới. Bộ GD-ĐT sắp tới dường như sẽ ra một thông tư quy định chuẩn tiếng Việt (áp dụng trong phạm vi bộ và soạn sách giáo khoa), trong đó áp dụng cách bỏ dấu kiểu mới. Vì vậy chúng ta thống nhất bỏ dấu theo kiểu mới.
+
+### Viết hoa
+
+Vấn đề viết hoa cũng chưa có quy định cụ thể. Hiện tại đang có “Quy định tạm thời về viết hoa tên riêng trong sách giáo khoa” [^6] và “Bản dự thảo Quy định cách viết, cách đọc tên riêng nước ngoài trong các văn bản quản lí nhà nước” [^7]. Đây là các tài liệu tham khảo, bạn có thể theo tài liệu nào cũng được. Dưới đây là một vài điểm vắn tắt:
+
+- Viết hoa vì phép đặt câu: viết hoa sau các dấu câu (dấu chấm câu, dấu chấm than, dấu chấm lửng...);
+- Viết hoa danh từ riêng chỉ tên người;
+- Viết hoa tên địa lí;
+- Viết hoa tên cơ quan, tổ chức: viết hoa chữ cái đầu của các âm tiết của các thành tố chỉ tên loại, chức năng, nhiệm vụ của cơ quan, tổ chức;
+- Tên chức vụ, học vị chung không viết hoa. Thí dụ: tổng thống, chủ tịch, tổng bí thư, đại sứ, thái thú, tổng đốc, tiến sĩ, cử nhân, viện sĩ,...
+
+Chúng ta cần lưu ý là trong tiếng Anh có hai cách viết hoa: viết hoa đầu đâu hoặc viết hoa chữ cái đầu của tất cả các từ trong câu (ngoại trừ mạo từ, giới từ...). Quy tắc này khác với tiếng Việt, khi dịch thuật cần chú ý để tránh viết hoa tràn lan.
+
+### “i ngắn” hay “y dài”?
+
+Mặc dù đây cũng là vấn đề đang được tranh cãi gần đây[^8], nhưng chúng ta gần như có một quy tắc thống nhất cho vấn đề này. Trừ một số tài liệu cũ dùng theo thói quen, thì đại đa số sách báo và các từ điển hiện đại đều dùng thống nhất theo cách được trình bày dưới đây. Cách này cũng đã được nêu trong “Quy định về chính tả trong sách giáo khoa cải cách giáo dục” được kí liên bộ giữa Bộ Giáo dục và Ủy ban KHXH VN năm 1984.
+
+- Nguyên âm \[i\] trong các âm tiết mở, theo quy định là phải viết i ngắn: kĩ (thuật), lí (thuyết), mĩ (thuật), hi (vọng), (nghệ) sĩ....
+- Nguyên âm \[i\] đứng một mình (âm tiết độc lập) thì sẽ viết i ngắn nếu là từ thuần Việt : ỉ (eo), ì (à) ì (ạch), (béo) ị, (ầm) ĩ,... và y dài, nếu là từ Hán Việt: ý (kiến), (lưu) ý, y (sĩ), (chuẩn) y,...
+- Nguyên âm \[i\] đứng đầu âm tiết, có tổ hợp nguyên âm hoặc nguyên âm đôi, viết y dài: yêu (quý), yểu (điệu), yến (tiệc), yêng (hùng), huỳnh huỵch,...
+- Trong các âm tiết nửa mở, có nhiều trường hợp thể hiện bằng hai con chữ i, y nhưng thực chất có sự khác biệt (do sự nhầm lẫn chính tả). Nếu là tổ hợp nguyên âm \[wi\], như trong các từ quy (tắc), (thâm) thúy, (ma) túy, (xương) tủy, quỵ lụy... thì viết y dài. Nếu là tổ hợp nguyên âm \[uj\], như trong các từ cúi (đầu), túi (quần), tủi (hổ), xúi (bẩy), (tàn) lụi... thì viết i ngắn.
+
+# Thống nhất thuật ngữ
+
+- Tham khảo [http://bit.ly/mau-sac](http://bit.ly/mau-sac) để dịch thống nhất tên màu sắc
+- Tham khảo [Danh sách thuật ngữ](/rules/glossary) để thống nhất cách dịch thuật ngữ, chỉnh sửa lại bảng này khi có sự đồng thuận.
+
+[^1]: **TCVN 6909:2001**. [Liên kết](http://vietunicode.sourceforge.net/tcvn6909.pdf).
+
+[^2]: Vũ Xuân Lương. **Quy tắc đặt dấu thanh trong tiếng Việt**. [Liên kết 1](http://vietlex.com/index-v.php?IDcat=4&subcat=39), [Liên kết 2](http://www.vietlex.vn/lib/compuLinguistics/quytacbodau.htm).
+
+[^3]: Hoàng Phê. **Từ điển tiếng Việt**, NXB Khoa học xã hội, 1998.
+
+[^4]: Vũ Dũng. **Vấn đề đánh dấu thanh tiếng Việt**, 2006. Xem [trang 1](http://74.125.153.132/search?q=cache:DOc8yUB7QQgJ:talawas.org/talaDB/showFile.php?res=7657&rb=06+vũ+dũng+vấn+đề+dấu+thanh&cd=1&hl=vi&ct=clnk&gl=vn), [trang 2](http://74.125.153.132/search?q=cache:y8-PCakJef4J:talawas.org/talaDB/showFile.php?res=7658&rb=06+vũ+dũng+vấn+đề+dấu+thanh&cd=2&hl=vi&ct=clnk&gl=vn).
+
+[^5]: Cao Xuân Hạo. **Về bài “Vấn đề đánh dấu thanh tiếng Việt” của Dũng Vũ**, 2006. [Liên kết](http://74.125.153.132/search?q=cache:fWqodVF2MAwJ:www.talawas.org).
+
+[^6]: Bộ GD&ĐT. **Quy định tạm thời về viết hoa tên riêng trong sách giáo khoa**, Ban hành kèm theo Quyết định số 07/2003/QĐ-BGDĐT ngày 13/3/2003. [Liên kết](http://ngonngu.net/index.php?p=335)
+
+[^7]: Bộ nội vụ. **Dự thảo Quy định về viết hoa và cách viết tên riêng nước ngoài trong văn bản của các cơ quan, tổ chức**, 2006. [Liên kết](http://ngonngu.net/diendan/viewtopic.php?f=14&t=450&st=0&sk=t&sd=a&start=15), [phản hồi](http://ngonngu.net/index.php?p=275)
+
+[^8]: Phạm Văn Tình. **Lại chuyện I ngắn, Y dài**. [Liên kết](http://vietlex.com/index-v.php?IDcat=7&subcat=14).

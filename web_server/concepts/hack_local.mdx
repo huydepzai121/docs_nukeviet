@@ -1,0 +1,22 @@
+---
+title: "Khái niệm về Hack local"
+description: "Hack local thực chất là tấn công 1 trang web thông qua 1 trang khác cùng server với nó."
+---
+
+## Hack local là gì?
+
+Hack local thực chất là tấn công 1 trang web thông qua 1 trang khác cùng server với nó.
+
+**Vì sao phải làm vậy?**
+
+Vì trang hacker cần tấn công không có (hoặc không tìm thấy lỗi) nên phải tấn công gián tiếp thông qua trang khác bị lỗi trên cùng server.
+
+## Các bước thường được sử dụng trong Hack local
+
+Hack local được thực hiện qua 4 bước:
+
+\- Tìm danh sách các trang cùng server với trang victim (nạn nhân).
+
+\- Rà soát xem các trang này trang nào có lỗi không, sau đó tấn công trang có lỗi để chiếm quyền admin. Việc ra soát và tấn công thường dựa vào lỗi SQL injection. Mục đích của việc này là lấy được quyền admin để up shell lên.
+
+\- Từ con shell up lên được, hacker thực hiện truy cập nội bộ (local) sang trang của nạn nhân. Từ đó có thể lấy được thông tin site ghi trong file config, rồi chiếm quyền admin và phá hoại web hoặc âm thầm phát tán shell, cài code ăn cắp mật khẩu... hoặc bất cứ trò nào hacker có thể nghĩ ra.

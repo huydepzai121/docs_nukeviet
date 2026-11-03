@@ -1,0 +1,23 @@
+---
+title: "check_server"
+description: "Trong mainfile.php, ngay sau khi hệ thống load xong các plugin."
+---
+
+Trong mainfile.php, ngay sau khi hệ thống load xong các plugin.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú |
+|-----|:---------|:-------------|:--------|
+
+### Dữ liệu trả về
+
+Tùy người lập trình
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'check_server', $priority, function($vars) {
+    // Thực hiện code hook tại đây...
+});
+```

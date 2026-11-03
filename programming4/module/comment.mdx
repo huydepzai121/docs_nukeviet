@@ -1,0 +1,175 @@
+---
+title: "Hướng tích hợp chức năng bình luận của hệ thống vào module"
+description: "Để hệ thống nhận dạng module có sử dụng comment, cần khai báo trong bảng config của hệ thống bằng cách thêm vào file action như sau"
+---
+
+## Khai báo CSDL
+
+Để hệ thống nhận dạng module có sử dụng comment, cần khai báo trong bảng config của hệ thống bằng cách thêm vào file action như sau
+
+``` php
+// Comments
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'auto_postcomm', '1')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'allowed_comm', '-1')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'view_comm', '6')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'setcomm', '4')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'activecomm', '1')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'emailcomm', '0')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'adminscomm', '')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'sortcomm', '0')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'captcha', '1')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'perpagecomm', '5')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'timeoutcomm', '360')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'allowattachcomm', '0')";
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'alloweditorcomm', '0')";
+
+// Từ NukeViet 4.5.00 bổ sung
+$sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'captcha_area_comm', '1')";
+```
+
+Trong đó:
+
+- `auto_postcomm` có tự động duyệt bình luận hay không
+- `allowed_comm` ai được quyền bình luận, nếu đặt -1 tức lấy theo cấu hình đối tượng bình luận.
+- `view_comm` ai được xem bình luận
+- `setcomm` quyền bình luận mặc định khi tạo bài viết (đối tượng) mới.
+- `adminscomm` id các admin quản lý bình luận
+- `sortcomm` sắp xếp bình luận: 0 =\> Mới trước 1 =\> Cũ trước 2 =\> Like nhiều trước.
+- `captcha` kích hoạt mã xác nhận để bình luận
+- `perpagecomm` số bình luận trên một trang.
+- `timeoutcomm` thời gian chờ (giây) giữa hai lần bình luận áp dụng đối với thành viên và khách.
+- `allowattachcomm` cho phép đính kèm file vào bình luận.
+- `alloweditorcomm` cho phép trình soạn thảo ở bình luận.
+
+> Các cấu hình trên module không cần viết phần quản lý riêng mà do module comment của hệ thống xử lý.
+
+## Lập trình load form comment và các comment cho bài viết (đối tượng)
+
+Sử dụng đoạn code như sau:
+
+``` php
+// Kiểm tra module có sử dụng chức năng comment và module comment được kích hoạt
+if (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm'])) {
+    $id = $news_contents['id']; // Chỉ ra ID của đối tượng được bình luận
+    $area = $module_info['funcs'][$op]['func_id']; // Chỉ ra phạm vi (loại, vị trí...) của đối tượng bình luận
+    
+    define('NV_COMM_ID', $id); // Định nghĩa hằng này để module comment hiểu
+    define('NV_COMM_AREA', $area); // Định nghĩa hằng này để module comment hiểu
+    
+    // Kiểm tra quyền bình luận
+    $allowed = $module_config[$module_name]['allowed_comm'];
+    if ($allowed == '-1') {
+        // Quyền bình luận theo đối tượng
+        $allowed = $news_contents['allowed_comm'];
+    }
+    require_once NV_ROOTDIR . '/modules/comment/comment.php';
+    $checkss = md5($module_name . '-' . $area . '-' . $id . '-' . $allowed . '-' . NV_CACHE_PREFIX);
+
+    $content_comment = nv_comment_module($module_name, $checkss, $area, $id, $allowed, 1);
+} else {
+    $content_comment = '';
+}
+```
+
+Giải thích cách viết trên:
+
+Biến `$id` và `$area` tạo thành một cặp khóa unique để xác định ra bài viết được bình luận, trong trường hợp module có bình luận cho nhiều đối tượng có cùng id thì chúng sẽ khác nhau ở \$area.
+
+Đoạn code trên sửa dụng ID function của module để làm \$area, bạn cũng có thể thay bằng giá trị bất kỳ miễn sao cặp `$id` và `$area` không trùng lại ở bất cứ bài viết nào.
+
+Thay giá trị `$news_contents['allowed_comm']` bằng quyền bình luận riêng đối với bài viết của bạn.
+
+> Chú ý:  
+> \* Giá trị đưa vào \$allowed là id hoặc list id của nhóm thành viên được phép bình luận ví dụ 1 hoặc 1,6,7,10  
+> \* `$id` và `$area` có kiểu dữ liệu là integer do đó cần chuẩn hóa về đúng kiểu.
+
+Cuối cùng `$content_comment` là biến chứa dữ liệu sẽ xuất ra trình duyệt.
+
+## Lập trình cập nhật thống kê số bình luận cho bài viết (đối tượng)
+
+> Nếu bài viết (đối tượng) của bạn có thống kê số bình luận thì mới thực hiện phần này, nếu không bạn có thể bỏ qua
+
+Sau khi có bình luận mới hoặc một bình luận bị xóa đi, hệ thống sẽ gọi về file comment.php (nếu có) ở thư mục của module để thực hiện thao tác cập nhật. Do đó cần tạo file comment.php đặt vào thư mục modules/ten-module/ với nội dung như sau:
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate Tue, 21 Jan 2014 01:32:02 GMT
+ */
+
+if (!defined('NV_MAINFILE')) {
+    die('Stop!!!');
+}
+
+// Nếu là trong admin thì xác định biến $id, $area theo $row
+if (defined('NV_ADMIN')) {
+    $id = $row['id'];
+    $area = $row['area'];
+}
+
+/**
+ * Sử dụng các biến sau để lấy số comment của đối tượng
+ * $id, $area là hai biến unique để xác định ra bài viết (đối tượng)
+ * $module tên module là module thực hoặc module ảo
+ * $mod_info tương đương với biến $module_info khi lập trình module
+ */
+
+// Xác định số comment của bài viết
+$numf = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_comment WHERE module= ' . $db->quote($module) . ' AND id=' . $id . ' AND area=' . $area . ' AND status=1')->fetchColumn();
+
+// Thực hiện cập nhật lại chô bài viết (đối tượng)
+// Ví dụ
+$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $mod_info['module_data'] . '_rows SET hitscm=' . $numf . ' WHERE id=' . $id;
+$db->query($sql);
+
+```
+
+## Lập trình mở liên kết tới trang chi tiết bài viết (đối tượng)
+
+> Phần này là bắt buộc nếu không khi nhấp vào nội dung bình luận trong phần quản trị comment sẽ bị lỗi.
+
+Tạo function view đặt vào thư mục admin của module khi đó tồn tại modules/ten-module/admin/view.php. Nội dung như sau:
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC <contact@vinades.vn>
+ * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate 2-9-2010 14:43
+ */
+
+if (!defined('NV_IS_FILE_ADMIN')) {
+    die('Stop!!!');
+}
+
+$id = $nv_Request->get_int('id', 'get', 0);
+$area = $nv_Request->get_int('area', 'get', 0);
+
+// Sử dụng $id và $area để truy vấn vào CSDL, xác định ra dữ liệu của bài viết
+// Ví dụ
+$rowcontent = $db_slave->query('SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_rows WHERE id=' . $id)->fetch();
+if (!empty($rowcontent)) {
+    // Chuyển hướng trình duyệt đến trang chi tiết bài viết
+    nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $rowcontent['alias'] . '-' . $rowcontent['id'] . $global_config['rewrite_exturl']);
+}
+
+// Thông báo lỗi không tồn tại bài viết
+nv_info_die($lang_global['error_404_title'], $lang_global['error_404_title'], $lang_global['admin_no_allow_func'], 404);
+
+```
+
+## Lập trình xóa bình luận khi xóa bài viết (đối tượng)
+
+Khi xóa bài viết (đối tượng) thì chỉ cần thực hiện câu lệnh xóa comment trong CSDL của hệ thống. Ví dụ:
+
+``` php
+$db->query('DELETE FROM ' . NV_PREFIXLANG . '_comment WHERE module=' . $db->quote($module_name) . ' AND area=' . $area . ' AND id = ' . $id);
+```

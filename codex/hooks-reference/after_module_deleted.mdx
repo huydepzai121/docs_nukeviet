@@ -1,0 +1,28 @@
+---
+title: "after_module_deleted"
+description: "Sau khi xóa một module."
+---
+
+Sau khi xóa một module.
+
+### Tham số
+
+| STT | Tên biến     | Kiểu dữ liệu | Ghi chú |
+|-----|:-------------|:-------------|:--------|
+| 0   | \$modname    | String       |         |
+| 1   | \$admin_info | Array        |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'after_module_deleted', $priority, function($vars) {
+    $modname = $vars[0];
+    $admin_info = $vars[1];
+
+    // Thực hiện code hook tại đây...
+});
+```

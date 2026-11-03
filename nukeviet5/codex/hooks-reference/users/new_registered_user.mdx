@@ -1,0 +1,28 @@
+---
+title: "new_registered_user"
+description: "Khi một thành viên mới đăng ký thành công ngoài site."
+---
+
+Khi một thành viên mới đăng ký thành công ngoài site.
+
+### Tham số
+
+| STT | Tên biến    | Kiểu dữ liệu | Ghi chú |
+|-----|:------------|:-------------|:--------|
+| 0   | \$userid    | Integer      |         |
+| 1   | \$user_data | Integer      |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'new_registered_user', $priority, function($vars) {
+    $userid = $vars[0];
+    $user_data = $vars[1];
+
+    // Thực hiện code hook tại đây...
+});
+```

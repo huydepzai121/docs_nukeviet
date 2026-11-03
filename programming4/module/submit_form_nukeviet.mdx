@@ -1,0 +1,118 @@
+---
+title: "Lấy giá trị của biến khi submit form trong NukeViet 4"
+description: "Lấy giá trị của inputname qua phương thức post, nếu không có giá trị bằng 0"
+---
+
+## Lấy biến số nguyên
+
+Lấy giá trị của input_name qua phương thức post, nếu không có giá trị bằng 0
+
+``` php
+$id = $nv_Request->get_int('id', 'post');
+```
+
+Lấy giá trị của input_name qua phương thức get, nếu không có giá trị bằng 10
+
+``` php
+$default = 10;
+$id = $nv_Request->get_int('id', 'get', $default);
+```
+
+Lấy giá trị của input_name qua phương thức post, hoặc get ưu tiên lấy post trước, nếu không có giá trị bằng 10
+
+``` php
+$default = 10;
+$id = $nv_Request->get_int('id', 'post,get', $default);
+```
+
+## Lấy biến số thực
+
+Lấy giá trị của input_name qua phương thức post, nếu không có giá trị bằng 0
+
+``` php
+$id = $nv_Request->get_float('id', 'post');
+```
+
+Lấy giá trị của input_name qua phương thức get, nếu không có giá trị bằng 10.5
+
+``` php
+$default = 10.5;
+$id = $nv_Request->get_float('id', 'get', $default);
+```
+
+Lấy giá trị của input_name qua phương thức post, hoặc get ưu tiên lấy post trước, nếu không có giá trị bằng 10.5
+
+``` php
+$default = 10.5;
+$id = $nv_Request->get_float('id', 'post,get', $default);
+```
+
+## Lấy biến của thẻ form input
+
+Lấy giá trị của input_name qua phương thức post, nếu không có giá trị bằng rỗng
+
+``` php
+$value = $nv_Request->get_title('input_name', 'post', ''); 
+```
+
+Lấy giá trị của input_name qua phương thức post hoặc get, nếu không có giá trị bằng rỗng Giá trị của biến sẽ được gọi qua hàm nv_htmlspecialchars để thay thế các mã html đặc biệt
+
+``` php
+$value = $nv_Request->get_title('input_name', 'post,get', "", 1);
+```
+
+Lấy giá trị của input_name qua phương thức request, nếu không có giá trị bằng default Giá trị của biến sẽ thay thế các kỹ tự khác a-zA-Z0-9 bằng ký tự gạch dưới
+
+``` php
+$default = "default";
+$preg_replace = array('pattern' => "/[^a-zA-Z0-9]/", 'replacement' => "_");
+$value = $nv_Request->get_title('input_name', 'request', $default, 0, $preg_replace);
+```
+
+Nếu cần chỉ lấy 255 ký tự đầu tiên, nếu giá trị nhiều hơn 255 ký tự thì các ký tự sau 255 sẽ bị cắt đi
+
+``` php
+$value = nv_substr($value, 0, 255);
+```
+
+## Lấy biến của thẻ form textarea
+
+**sử dụng cho các form là trình soạn thảo**: phương thức get_editor của class Request chỉ dùng post, chứ không dùng phương thức get, nếu không sẽ bị mất dữ liệu, chỉ các tags được liệt kê trong NV_ALLOWED_HTML_TAGS mới được sử dụng, các mã khác sẽ bị lọc bỏ, hoặc sử dụng
+
+``` php
+$content = $nv_Request->get_editor('content', '', NV_ALLOWED_HTML_TAGS);
+$content = $nv_Request->get_editor('content', ''); //sẽ không lọc các tags html
+$content = nv_editor_nl2br($content);// dung de save vào CSDL hoặc dùng
+$content = $nv_Request->get_editor('content', '', NV_ALLOWED_HTML_TAGS, 1);
+```
+
+Sau khi đã lưu vào CSDL, nếu đưa vào trình soạn thảo
+
+``` php
+$content = nv_htmlspecialchars(nv_editor_br2nl( $row['content']));
+```
+
+sử dụng cho các form là textarea: phương thức get_textarea của class Request chỉ dùng post, chứ không dùng phương thức get, nếu không sẽ bị mất dữ liệu, Chì chỉ các tags được liệt kê trong NV_ALLOWED_HTML_TAGS mới được sử dụng, các mã khác sẽ bị lọc bỏ
+
+``` php
+$content = $nv_Request->get_textarea('content', '', NV_ALLOWED_HTML_TAGS);
+$content = $nv_Request->get_textarea('content', ''); //sẽ không lọc các tags html
+```
+
+Nếu lưu vào CSDL hoặc vào file
+
+``` php
+$content = $nv_Request->get_textarea('content', '', NV_ALLOWED_HTML_TAGS, 1);
+```
+
+Sau khi đã lưu vào CSDL, nếu đưa vào textarea
+
+``` php
+$content = nv_htmlspecialchars(nv_br2nl($row['content'])); // dung de lay data tu CSDL, dua vao textarea
+```
+
+## Lấy giá trị của trình soạn thảo bằng javascript
+
+``` js
+value = CKEDITOR.instances['DOM-ID-HERE'].getData()
+```

@@ -1,0 +1,110 @@
+---
+title: "Các điểm mới ở PHP 8.0 so với 7.4"
+description: "Cho phép truyền tham số vào hàm thông qua tên, không cần theo thứ tự. Ví dụ:"
+---
+
+## Tên đối số trong hàm
+
+Cho phép truyền tham số vào hàm thông qua tên, không cần theo thứ tự. Ví dụ:
+
+``` php
+function getMyName($id, $email) 
+{
+    echo "id: " . $id . "\n";
+    echo "email: " . $email . "\n";
+}
+getMyName(email: 'my@gmail.com', id: 1);
+```
+
+Tên đối số là giá trị cố định, không được là biến. Ví dụ `getMyName($email: 'my@gmail.com', $id: 1);` sẽ lỗi.
+
+## Attributes
+
+Hiểu một cách đơn giản đây là cách comment thay cho PHPDoc ví dụ
+
+``` php
+#[Attribute]
+class MyAttribute
+{
+}
+```
+
+Xem thêm nhiều mô tả [https://php.watch/articles/php-attributes](https://php.watch/articles/php-attributes)
+
+## Constructor Promotion
+
+Cho phép viết luôn các thuộc tính vào hàm `__construct` của class. Khi đó trình biên dịch tự động tạo ra thuộc tính đó luôn. Ví dụ
+
+``` php
+class Point {
+    public function __construct(protected int $x, protected int $y = 0) {
+    }
+}
+```
+
+Điều này tương đương viết
+
+``` php
+class Point {
+    protected int $x;
+    protected int $y = 0;
+    
+    public function __construct($x, $y = 0) {
+        $this->x = $x;
+        $this->y = $y;
+    }
+}
+```
+
+## Union Types
+
+Trong ví dụ trên, trước đây chỉ viết được 1 type ví dụ int
+
+``` php
+protected int $x;
+```
+
+Bây giờ kết hợp được nhiều. Ví dụ
+
+``` php
+protected int|float|null $x;
+```
+
+Điều này cho phép thuộc tính \$x nhận số nguyên, số thực hoặc null
+
+## Match Expression
+
+Gần giống như là switch. Không cần break, tự break khi tìm thấy lần đầu tiên. Nếu không có default và match không trả về kết quả sẽ bị trang trắng cho `throw new UnhandledMatchError()`. Giá trị so sánh ở đây chính xác cả kiểu dữ liệu. Ví dụ '8' (char 8) khác với 8 (số 8)
+
+Ví dụ
+
+``` php
+$food = 'cake';
+
+$return_value = match ($food) {
+    'apple', 'my' => 'This food is an apple',
+    'bar' => 'This food is a bar',
+    'cake' => 'This food is a cake',
+};
+
+var_dump($return_value);
+```
+
+## Nullsafe Operator
+
+Trước đây nếu class truy cập null sẽ gây ra lỗi ví dụ
+
+``` php
+$user = null;
+$user->getUserid(); // Lỗi
+```
+
+Bây giờ có thể viết
+
+``` php
+$user?->getUserid();
+```
+
+## Một số bổ sung khác
+
+Bổ sung class WeakMap, ValueError... [xem thêm tại đây](https://www.php.net/manual/en/migration80.new-features.php#migration80.new-features.core.others)

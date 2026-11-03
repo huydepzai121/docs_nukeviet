@@ -1,0 +1,30 @@
+---
+title: "db_slave_connect"
+description: "Thay thế cho kết nối đến DB Slave."
+---
+
+Thay thế cho kết nối đến DB Slave.
+
+### Tham số
+
+| STT | Tên biến    | Kiểu dữ liệu | Ghi chú |
+|-----|:------------|:-------------|:--------|
+| 0   | \$db        |              |         |
+| 1   | \$db_config |              |         |
+
+### Dữ liệu trả về
+
+Biến `$db`
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'db_slave_connect', $priority, function($vars) {
+    $db = $vars[0];
+    $db_config = $vars[1];
+
+    // Thực hiện code hook tại đây...
+
+    return $db;
+});
+```

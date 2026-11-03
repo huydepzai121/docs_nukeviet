@@ -1,0 +1,32 @@
+---
+title: "get_email_content_before_send"
+description: "Dùng để chỉnh sửa nội dung email trước khi gửi đi trong hàm nvsendmailfromtemplate."
+---
+
+Dùng để chỉnh sửa nội dung email trước khi gửi đi trong hàm nv_sendmail_from_template.
+
+### Tham số
+
+| STT | Tên biến        | Kiểu dữ liệu | Ghi chú                              |
+|-----|:----------------|:-------------|:-------------------------------------|
+| 0   | \$email_content | string       | Nội dung email truyền vào            |
+| 1   | \$email_data    | array        | Dữ liệu trong CSDL của mẫu email     |
+| 2   | \$row           | array        | Dữ liệu truyền vào do người dùng đặt |
+
+### Dữ liệu trả về
+
+Biến `$email_content` là nội dung của email.
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_email_content_before_send', $priority, function($vars) {
+    $email_content = $vars[0];
+    $email_data = $vars[1];
+    $row = $vars[2];
+
+    // Thực hiện code hook tại đây...
+
+    return $email_content;
+});
+```

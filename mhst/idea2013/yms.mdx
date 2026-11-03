@@ -1,0 +1,65 @@
+---
+title: "Hệ thống quản lý nghiệp vụ công tác Đoàn tại trường Đại học – Cao đẳng"
+description: "Hiện nay việc ứng dụng CNTT vào công tác Đoàn đã và đang được đầu tư và triển khai. Tuy nhiên việc ứng dụng CNTT vào công tác đoàn vẫn còn nhiều hạn chế và c..."
+---
+
+## Tóm tắt ý tưởng
+
+Hiện nay việc ứng dụng CNTT vào công tác Đoàn đã và đang được đầu tư và triển khai. Tuy nhiên việc ứng dụng CNTT vào công tác đoàn vẫn còn nhiều hạn chế và chỉ dừng lại ở những mức độ cơ bản. Những năm gần đây đã có một số nơi mua ứng dụng để triển khai nhưng hoặc chi phí tương đối cao hoặc không đáp ứng được nhu cầu sử dụng phía cơ sở (Trong khi đoàn cấp trên không thể cấp kinh phí liên tục để thay đổi theo nhu cầu của đoàn cơ sở). Giải pháp một hệ thống quản lý nghiệp vụ công tác Đoàn tại trường Đại học – Cao đẳng làm bằng mã nguồn mở sẽ giải quyết triệt để các bất cập hiện tại, hơn thế nữa, nếu viết bằng Module cho NukeViet thì rất tiện lợi vì có thể tích hợp vào các website đang chạy bằng NukeViet (tỉ lệ các website sử dụng NukeViet hiện nay không hề nhỏ). Xây dựng và phát triển một hệ thống quản lý nghiệp vụ công tác Đoàn tại trường Đại học – Cao đẳng có thể thực hiện được tất cả các nghiệp vụ trong công tác quản lý tại các cơ sở Đoàn, giúp cán bộ đoàn có thể thực hiện công việc của mình một cách nhanh nhất và hiệu quả nhất.
+
+## Kỹ năng yêu cầu
+
+- Ngôn ngữ lập trình: PHP, MySQL, xHTML, CSS…
+- Đánh giá độ khó của ý tưởng: “trung bình”.
+
+Ghi chú: Độ khó trung bình được giả định với một nhóm khoảng 3 SV thành thạo các kỹ năng yêu cầu chắc chắn sẽ hoàn thành dự án trong 3 tháng, không cần làm toàn thời gian.
+
+## Mô tả chi tiết
+
+Hệ thống cần đáp ứng được yêu cầu về các chức năng nghiệp vụ quản lý như:
+
+- Quản lý danh mục dùng chung: danh mục Liên chi Đoàn, danh mục Chi đoàn, danh mục Khóa học.
+- Quản lý thông tin Đoàn viên:
+  - Họ và tên
+  - Ngày sinh
+  - Giới tính
+  - Dân tộc
+  - Tôn giáo
+  - Quê quán
+  - Nơi ở hiện nay
+  - Ngày vào Đoàn
+  - Nơi vào Đoàn
+  - Ngày vào Đảng
+  - Nơi vào Đảng
+  - Thành tích cá nhân
+  - Số điện thoại liên lạc
+  - Email
+  - Ngày chuyển đến, nơi chuyển đến
+  - Nơi chuyển đi, nơi chuyển đi
+- Quản lý hoạt động.
+- Quản lý khen thưởng – kỷ luật.
+- Quản lý thu – chi.
+- Quản lý Tìm kiếm, lập báo cáo thống kê.
+- Quản lý hệ thống: Quản lý tài khoản người dùng, sao lưu phục hồi CSDL
+
+Tài khoản người dùng cần phân thành 5 cấp, mỗi cấp tương ứng với các quyền khác nhau:
+
+``` text
+  * Cấp quản trị hệ thống: Người dùng có thể quản lý tất cả các chức năng của hệ thống.
+  * Cấp Đoàn trường: Người dùng có thể quản lý các danh mục: danh mục Liên chi Đoàn, danh mục Chi đoàn, danh mục khóa học, quản lý TT đoàn viên, quản lý hoạt động, quản lý khen thưởng – kỷ luật, quản lý thu – chi, tìm kiếm và lập báo cáo, quản lý trang tin, quản lý trang văn bản – tài liệu, quản lý trang lịch công tác.
+  * Cấp Liên chi Đoàn: người dùng có thể quản lý danh mục Chi đoàn của Liên chi mình cũng như thông tin đoàn viên của Liên chi mình. Ngoài ra ứng với tài khoản ở cấp Liên chi Đoàn người dùng có thể sử dụng một số chức năng quản lý ở cấp Liên chi: Quản lý hoạt động, tìm kiếm và lập báo cáo.
+  * Cấp Chi đoàn: người dùng có thể quản lý thông tin đoàn viên của Chi đoàn mình.
+  * Cấp đoàn viên: người dùng có thể đăng nhập để xem thông tin của mình, thông tin của Chi đoàn và Liên chi Đoàn của mình.
+* Một số yêu cầu khác: Ngoài ra hệ thống cần phải xây dựng trang tin, trang quản lý văn bản – tài liệu và trang lịch công tác.
+```
+
+## Thông tin khác
+
+NukeViet hiện đang được sử dụng làm website của hàng trăm trường học và các cơ sở giáo dục (Số liệu điều tra năm 2011 của nukeviet.vn cho thấy có 250 website trường học và các cơ sở giáo dục có sử dụng NukeViet. Hiện nay tra trên Google cho khoảng 229.000 kết quả về NukeViet từ các website có tên miền .edu.vn). Ngoài khối trường học, rất nhiều cơ sở khác có duy trì tổ chức Đoàn Thanh Niên có thể triển khai ứng dụng này.
+
+## Người hướng dẫn
+
+- Mentor: Nguyễn Thế Hùng – Tổng giám đốc Công ty cổ phần Phát triển nguồn mở Việt Nam.
+- Co-mentor:
+  - Nguyễn Bá Cát - Phó Bí thư Liên chi Đoàn khoa CNTT – Trường Đại học Công nghiệp Hà Nội.
+  - Vũ Văn Thảo - Lập trình viên NukeViet - Công ty cổ phần Phát triển nguồn mở Việt Nam

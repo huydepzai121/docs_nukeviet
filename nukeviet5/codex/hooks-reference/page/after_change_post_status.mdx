@@ -1,0 +1,30 @@
+---
+title: "after_change_post_status"
+description: "Sau khi thay đổi trạng thái hoạt động của một bài viết."
+---
+
+Sau khi thay đổi trạng thái hoạt động của một bài viết.
+
+### Tham số
+
+| STT | Tên biến     | Kiểu dữ liệu | Ghi chú |
+|-----|:-------------|:-------------|:--------|
+| 0   | \$id         | Integer      |         |
+| 1   | \$status_old | Integer      |         |
+| 2   | \$new_status | Integer      |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'after_change_post_status', $priority, function($vars) {
+    $id = $vars[0];
+    $status_old = $vars[1];
+    $new_status = $vars[2];
+
+    // Thực hiện code hook tại đây...
+});
+```

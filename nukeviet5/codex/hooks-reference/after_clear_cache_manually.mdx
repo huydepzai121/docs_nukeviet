@@ -1,0 +1,28 @@
+---
+title: "after_clear_cache_manually"
+description: "Xảy ra sau khi xóa cache và trước khi các file cache bị xóa được xử lý để hiển thị ra giao diện tại khu vực công cụ web => Dọn dẹp hệ thống."
+---
+
+Xảy ra sau khi xóa cache và trước khi các file cache bị xóa được xử lý để hiển thị ra giao diện tại khu vực công cụ web =\> Dọn dẹp hệ thống.
+
+### Tham số
+
+| STT | Tên biến | Kiểu dữ liệu | Ghi chú |
+|-----|:---------|:-------------|:--------|
+| 0   | \$files  | Array        |         |
+
+### Dữ liệu trả về
+
+Biến `$files` chứa các file cache bị xóa.
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'after_clear_cache_manually', $priority, function($vars) {
+    $files = $vars[0];
+
+    // Thực hiện code hook tại đây...
+
+    return $files;
+});
+```

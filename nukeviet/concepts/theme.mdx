@@ -1,0 +1,24 @@
+---
+title: "Khái niệm theme"
+description: "NukeViet hỗ trợ việc sử dụng nhiều theme và người quản trị có thể dễ dàng thay đổi chúng."
+---
+
+**Theme** (hay còn gọi là *skin*, *template*…) là khái niệm của NukeViet dùng để gọi các giao diện.
+
+NukeViet hỗ trợ việc sử dụng nhiều theme và người quản trị có thể dễ dàng thay đổi chúng.
+
+Theme của NukeViet là giải pháp lý tưởng giúp cho công việc thay đổi giao diện website trở lên dễ dàng. Nhờ thiết kế mỹ thuật của tác giả tạo ra theme mà website có thể được trình bày dưới các bố cục khác nhau. Điều này sẽ giúp cho website không trở lên nhàm chán.
+
+NukeViet tích hợp sẵn hai theme: default và modern cho khu vực người dùng và 2 theme: admin_default và admin_full cho khu vực quản trị.
+
+Hai theme default và admin_default là hai theme hệ thống, nếu các giao diện khác không hỗ trợ bất kì thành phần gì thì những thành phần đó được lấy mặc định từ hai theme này, vì vậy tuyệt đối không được đổi tên hay chỉnh sửa hai theme này.
+
+Hệ thống NukeViet cho phép quản lý giao diện ở 3 mức độ khác nhau:
+
+- Mức độ toàn bộ website (giao diện mặc định).
+- Mức độ module (giao diện cho từng module).
+- Mức độ chức năng của module (kiểu bài trí giao diện cho từng chức năng). [^1]
+
+Như vậy là ngoài việc hỗ trợ mỗi [module](/nukeviet/concepts/module) sử dụng một giao diện, mỗi chức năng ([function](/programming/function)) còn có thể sử dụng một [layout](/nukeviet/concepts/layout) riêng, NukeViet còn cho phép tùy biến các [block](/nukeviet/concepts/block) trên từng function. Nhưng đừng nghĩ quá phức tạp, với NukeViet, việc quản lý giao diện hoàn toàn là "kéo và thả" trực quan bằng chuột.
+
+[^1]: Mỗi giao diện có thể có nhiều kiểu bố trí (layout) khác nhau. Bố trí này có thể khác nhau cho từng module và từng chức năng của module. Việc thiết lập layout nên được làm ngay sau khi cài giao diện và cần được làm trước khi kích hoạt giao diện.

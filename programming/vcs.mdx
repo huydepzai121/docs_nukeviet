@@ -1,0 +1,102 @@
+---
+title: "Hệ thống Quản lí phiên bản (Version Control System)"
+description: "Để quản lý kho code của mình, NukeViet 3.4 trở về trước (từ phiên bản NukeViet 2.0 cho tới phiên bản NukeViet 3.4) sử dụng hệ thống quản lý phiên bản (Versio..."
+---
+
+Để quản lý kho code của mình, NukeViet 3.4 trở về trước (từ phiên bản NukeViet 2.0 cho tới phiên bản NukeViet 3.4) sử dụng hệ thống quản lý phiên bản (Version Control System, viết tắt là VCS) [Subversion](http://vi.wikipedia.org/wiki/Subversion) (SVN) lưu trữ trên kho Google code. Từ phiên bản NukeViet 3.5, NukeViet chuyển sang sử dụng Git (lưu trữ trên kho Github).
+
+## VCS là gì?
+
+Hệ thống quản lý phiên bản (Version control system - VCS) là một dạng phần mềm Quản lý mã nguồn (Source Code Management- SCM)
+
+## Vì sao phải sử dụng VCS?
+
+VCS là hệ thống hỗ trợ làm việc theo nhóm rất hiệu quả. Khi một nhóm làm việc cùng trên một dự án (project), việc nhiều người cùng chỉnh sửa nội dung của một tệp tin là điều không thể tránh khỏi. Việc chỉnh sửa như vậy sẽ tạo ra các phiên bản (Versions/Revisions) khác nhau và phát sinh nhu cầu quản lý chúng. VCS ra đời để cung cấp các chức năng để có thể thực hiện việc này một cách đơn giản và an toàn.
+
+## Chức năng của các VCS
+
+Các Hệ thống Quản lí phiên bản cung cấp đồng thời ba chức năng quan trọng nhất:
+
+- Ghi lại lịch sử: ghi lại các thông tin cần thiết của từng sửa đổi một, như tác giả, thời gian, các ghi chú giải trình thao tác thay đổi đó...
+- Chức năng phục hồi: cho phép khôi phục trạng thái trước khi phát hiện ra có lỗi trong một thao tác sửa đổi đã làm.
+- Chức năng đồng bộ: cho phép nhiều người cùng sửa một hoặc nhiều tệp tin cùng lúc vì các thao tác sửa đổi gây xung đột có thể được phát hiện và giải quyết sau đó.
+
+## Các khái niệm thường sử dụng trong các VCS
+
+### Đơn vị cơ bản của các VCS: Commit
+
+- Commit là thao tác ra lệnh cho VCS ghi lại những thay đổi (change-sets) mà tác giả vừa thực hiện với (các) file mà VCS đang theo dõi. Commit cũng được dùng với nghĩa là những thay đổi nằm trong cùng một lần “commit” (ra lệnh) này. “Những thay đổi” ở đây có thể là tạo file, đổi tên/di chuyển, xoá file, sửa đổi nội dung v.v…
+- Để các commit có giá trị thông tin (xem lại sau này chẳng hạn), ngoài thông tin tác giả và thời gian được VCS tự động thêm vào, người sử dụng phải nhập các ghi chú (comment) lí giải về commit đó. Các ghi chú của commit được gọi là “commit message”. Các message nên ngắn gọn, giải thích xem những sửa đổi đó nhằm làm gì (và khái quát cách làm nếu nó phức tạp).
+- Khi cần xem lại các commit trước đó, người ta tìm đến lịch sử commit (commit history).
+
+### Thao tác sửa đổi nội dung: patch và diff
+
+- So với việc lưu lại từng phiên bản, việc chỉ lưu những phần thay đổi có lợi hơn cho không gian đĩa, cũng như giúp cho việc trao đổi các thay đổi trong môi trường mạng máy tính nhanh hơn. Thao tác “diff” sẽ tự động phân tích hai phiên bản khác nhau của một file để chỉ ra phần khác nhau (diff). Phần khác nhau này có thể được xuất ra thành một file gọi là “patch” chứa thông tin về thay đổi theo quy chuẩn.
+- Cần lưu ý là patch với nghĩa là “bản vá” chỉ là một ứng dụng cụ thể của patch. Thao tác applying patch nói chung là “từ file trước sửa đổi và bản patch tổng hợp thành file sau sửa đổi”.
+- Các thao tác diff và patch có thể thực hiện trực tiếp thông qua các lệnh cùng tên trên các hệ thống GNU/Linux hoặc gián tiếp nhờ sự giúp đỡ của các VCS.
+
+### Xung đột (conflict) giữa các commit
+
+- Xung đột (conflict) giữa các commit xảy ra khi có hai (hay nhiều hơn) commit độc lập với nhau xuất phát từ cùng một commit cũ trước đó. Xung đột thường xảy ra khi có một trong các commit mới đó chứa thao tác xoá bỏ. Trường hợp các commit đều là thao tác thêm sẽ dễ dàng được các RCS tự động xử lí (resolve). Khi xung đột xảy ra, lập trình viên phải cho VCS biết kết quả cuối cùng mà mình mong muốn.
+
+### Một số thuật ngữ khác
+
+- branch: rẽ nhánh
+- merge (merging branches): sáp nhập hai nhánh lại
+- mainline/trunk/master branch: nhánh chính
+- label/tag: nhãn/thẻ
+
+Các thuật ngữ này cũng sẽ được bắt gặp khi thao tác thực tế. Mỗi hệ thống quản lí phiên bản khác nhau có thể sử dụng các thuật ngữ khác nhau. Việc hiểu các thuật ngữ trên đòi hỏi một quá trình thực hành trên hệ thống cụ thể.
+
+## Hai dạng Hệ thống Quản lí phiên bản chính
+
+### Dạng tập trung
+
+Dạng tập trung (Centralized Version/Revision Control) là dạng quản lý cũ, được sử dụng nhiều cách đây vài năm. Ví dụ điển hình cho dạng này là Concurrent Versions System ([CVS](http://vi.wikipedia.org/wiki/CVS)) và [Subversion](/programming/vcs/subversion) (SVN). Đặc điểm của dạng này là hệ thống làm việc theo mô hình client – server trong đó server (kho mã nguồn) đặt một nơi và cho phép các client kết nối đến nó.
+
+### Dạng phi tập trung
+
+Dạng phi tập trung (Decentralized/Distributed Version/Revision Control) là mô hình quản lý mới ra đời và phổ biến trong vài năm gần đây. Trong mô hình của các hệ thống này, mỗi người sử dụng có bản sao của toàn bộ kho mã nguồn (repository), bao gồm cả tập hợp các file và lịch sử sửa đổi. Trong các hệ phi tập trung các kho mã nguồn đồng bộ với nhau bằng cách trao đổi các commit dưới dạng các patch. Hai hệ thống quản lí phiên bản phân tán phổ biến nhất hiện nay là Git và Mercurial. Sự khác biệt quan trọng so với các hệ tập trung là:
+
+- Các kho mã nguồn (trên máy của lập trình viên chẳng hạn) hoàn toàn độc lập, do đó các thao tác hay dùng như commit, xem history, phục hồi (reverting changes) có thể thực hiện tại chỗ (local) mà không cần kết nối đến server tập trung.
+- Tương tác giữa các kho mã nguồn chỉ cần thiết khi một kho mã nguồn muốn gửi/nhận các thay đổi (pushing/pulling changes) với một kho khác.
+- Mỗi kho mã nguồn là một bản sao đầy đủ của toàn bộ mã nguồn. Điều này giúp tránh được nguy cơ mất dữ liệu. Lưu ý là vẫn có thể quy ước một kho mã nguồn đóng vai trò trung tâm trao đổi để đảm bảo dữ liệu được truyền tải đầy đủ đến các kho thành viên. Đó là cách chúng ta vẫn làm với các kho trên github, bitbucket, Google code...
+
+## Chiến lược cho việc sửa đổi: Thay đổi theo từng bước lớn hay nhỏ? (Big steps/small steps?)
+
+Nhiều người nghĩ rằng nên “để dành” các thay đổi đến khi “đáng kể” rồi mới commit một lượt. Trên thực tế, chiến lược này không tiết kiệm thời gian như họ tưởng.
+
+- Một trong các lợi ích của commit là nhanh chóng phục hồi (revert) lại trạng thái từ commit trước đó. Việc để dồn cho thay đổi đáng kể (big steps) không mang lại thêm “cái được” nhưng lại làm tăng đáng kể “cái mất”. Làm theo hướng này, khi gặp lỗi trong quá trình thử nghiệm (vốn là một việc rất thường xuyên), lập trình viên phải lựa chọn hoặc mất cả (revert lại ngay), hoặc loay hoay sửa đến lúc được thì thôi. Dù chọn cách nào thì đó cũng là sự lãng phí (thời gian, công sức) mà lẽ ra có thể tránh được khi commit theo từng bước nhỏ.
+- Chiến lược small steps giúp lịch sử commit chi tiết, đồng thời các commit message cũng đơn giản và tự nhiên (ghi lại suy nghĩ của lập trình viên ngay tại thời điểm viết). Trong khi đó với chiến lược big steps, các commit message phức tạp hơn, và việc phải lục lại trí nhớ có thể khiến lập trình viên chán nản mà tạo ra những message nghèo giá trị thông tin. Big steps tạo ra lịch sử commit nghèo nàn và “quan liêu”.
+- Nhiều VCS còn cho phép hợp nhất các thay đổi nhỏ. Điều này có thể hữu ích cho việc duyệt xem lịch sử được gọn hơn. Lưu ý chỉ áp dụng thao tác hợp nhất này cho những bộ phận mã nguồn đã đi vào ổn định. Nói chung, việc sửa đổi lịch sử cần có sự cân nhắc kĩ lưỡng.
+- Chiến lược big steps còn dẫn đến sự kém linh hoạt: các xung đột (conflict) phức tạp và việc xử lí xung đột cũng khó khăn gấp nhiều lần.
+
+Tóm lại, chiến lược big steps chỉ có thể gắn với các VCS tập trung vốn thống trị trong quá khứ chủ yếu do hạ tầng máy tính và mạng còn hạn chế.
+
+## Lựa chọn hệ thống quản lí phiên bản
+
+Có nhiều hệ thống quản lí phiên bản và chúng rất khác nhau từ quan điểm thiết kế đến cách thức vận hành. Chúng ta phải có lựa chọn khi bắt đầu dự án mới, hoặc khi rà soát lại hệ thống đang sử dụng và quyết định xem có nên chuyển đổi hay không. Việc lựa chọn trước hết cần dựa trên việc trả lời câu hỏi: Thế nào là một hệ thống quản lí phiên bản tốt?
+
+### Hệ thống quản lí phiên bản tốt
+
+- Hệ thống quản lí phiên bản trước hết phải đảm bảo ba chức năng cơ bản (xem mục Chức năng ở trên) hoạt động dễ dàng và thuận tiện.
+- Một hệ thống quản lí phiên bản cần khuyến khích người sử dụng commit (khuyến khích đổi mới sáng tạo), bằng cách:
+  - Tối thiểu hoá chi phí (thời gian, công sức) trong từng commit.
+  - Khuyến khích commit tốt và message tốt
+- An toàn dữ liệu: có thể back-up thường xuyên, nhưng tốt nhất là dùng mô hình phân tán.
+- Kiểm soát chất lượng commit: Ngoài vấn đề chất lượng mã nguồn, luôn rình rập nguy cơ kẻ xấu chèn thêm các đoạn mã độc. Việc kiểm soát này chỉ có thể thực hiện khi:
+  - chỉ có ai có quyền được commit, không được mạo danh (với trường hợp mã nguồn không công khai)
+  - việc theo dõi các thay đổi trong từng commit phải dễ dàng, trực quan.
+- Ngoài ra còn phải xem xét khả năng tích hợp với các phần mềm khác, các công cụ hỗ trợ v.v…
+
+Với đặc điểm thường xuyên làm việc với khối lượng mã nguồn khổng lồ, yêu cầu về đồng bộ hoá cao, cộng đồng phần mềm Tự do nguồn mở luôn đi đầu về Hệ thống quản lí phiên bản. Các đại diện ưu tú của phần mềm Tự do nguồn mở trong lĩnh vực này là [git](/programming/vcs/git) và mecurial.
+
+### Lựa chọn của NukeViet
+
+- NukeViet đã lựa chọn Hệ thống Quản lý phiên bản là Subversion trong giai đoạn phát triển NukeViet 2.0 đến NukeViet 3.4 (từ năm 2009 đến tháng 9 năm 2012). Khi đó Subversion là hệ thống quản lý phiên bản tốt nhất trên Google code. Nó cũng phù hợp với môi trường làm việc của đội code NukeViet. Xem thêm: [Làm việc với hệ thống quản lý phiên bản Subversion (SVN) của Google code](/programming/vcs/subversion)
+- Kể từ phiên bản NukeViet 3.5, NukeViet chuyển sang sử dụng Git và quản lý trên github. Có nhiều lý do cho việc này: Độ trưởng thành và chuyên nghiệp của đội code tăng lên, đòi hỏi về an toàn và lưu trữ hệ thống... Xem thêm: [Làm việc với hệ thống quản lý phiên bản Git của github](/programming/vcs/git)
+
+## Nguồn tham khảo
+
+- Bài viết trên diễn đàn NukeViet: [http://forum.nukeviet.vn/viewtopic.php?f=138&t=7025](http://forum.nukeviet.vn/viewtopic.php?f=138&t=7025)
+- Bài phân tích về hệ thống quản lý phiên bản (Hoàng Minh Thắng): [http://programmable.banphim.net/revision-control/](http://programmable.banphim.net/revision-control/)

@@ -1,0 +1,26 @@
+---
+title: "Khái niệm ngôn ngữ giao diện và ngôn ngữ cơ sở dữ liệu"
+description: "Đối với website sử dụng nhiều ngôn ngữ, ngôn ngữ trên site được xác định bằng 2 thành phần: Ngôn ngữ giao diện và ngôn ngữ Cơ sở dữ liệu."
+---
+
+Đối với website sử dụng nhiều ngôn ngữ, ngôn ngữ trên site được xác định bằng 2 thành phần: Ngôn ngữ giao diện và ngôn ngữ Cơ sở dữ liệu.
+
+- Ngôn ngữ giao diện là ngôn ngữ cố định, được xác định khi lập trình và được định nghĩa sẵn trong các tệp tin ngôn ngữ.
+- Ngôn ngữ cơ sở dữ liệu là các dữ liệu sử dụng cho các ngôn ngữ khác nhau, do người sử dụng nhập vào cho các trang ngôn ngữ khác nhau.
+
+Sở dĩ NukeViet phải phân biệt 2 khái niệm này vì phương pháp xử lý đa ngôn ngữ của NukeViet là giải pháp toàn vẹn cho phép mỗi ngôn ngữ có thể độc lập hoàn toàn hoặc phụ thuộc 1 phần vào ngôn ngữ kia tùy theo ý đồ của người thiết kế module. Đây chính là một thế mạnh về ngôn ngữ của NukeViet.
+
+### Ngôn ngữ theo địa phương và quốc gia
+
+NukeViet có tính năng tự động nhận diện địa phương (location) của người truy cập thông qua IP, từ đó xác định quốc gia và gán ngôn ngữ mặc định cho nó. Điều này xảy ra khi đồng thời có đủ các yếu tố sau:
+
+- Website sử dụng nhiều ngôn ngữ.
+- Chế độ xác định ngôn ngữ theo địa phương được bật và đã cấu hình trong quản trị.
+- Người sử dụng chưa chọn ngôn ngữ khác trong lần truy cập trước đó.
+- Hệ thống xác định được địa phương người truy cập (dải IP nằm trong thư viện IP được NukeViet quản lý, cho tới NukeViet 3.4.02 thì NukeViet chưa xác định được địa phương người truy cập nếu họ đi qua IPv6)
+
+### Xem thêm
+
+- [Dịch thuật ngôn ngữ giao diện cho hệ thống (dịch thuật thủ công)](/programming/translate)
+- [Chọn giải pháp đa ngôn ngữ (dành cho lập trình viên)](/programming/multi_language).
+- [Công cụ dịch thuật dành cho NukeViet](/programming/nvtools/translate)

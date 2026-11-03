@@ -1,0 +1,53 @@
+---
+title: "Thay đổi từ PHP 8.0 lên 8.1 và cách sửa code ở PHP 8.0 tương thích PHP 8.1"
+description: "Cũng tương tự như ở đây"
+---
+
+## Các điểm mới
+
+> Tại đây chỉ liệt kê những cái đáng kể, có khả năng sử dụng trong NukeViet tương lai. Toàn văn những điểm mới bạn có thể tìm đọc:  
+> - [Các tính năng mới](https://www.php.net/manual/en/migration81.new-features.php)  
+> - [Class mới](https://www.php.net/manual/en/migration81.new-classes.php)  
+> - [Hàm mới](https://www.php.net/manual/en/migration81.new-functions.php)  
+> - [Hằng mới](https://www.php.net/manual/en/migration81.constants.php)
+
+**Các điểm mới đáng chú ý**
+
+- Bổ sung hàm array_is_list trả về true nếu hàm được kiểm tra có key từ 0 đến sizeof(\$array) - 1
+
+## Kiểm tra và sửa các module của NukeViet bằng tay
+
+> Tài liệu này chỉ liệt kê những thay đổi cần làm gặp phải trong NukeViet, không liệt kê toàn bộ. Ai có gặp trường hợp nào ngoài tài liệu này thì bổ sung thêm vào nhé.
+
+### Thay đổi trong cách viết tham số ở hàm
+
+Cũng tương [tự như ở đây](/php/version/7-8)
+
+Ở PHP 8.1 các tham số có giá trị mặc định phía trước tham số bắt buộc cũng xem như bắt buộc thậm chí chúng được gọi thông qua tên
+
+### Chú ý khi sử dụng mảng
+
+Việc dùng key của mảng dạng float sẽ gây ra một số rắc rối và sai dữ liệu. Do đó chỉ nên dùng key của mảng dạng int hoặc string. Ví dụ
+
+``` php
+$a = [];
+$a['15.5'] = 1; 
+$a[15.5] = 2; 
+$a[15.0] = 3;
+
+print_r($a);
+```
+
+Kết quả chỉ có
+
+``` text
+Array
+(
+    [15.5] => 1
+    [15] => 3
+)
+```
+
+Vì số 15.5 được chuyển thành 15 trong key
+
+> Các thay đổi còn lại không có tác động nhiều đến các module NukeViet

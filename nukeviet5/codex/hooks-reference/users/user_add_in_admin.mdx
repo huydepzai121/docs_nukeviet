@@ -1,0 +1,28 @@
+---
+title: "user_add_in_admin"
+description: "Thành viên mới do admin tạo."
+---
+
+Thành viên mới do admin tạo.
+
+### Tham số
+
+| STT | Tên biến    | Kiểu dữ liệu | Ghi chú |
+|-----|:------------|:-------------|:--------|
+| 0   | \$userid    | Integer      |         |
+| 1   | \$user_data | Array        |         |
+
+### Dữ liệu trả về
+
+Không có
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'user_add_in_admin', $priority, function($vars) {
+    $userid = $vars[0];
+    $user_data = $vars[1];
+
+    // Thực hiện code hook tại đây...
+});
+```

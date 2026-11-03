@@ -1,0 +1,64 @@
+---
+title: "Nâng cấp từ NukeViet 2 lên NukeViet 3"
+description: "Khi thực hiện nâng cấp, chương trình sẽ chuyển dữ liệu các module sau: tài khoản thành viên, tài khoản người quản trị, module news, module download, module w..."
+---
+
+Khi thực hiện nâng cấp, chương trình sẽ chuyển dữ liệu các module sau: tài khoản thành viên, tài khoản người quản trị, module news, module download, module weblink và module voting.
+
+1\) Các phần mềm cần có: Unikey 4.0 RC2, Notepad++, MySQLDumper
+
+2\) Cài đặt NukeViet 3.0 phiên bản mới nhất
+
+3\) Backup dữ liệu của bản 2.0, 3.0 (bởi khi nâng cấp hệ thống sẽ xoá hết dữ liệu cũ).
+
+4\) Nếu bạn dùng server linux, cần vào khu vực cấu hình site, cấu hình các thông số FTP cho đúng. Nếu bạn đang đăng nhập thành viên hay quản trị cần thoát hết các tài khoản này.
+
+5\) Download [MySQLDumper](http://sourceforge.net/projects/mysqldumper/files/) cài đặt để tiến hành import hoặc export dữ liệu.
+
+6\) Vào MySQLDumper backup các dữ liệu của NukeViet 2.0 ra file, cần backup các bảng sau:
+
+``` text
+prefix_authors
+prefix_files
+prefix_files_categories
+prefix_stories
+prefix_stories_cat
+prefix_stories_topic
+prefix_weblinks_cats
+prefix_weblinks_links
+prefix_users
+prefix_nvvotings
+```
+
+7\) Giải nén data backup bằng Notepad++ tìm và thay thế tất cả các từ latin1 thành utf8, sau đó copy toàn bộ mã sql vào bộ nhớ đệm bằng.
+
+8\) Mở UniKey dùng chức năng công cụ để chuyển đồi bảng mã utf-8 sang unicode, khi được thông báo kết quả thành công bạn quay lại cửa sổ Notepad++ dán lại, bạn sẽ được file sql hiển thị được tiếng việt, lưu lại 1 file sql.
+
+9\) Dùng MySQLDumper import file sql vừa chuyển mã trên vào CSDL của bản NukeViet 3.0
+
+10\) Copy các thư mục trong uploads\News\\ của bản 2.0 sang thư mục uploads\news\\ của bản 3.0, Bạn cần chmod 777 đối với tất cả các file và thư mục trong thư mục uploads\news\\ của bản 3.0
+
+Copy các file upload của module File, Weblink sang tương ứng với các module của bản NukeViet 3.0
+
+Copy các thư mục upload do trình soạn thảo của bản 2.0 tao ra vào thư mục tương ứng với bản NukeViet 3.0 như: spaw, spaw2 ...
+
+11\) Download file convertdata.zip ([http://nukeviet.vn/phpbb/download/file.php?id=5786](http://nukeviet.vn/phpbb/download/file.php?id=5786)) giải nén được file convertdata.php, copy vào thư mục gốc của NukeViet 3 (ngang hàng với file index.php)
+
+Mở file convertdata.php bằng Notepad++tìm đến dòng
+
+``` php
+$prefix2 = ""; //prefix NukeViet 2.0
+$user_prefix2 = ""; //user_prefix NukeViet 2.0
+```
+
+sửa giá trị \$prefix2, \$user_prefix2 cho đúng với \$prefix của nukeviet2.0,lưu file này lại.
+
+12\) Mở trình duyệt và chạy url tương ứng url chưa NukeViet 3.0 của bạn, ví dụ: [http://localhost/nukeviet3/convertdata.php](http://localhost/nukeviet3/convertdata.php) chương trình sẽ chạy qua các bước đến khi thông báo thành công.
+
+13\) Bạn đăng nhập tài khoản quản trị với tài khoản mật khẩu của thành viên bên NukeViet 2. Sau đó thiết lập lại quyền hạn cho người điều hành các modulle.
+
+Chi tiết quá trình thực hiện các bạn có thể xem đoạn video:
+
+<iframe className="w-full aspect-video rounded-xl" src="https://www.youtube.com/embed/hyVGdGM6y64" title="YouTube video" allowFullScreen></iframe>
+
+Link thảo luận Nâng cấp từ NukeViet 2 lên NukeViet [http://forum.nukeviet.vn/viewtopic.php?f=106&t=13285](http://forum.nukeviet.vn/viewtopic.php?f=106&t=13285)

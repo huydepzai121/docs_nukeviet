@@ -1,0 +1,347 @@
+---
+title: "Các biến dùng chung trong hệ thống NukeViet 4"
+description: "Trong lập trình NukeViet cần tránh khai báo các biến cùng tên với tên các biến dùng chung của hệ thống."
+---
+
+Trong lập trình NukeViet cần tránh khai báo các biến cùng tên với tên các biến dùng chung của hệ thống.
+
+## \$db_config
+
+Biến cấu hình CSDL.
+
+``` php
+Array
+(
+    [dbhost] => 127.0.0.1
+    [dbport] => 
+    [dbname] => vinades_domain
+    [dbsystem] => vinades_domain
+    [dbuname] => root
+    [dbtype] => mysql
+    [collation] => utf8mb4_unicode_ci
+    [charset] => utf8mb4
+    [persistent] => 
+    [prefix] => nv4
+)
+```
+
+## \$global_config
+
+Biến lưu cấu hình chung của hệ thống
+
+``` php
+array (
+  'site_charset' => 'utf-8',
+  'check_module' => '/^[a-z0-9\\-]+$/',
+  'check_op' => '/^[a-zA-Z0-9\\-]+$/',
+  'check_op_file' => '/^([a-zA-Z0-9\\-\\_]+)\\.php$/',
+  'check_block_global' => '/^global\\.([a-zA-Z0-9\\-\\_]+)\\.php$/',
+  'check_block_module' => '/^(global|module)\\.([a-zA-Z0-9\\-\\_]+)\\.php$/',
+  'check_theme' => '/^(?!admin\\_)([a-zA-Z0-9\\-\\_]+)$/',
+  'check_theme_admin' => '/^(admin)\\_[a-zA-Z0-9\\-\\_]+$/',
+…
+```
+
+## \$module_config
+
+Biến lưu cấu hình module.
+
+``` php
+array (
+  'news' =>
+  array (
+    'activecomm' => '1',
+    'auto_postcomm' => '1',
+    'blockheight' => '60',
+    'blockwidth' => '52',
+    'copyright' => 'Bản quyền bởi NukeViet.vn',
+    'emailcomm' => '1',
+    'homeheight' => '80',
+    'homewidth' => '100',
+    'imagefull' => '460',
+    'indexfile' => 'viewcat_main_right',
+    'per_page' => '20',
+    'setcomm' => '2',
+    'showhometext' => '1',
+    'st_links' => '10',
+  ),
+  'shops' =>
+  array (
+    'active_order' => '1',
+    'active_order_number' => '0',
+    'active_payment' => '1',
+    'active_price' => '1',
+    'active_showhomtext' => '1',
+    'auto_check_order' => '1',
+    'comment' => '1',
+    'comment_auto' => '1',
+    'format_order_id' => 'S%06s',
+    'homeheight' => '100',
+    'homewidth' => '100',
+    'home_view' => 'view_home_all',
+    'image_size' => '100x100',
+    'money_unit' => 'VND',
+    'per_page' => '20',
+    'per_row' => '4',
+    'post_auto_member' => '0',
+    'who_comment' => 'all',
+  ),
+)
+```
+
+## \$client_info
+
+Biến lưu thông tin client
+
+``` php
+Array
+(
+    [country] => ZZ
+    [ip] => 127.0.0.1
+    [session_id] => 7nfkq6qc9qj7l66827c9pvmbb6
+    [referer] => 
+    [is_myreferer] => 2
+    [selfurl] => http://tienganh.domain.vinades.my/
+    [browser] => Array
+        (
+            [key] => chrome
+            [name] => Chrome
+            [version] => 51
+        )
+
+    [is_mobile] => 
+    [is_tablet] => 
+    [is_bot] => 
+    [client_os] => Array
+        (
+            [key] => win8
+            [name] => Windows 8
+        )
+
+)
+```
+
+## \$user_info
+
+Biến lưu thông tin thành viên, biến này chỉ có giá trị khi thành viên đã đăng nhập bên ngoài site hoặc admin hoạt động bên ngoài site.
+
+``` php
+array (
+  'admin_id' => 1,
+  'level' => 1,
+  'position' => 'Administrator',
+  'current_login' => 1314503960,
+  'last_login' => 1314469534,
+  'current_agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0',
+  'last_agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0',
+  'current_ip' => '127.0.0.1',
+  'last_ip' => '127.0.0.1',
+  'editor' => 'ckeditor',
+  'allow_files_type' =>
+…
+```
+
+## \$admin_info
+
+Lưu thông tin của admin, chỉ có giá trị khi admin đăng nhập.
+
+## \$sys_info
+
+Lưu thông tin máy chủ.
+
+``` php
+array (
+  'disable_functions' =>
+  array (
+  ),
+  'ini_set_support' => true,
+  'safe_mode' => 0,
+  'php_support' => 1,
+  'mysql_support' => 1,
+  'gd_support' => 1,
+  'zlib_support' => 1,
+  'session_support' => 1,
+  'mb_support' => 1,
+  'iconv_support' => 1,
+  'allowed_set_time_limit' => 1,
+  'os' => 'WINDOWS NT',
+  'fileuploads_support' => 1,
+  'curl_support' => 1,
+  'opendir_support' => 1,
+  'ftp_support' => 1,
+  'string_handler' => 'mb',
+  'supports_rewrite' => 'rewrite_mode_apache',
+  'str_compress' =>
+  array (
+    0 => 'gzcompress',
+    1 => 'gzuncompress',
+  ),
+  'supports_tidy' => false,
+  'register_globals' => false,
+  'magic_quotes_gpc' => false,
+  'sessionpath' => 'D:/Web/www/nukeviet/sess/',
+)
+```
+
+## \$lang_global
+
+Ngôn ngữ trên toàn site
+
+``` php
+array (
+  'Content_Language' => 'vi',
+  'LanguageName' => 'vietnamese',
+  'site_info' => 'Thông báo từ hệ thống',
+  'welcome' => 'Thân ái chào mừng bạn trên website của %s',
+  'disable_site_title' => 'Website tạm ngưng hoạt động',
+  'disable_site_content' => 'Vì lý do kỹ thuật website tạm ngưng hoạt động. Thành thật xin lỗi các bạn vì sự bất tiện này!',
+  'Home' => 'Trang nhất',
+…
+```
+
+## \$rss
+
+Lưu đường dẫn rss của module
+
+## \$nv_vertical_menu
+
+Lưu menu ngang của module.
+
+## \$array_mod_title
+
+Lưu thông tin Mod title của mỗi module.
+
+## \$contents
+
+Nội dung của một module.
+
+## \$content
+
+Nội dung của một block.
+
+## \$module_name
+
+Tên của một module.
+
+## \$module_file
+
+Tên thư mục chứa module.
+
+## \$module_data
+
+Tên table của module.
+
+## \$page_title
+
+tiêu đề trang.
+
+## \$keywords
+
+Từ khóa của trang.
+
+## \$description
+
+Mô tả trang.
+
+## \$op
+
+funcs của một module.
+
+## \$language_array
+
+Thông tin ngôn ngữ.
+
+## \$lang_module
+
+Ngôn ngữ của module.
+
+## \$my_head
+
+Nội dung thêm trong thẻ `<head></head>`.
+
+## \$my_footer
+
+Nội dung thêm ở cuối trang.
+
+## \$module_info
+
+Thông tin một module.
+
+## \$home
+
+Có phải là trang chủ hay không
+
+## \$module_upload
+
+Tên thư mục upload của module
+
+## \$nv_Cache
+
+Biến của class Cache
+
+## \$canonicalUrl
+
+Biến định nghĩa canonicalUrl cho SEO
+
+## \$meta_property
+
+Biến lưu các meta tùy chỉnh
+
+## \$nv_parse_ini_timezone
+
+Biến lưu thông tin múi giờ:
+
+``` php
+$nv_parse_ini_timezone = array(
+    'Pacific/Midway' => array('winter_offset' => '-39600', 'summer_offset' => '-39600'),
+    'Pacific/Pago_Pago' => array('winter_offset' => '-39600', 'summer_offset' => '-39600'),
+    'Pacific/Niue' => array('winter_offset' => '-39600', 'summer_offset' => '-39600'),
+    'Pacific/Tahiti' => array('winter_offset' => '-36000', 'summer_offset' => '-36000'),
+    'Pacific/Rarotonga' => array('winter_offset' => '-36000', 'summer_offset' => '-36000'),
+    'Pacific/Apia' => array('winter_offset' => '-36000', 'summer_offset' => '-36000'),
+    ....
+```
+
+## \$nv_plugin_area
+
+Biến lưu thông tin các plugin
+
+``` php
+$nv_plugin_area = array(
+    1 => array(0 => 'qrcode.php', ),
+    2 => array(0 => 'forum_redirect.php', ),
+    3 => array(0 => 'cdn_js_css_image_for_vn.php')
+);
+```
+
+## \$rewrite_keys
+
+Biến lưu khóa rewrite.
+
+``` php
+$rewrite_keys = array(
+    0 => '#"(/)index.php\\?language=([a-z-]+)\\&[amp;]*nv=seek\\&[amp;]*q\\=([^"]+)"#',
+    1 => '#"(/)index.php\\?language=([a-z-]+)\\&[amp;]*nv=([a-zA-Z0-9-]+)\\&[amp;]*op=search\\&[amp;]*q\\=([^"]+)"#',
+    2 => '#"(/)index.php\\?language=([a-z-]+)\\&[amp;]*nv=([a-zA-Z0-9-]+)\\&[amp;]*op=tag/([^"]+)"#',
+    3 => '#"(/)index.php\\?language=([a-z-]+)\\&[amp;]*nv=([a-zA-Z0-9-]+)\\&[amp;]*op=([a-zA-Z0-9-/]+)\\.html"#',
+    4 => '#"(/)index.php\\?language=([a-z-]+)\\&[amp;]*nv=([a-zA-Z0-9-]+)\\&[amp;]*op=([a-zA-Z0-9-/]+)"#',
+    5 => '#"(/)index.php\\?language=([a-z-]+)\\&[amp;]*nv=([a-zA-Z0-9-/]+)"#',
+    6 => '#"(/)index.php\\?language=([a-z-]+)"#'
+);
+```
+
+## \$rewrite_values
+
+Biến lưu giá trị rewrite ứng với khóa rewtite `$rewrite_keys`
+
+``` php
+$rewrite_values = array(
+    0 => '"\\1\\2/seek/q=\\3"',
+    1 => '"\\1\\2/\\3/search/q=\\4"',
+    2 => '"\\1\\2/\\3/tag/\\4"',
+    3 => '"\\1\\2/\\3/\\4.html"',
+    4 => '"\\1\\2/\\3/\\4/"',
+    5 => '"\\1\\2/\\3/"',
+    6 => '"\\1\\2/"'
+);
+```

@@ -1,0 +1,67 @@
+---
+title: "Mẹo chèn CSS và Javascript trong TPL"
+description: "Không cần phải gọi CSS và Js ở biến $myhead hoặc $myfooter giờ đây nhà phát triển có thể viết trực tiếp vào bất ky file TPL nào. Ví dụ"
+---
+
+Không cần phải gọi CSS và Js ở biến `$my_head` hoặc `$my_footer` giờ đây nhà phát triển có thể viết trực tiếp vào bất ky file TPL nào. Ví dụ
+
+``` html
+<link rel="stylesheet" href="{$NV_BASE_SITEURL}{$NV_ASSETS_DIR}/js/select2/select2.min.css">
+<script src="{$NV_BASE_SITEURL}{$NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
+<script src="{$NV_BASE_SITEURL}{$NV_ASSETS_DIR}/js/select2/i18n/{$NV_LANG_INTERFACE}.js"></script>
+<script>
+$(document).ready(function() {
+    $(".select2").select2({
+        width: "100%",
+        containerCssClass: "select2-sm"
+    });
+});
+</script>
+```
+
+Khi xuất ra trình duyệt, hệ thống tự động trích xuất các file css lên trên thẻ head, các file js và đoạn mã javascript đưa xuống cuối trang.
+
+## Đối với các file CSS
+
+Hệ thống sẽ viết lại CSS theo đúng thứ tự mà nó được tìm thấy HTML thô khi xuất ra trình duyệt. Trong một số trường hợp nhà phát triển muốn sắp xếp thứ tự xuất hiện của các file CSS có thể sử dụng thuộc tính `data-offset`. Ví dụ
+
+``` html
+<link data-offset="0" rel="stylesheet" href="{$NV_BASE_SITEURL}{$NV_ASSETS_DIR}/js/select2/select2.min.css">
+```
+
+Số càng nhỏ thì file CSS càng ưu tiên xuất hiện trước. Ví dụ:
+
+``` html
+<link rel="stylesheet" href="/themes/admin_nv5/fonts/fonts.css">
+<link data-offset="3" rel="stylesheet" href="/themes/admin_nv5/libs/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="/themes/admin_nv5/libs/perfect-scrollbar/css/perfect-scrollbar.css">
+<link data-offset="0" rel="stylesheet" href="/themes/admin_nv5/libs/gritter/css/jquery.gritter.css">
+<link rel="stylesheet" href="/themes/admin_nv5/css/nv.core.css">
+```
+
+Sẽ cho ra trình duyệt:
+
+``` html
+<link rel="stylesheet" href="/themes/admin_nv5/libs/gritter/css/jquery.gritter.css">
+<link rel="stylesheet" href="/themes/admin_nv5/libs/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="/themes/admin_nv5/fonts/fonts.css">
+<link rel="stylesheet" href="/themes/admin_nv5/libs/perfect-scrollbar/css/perfect-scrollbar.css">
+<link rel="stylesheet" href="/themes/admin_nv5/css/nv.core.css">
+```
+
+> Các file không có thuộc tính `data-offset` thì mặc định nó là 10000
+
+## Đối với các file JS và thẻ script
+
+Hệ thống tự đưa về cuối trang theo đúng thứ tự mà nó xuất hiên trong mã HTML thô. Một số trường hợp nhà phát triển muốn nó ở đúng vị trí đó trong mã HTML (thường thấy ở các đoạn mã chèn quảng cáo hoặc javascript viết không dùng jquery) thì có thể sử dụng thuộc tính `data-show="inline"` . Ví dụ:
+
+``` html
+<script data-show="inline">
+$(document).ready(function() {
+    $(".select2").select2({
+        width: "100%",
+        containerCssClass: "select2-sm"
+    });
+});
+</script>
+```

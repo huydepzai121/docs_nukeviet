@@ -1,0 +1,442 @@
+---
+title: "Viết Blocks cho NukeViet 4.x"
+description: "- Block global của module: File xử lý chính và file cấu hình được đặt chung vào một thư mục. File cấu hình có tên giống với tên block và có phần mở rộng tùy ..."
+---
+
+## Tổng quan về block: quy ước và cách đặt tên
+
+- Các block module được đặt trong thư mục blocks của mỗi module. Tên block quy ước chỉ được bao gồm chữ cái, chữ số, dấu gạch ngang và dấu gạch dưới.
+- Block module được bắt đầu bằng “module.”. Ví dụ: module.block_topdownload.php, module.block_lastestdownload.php. Block module chỉ được dùng trong module đó.
+- Block global: Có hai vị trí đặt block global: trong thư mục blocks của module và thư mục themes/ten-theme/blocks/. Block global bao gồm ba thành phần File xử lý chính của block, file cấu hình và file ngôn ngữ block, tuy nhiên tùy vào điều kiện, block global cũng có thể chỉ gồm một file xử lý chính. Block global đặt tại `themes/blocks/` chỉ sử dụng được trên `ten-theme` tương ứng.
+
+\*\* - Block global của module\*\*: File xử lý chính và file cấu hình được đặt chung vào một thư mục. File cấu hình có tên giống với tên block và có phần mở rộng tùy thuộc vào phiên bản như sau:
+
+- NukeViet trước 4.6.00 chỉ hỗ trợ tệp có đuôi .ini
+- NukeViet từ 4.6.00 về sau hỗ trợ cả 2 loại đuôii .ini và .json. Tuy nhiên khuyến cáo nên dùng .json
+
+Ví dụ: Block global.block_blocknews.php thì file cấu hình sẽ là global.block_blocknews.ini hoặc global.block_blocknews.json. File ngôn ngữ được đặt vào thư mục language của module. Tên file ngôn ngữ bắt đầu bằng block. tiếp đến là tên block\_ và ngôn ngữ.
+
+Ví dụ với block global.block_blocknews.php và ngôn ngữ tiếng Việt thì ta có file ngôn ngữ block.global.block_blocknews_vi.php.
+
+\*\* - Block global trong thư mục themes/ten-theme/blocks/\*\*: File xử ký và file cấu hình cũng được đặt chung một thư mục còn ngôn ngữ nên viết vào themes/ten-theme/language/lang.php với lang là tên ngôn ngữ. Khi cần thiết sử dụng đến đa ngôn ngữ, người lập trình cần gọi file ngôn ngữ ra.
+
+## Viết block module
+
+Tạo một file mới cho block module, đặt vào thư mục blocks của module cần tạo block.
+
+Để sử dụng các biến chung của hệ thống cần dùng lệnh global.
+
+Ví dụ:
+
+``` php
+global $module_name, $lang_module, $module_data;
+```
+
+Block module sẽ dùng được các tài nguyên của module đó, do đó có thể sửa dụng Xtemplate, truy vấn CSDL…. Cho block.
+
+Tất cả nội dung của block được hiển thị cần phải lưu vào biến \$content.
+
+Một block hoàn chỉnh sẽ có dạng:
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
+ * @License GNU/GPL version 2 or any later version
+ * @Createdate 3/9/2010 23:25
+ */
+
+if (! defined('NV_IS_MOD_DOWNLOAD')) {
+    die('Stop!!!');
+}
+
+global $db, $module_name, $module_info, $module_file, $lang_module, $list_cats, $global_config;
+
+$path = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file;
+if (! file_exists(NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file . '/block_topdownload.tpl')) {
+    $path = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file;
+}
+
+$db->sqlreset()
+    ->select('catid, title, alias, download_hits')
+    ->from(NV_MOD_TABLE)
+    ->where('status=1')
+    ->order('download_hits DESC')
+    ->limit(5);
+$result = $db->query($db->sql());
+
+$xtpl = new XTemplate('block_topdownload.tpl', $path);
+$xtpl->assign('LANG', $lang_module);
+
+$i = 1;
+while ($row = $result->fetch()) {
+    $catalias = $list_cats[$row['catid']]['alias'];
+    $row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $catalias . '/' . $row['alias'] . $global_config['rewrite_exturl'];
+    $row['order'] = $i;
+    $xtpl->assign('loop', $row);
+    $xtpl->parse('main.loop');
+    ++$i;
+}
+
+$xtpl->parse('main');
+$content = $xtpl->text('main');
+
+```
+
+## Viết block global
+
+Trước khi viết block global cần xác định đặt block ở đâu? Block của module hay block của giao diện.
+
+Tiếp theo cần xác định block có phần cấu hình hoặc ngôn ngữ block không?
+
+Nếu block có phần cấu hình cần tạo thêm file cấu hình, file này như bên trên đã mô tả có thể là ini hoặc json
+
+### Cấu hình block bằng tệp .json
+
+> Cấu hình bằng tệp .json chỉ hỗ trợ từ NukeViet 4.6.00 về sau, trước đó cần dùng cách cấu hình bằng tệp .ini bên dưới
+
+``` json
+{
+    "info": {
+        "name": "Block RSS",
+        "author": "VINADES.,JSC",
+        "website": "https://vinades.vn",
+        "description": ""
+    },
+    "config": {
+        "url": "",
+        "number": "10",
+        "isdescription": "1",
+        "ishtml": "1",
+        "title_length": "0",
+        "ispubdate": "1",
+        "istarget": "1"
+    },
+    "datafunction": "nv_block_data_config_rss",
+    "submitfunction": "nv_block_data_config_rss_submit",
+    "i18n": {
+        "en": {
+            "language": {
+                "url": "Url rss",
+                "number": "Number of items to display",
+                "isdescription": "Display description",
+                "ishtml": "Description Using HTML",
+                "title_length": "Number of cat title characters",
+                "ispubdate": "Display the date pubdate",
+                "istarget": "Open link in new window",
+                "error_url": "Rss path you put in wrong",
+                "error_template": "You need to select a template for the block"
+            },
+            "info": {
+                "name": "Display items in the RSS feed"
+            }
+        },
+        "vi": {
+            "language": {
+                "url": "Đường dẫn tới file rss",
+                "number": "Số mục muốn hiển thị",
+                "isdescription": "Hiện thị miêu tả",
+                "ishtml": "Sử dụng HTML miêu tả",
+                "title_length": "Số ký tự của tiêu đề",
+                "ispubdate": "Hiện ngày gửi",
+                "istarget": "Mở liên kết bằng cửa sổ mới",
+                "error_url": "Đường dẫn Rss bạn đưa vào không đúng",
+                "error_template": "Bạn cần chọn template cho block"
+            },
+            "info": {
+                "name": "Hiển thị tin trong nguồn cấp RSS"
+            }
+        },
+        "cz": {
+            "language": {
+                "url": "Cesta Rss",
+                "number": "Počet položek pro zobrazení",
+                "isdescription": "Zobrazit popisek",
+                "ishtml": "Použití HTML popisek",
+                "title_length": "Počet znaků názvu",
+                "ispubdate": "zjevit se datum poslano",
+                "istarget": "Otevřít odkaz v novém okně",
+                "error_url": "RSS cestu kterou  špatně",
+                "error_template": "Musíte vybrat šablonu pro blok"
+            },
+            "info": {
+                "name": "Afficher les éléments dans le flux RSS"
+            }
+        },
+        "fr": {
+            "language": {
+                "url": "Chemin d'accès au fichier RSS",
+                "number": "Nombre d'éléments à afficher",
+                "isdescription": "Afficher la description",
+                "ishtml": "Utiliser HTML pour la description",
+                "title_length": "Nombre de caractères du titre",
+                "ispubdate": "Afficher la date de publication",
+                "istarget": "Ouvrir le lien dans une nouvelle fenêtre",
+                "error_url": "L'URL RSS que vous avez fournie est incorrecte",
+                "error_template": "Vous devez choisir un modèle pour le bloc"
+            },
+            "info": {
+                "name": "Afficher les articles dans le flux RSS"
+            }
+        }
+    }
+}
+
+```
+
+Các thiết lập trong mục i18n là để dịch thuật ngôn ngữ, riêng phần `i18n.[lang].info.name` là để đặt tên block (hiển thị khi thêm block) còn lại các khóa khác tương đương với tệp .ini, đọc thêm ở bên dưới
+
+### Cấu hình block bằng tệp .ini
+
+> Nếu bạn lập trình NukeViet trước 4.6.00 cần dùng định dạng này, từ 4.6.00 về sau cũng có thể hỗ trợ tuy nhiên nên dùng json bên trên
+
+``` xml
+<?xml version="1.0" encoding="utf-8"?>
+<block>
+    <info>
+        <name>Block Groups</name>
+        <author>VinaDes.,Jsc</author>
+        <website>http://vinades.vn</website>
+        <description></description>
+    </info>
+    <config>
+        <blockid>0</blockid>
+        <numrow>5</numrow>
+        <showtooltip>1</showtooltip>
+        <tooltip_position>bottom</tooltip_position>
+        <tooltip_length>150</tooltip_length>
+    </config>
+    <datafunction>nv_block_config_news_groups</datafunction>
+    <submitfunction>nv_block_config_news_groups_submit</submitfunction>
+</block>
+```
+
+Trong đó cần quan tâm đến
+
+``` text
+<config>
+<blockid>1</blockid>
+<numrow>5</numrow>
+<type>1</type>
+</config>
+```
+
+Phần này là các biến để thiết lập block.
+
+\<datafunction\>nv_block_config_news_groups\</datafunction\> Đây là tên function sẽ được gọi để hiển thị phần cấu hình của block khi thực hiện thao tác thêm hoặc sửa block.
+
+\<submitfunction\>nv_block_config_news_groups_submit\</submitfunction\> Là tên function xử lý dữ liệu cấu hình block khi lưu block.
+
+Nếu block có ngôn ngữ riêng cần tạo thêm file ngôn ngữ có dạng:
+
+``` php
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
+ * @Language Tiếng Việt
+ * @License CC BY-SA (http://creativecommons.org/licenses/by-sa/4.0/)
+ * @Createdate Jun 22, 2010, 08:22:00 AM
+ */
+
+if (! defined('NV_ADMIN') or ! defined('NV_MAINFILE')) {
+    die('Stop!!!');
+}
+
+$lang_translator['author'] = 'VINADES.,JSC (contact@vinades.vn)';
+$lang_translator['createdate'] = '22/06/2010, 09:22';
+$lang_translator['copyright'] = '@Copyright (C) 2012 VINADES.,JSC. All rights reserved';
+$lang_translator['info'] = '';
+$lang_translator['langtype'] = 'lang_block';
+
+$lang_block['blockid'] = 'Nhóm tin liên quan';
+$lang_block['numrow'] = 'Số bài hiển thị';
+$lang_block['type'] = 'Cách thức hiển thị';
+$lang_block['showtooltip'] = 'Hiển thị tooltip';
+$lang_block['tooltip_position'] = 'Vị trí';
+$lang_block['tooltip_position_top'] = 'Trên';
+$lang_block['tooltip_position_bottom'] = 'Dưới';
+$lang_block['tooltip_position_left'] = 'Trái';
+$lang_block['tooltip_position_right'] = 'Phải';
+$lang_block['tooltip_length'] = 'Số ký tự';
+
+```
+
+Trong đó biến \$lang_translator không nên chỉnh sửa, biến \$lang_block gồm nội dung của ngôn ngữ block.
+
+Sau khi tạo thêm các thành phần trên, ta tiến hành viết nội dung chính của block.
+
+Tạo file block và đặt vào vị trí thích hợp.
+
+Vì block có thể dùng nhiều lần trên một trang do đó cần kiểm tra xem một block đã được dùng chưa? Việc kiểm tra sẽ tránh tình trạng lặp đi lặp lại các phần trong block.
+
+Ví dụ:
+
+``` php
+if (!nv_function_exists('nv_news_blocks')) {
+    function nv_news_blocks($block_config) {
+        // Some code here
+    }
+}
+```
+
+Nội dung của block cần đặt trong một function, theo ví dụ trên đó là function nv_news_blocks.
+
+Vì nội dung được đặt trong function nên để sử dụng các biến dùng chung cũng cần gọi biến global.
+
+Nếu block có cấu hình, thêm tiếp hai function cấu hình block.
+
+Ví dụ:
+
+``` php
+function nv_block_config_news_groups($module, $data_block, $lang_block)
+{
+    global $nv_Cache, $site_mods;
+
+    $html_input = '';
+    $html = '';
+    $html .= '<tr>';
+    $html .= '<td>' . $lang_block['blockid'] . '</td>';
+    $html .= '<td><select name="config_blockid" class="form-control w200">';
+    $html .= '<option value="0"> -- </option>';
+    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $site_mods[$module]['module_data'] . '_block_cat ORDER BY weight ASC';
+    $list = $nv_Cache->db($sql, '', $module);
+    foreach ($list as $l) {
+        $html_input .= '<input type="hidden" id="config_blockid_' . $l['bid'] . '" value="' . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $site_mods[$module]['alias']['groups'] . '/' . $l['alias'] . '" />';
+        $html .= '<option value="' . $l['bid'] . '" ' . (($data_block['blockid'] == $l['bid']) ? ' selected="selected"' : '') . '>' . $l['title'] . '</option>';
+    }
+    $html .= '</select>';
+    $html .= $html_input;
+    $html .= '<script type="text/javascript">';
+    $html .= '  $("select[name=config_blockid]").change(function() {';
+    $html .= '      $("input[name=title]").val($("select[name=config_blockid] option:selected").text());';
+    $html .= '      $("input[name=link]").val($("#config_blockid_" + $("select[name=config_blockid]").val()).val());';
+    $html .= '  });';
+    $html .= '</script>';
+    $html .= '</tr>';
+    $html .= '<tr>';
+    $html .= '<td>' . $lang_block['numrow'] . '</td>';
+    $html .= '<td><input type="text" class="form-control w200" name="config_numrow" size="5" value="' . $data_block['numrow'] . '"/></td>';
+    $html .= '</tr>';
+    $html .= '<tr>';
+    $html .= '<td>' . $lang_block['showtooltip'] . '</td>';
+    $html .= '<td>';
+    $html .= '<input type="checkbox" value="1" name="config_showtooltip" ' . ($data_block['showtooltip'] == 1 ? 'checked="checked"' : '') . ' /><br /><br />';
+    $tooltip_position = array( 'top' => $lang_block['tooltip_position_top'], 'bottom' => $lang_block['tooltip_position_bottom'], 'left' => $lang_block['tooltip_position_left'], 'right' => $lang_block['tooltip_position_right'] );
+    $html .= '<span class="text-middle pull-left">' . $lang_block['tooltip_position'] . '&nbsp;</span><select name="config_tooltip_position" class="form-control w100 pull-left">';
+    foreach ($tooltip_position as $key => $value) {
+        $html .= '<option value="' . $key . '" ' . ($data_block['tooltip_position'] == $key ? 'selected="selected"' : '') . '>' . $value . '</option>';
+    }
+    $html .= '</select>';
+    $html .= '&nbsp;<span class="text-middle pull-left">' . $lang_block['tooltip_length'] . '&nbsp;</span><input type="text" class="form-control w100 pull-left" name="config_tooltip_length" size="5" value="' . $data_block['tooltip_length'] . '"/>';
+    $html .= '</td>';
+    $html .= '</tr>';
+    return $html;
+}
+
+function nv_block_config_news_groups_submit($module, $lang_block)
+{
+    global $nv_Request;
+    $return = array();
+    $return['error'] = array();
+    $return['config'] = array();
+    $return['config']['blockid'] = $nv_Request->get_int('config_blockid', 'post', 0);
+    $return['config']['numrow'] = $nv_Request->get_int('config_numrow', 'post', 0);
+    $return['config']['showtooltip'] = $nv_Request->get_int('config_showtooltip', 'post', 0);
+    $return['config']['tooltip_position'] = $nv_Request->get_string('config_tooltip_position', 'post', 0);
+    $return['config']['tooltip_length'] = $nv_Request->get_string('config_tooltip_length', 'post', 0);
+    return $return;
+}
+```
+
+Tiếp theo thêm function chính (nội dung block)
+
+Ví dụ:
+
+``` php
+function nv_block_news_groups($block_config)
+{
+    global $module_array_cat, $module_info, $site_mods, $module_config, $global_config, $nv_Cache, $db;
+    $module = $block_config['module'];
+    $show_no_image = $module_config[$module]['show_no_image'];
+    $blockwidth = $module_config[$module]['blockwidth'];
+
+    $db->sqlreset()
+        ->select('t1.id, t1.catid, t1.title, t1.alias, t1.homeimgfile, t1.homeimgthumb,t1.hometext,t1.publtime')
+        ->from(NV_PREFIXLANG . '_' . $site_mods[$module]['module_data'] . '_rows t1')
+        ->join('INNER JOIN ' . NV_PREFIXLANG . '_' . $site_mods[$module]['module_data'] . '_block t2 ON t1.id = t2.id')
+        ->where('t2.bid= ' . $block_config['blockid'] . ' AND t1.status= 1')
+        ->order('t2.weight ASC')
+        ->limit($block_config['numrow']);
+    $list = $nv_Cache->db($db->sql(), '', $module);
+
+    if (! empty($list)) {
+        if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/news/block_groups.tpl')) {
+            $block_theme = $global_config['module_theme'];
+        } else {
+            $block_theme = 'default';
+        }
+        $xtpl = new XTemplate('block_groups.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/news');
+        $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+        $xtpl->assign('TEMPLATE', $block_theme);
+
+        foreach ($list as $l) {
+            $l['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $module_array_cat[$l['catid']]['alias'] . '/' . $l['alias'] . '-' . $l['id'] . $global_config['rewrite_exturl'];
+            if ($l['homeimgthumb'] == 1) {
+                $l['thumb'] = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $l['homeimgfile'];
+            } elseif ($l['homeimgthumb'] == 2) {
+                $l['thumb'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $l['homeimgfile'];
+            } elseif ($l['homeimgthumb'] == 3) {
+                $l['thumb'] = $l['homeimgfile'];
+            } elseif (! empty($show_no_image)) {
+                $l['thumb'] = NV_BASE_SITEURL . $show_no_image;
+            } else {
+                $l['thumb'] = '';
+            }
+
+            $l['blockwidth'] = $blockwidth;
+
+            $l['hometext'] = nv_clean60($l['hometext'], $block_config['tooltip_length'], true);
+
+            if (! $block_config['showtooltip']) {
+                $xtpl->assign('TITLE', 'title="' . $l['title'] . '"');
+            }
+
+            $xtpl->assign('ROW', $l);
+            if (! empty($l['thumb'])) {
+                $xtpl->parse('main.loop.img');
+            }
+            $xtpl->parse('main.loop');
+        }
+
+        if ($block_config['showtooltip']) {
+            $xtpl->assign('TOOLTIP_POSITION', $block_config['tooltip_position']);
+            $xtpl->parse('main.tooltip');
+        }
+
+        $xtpl->parse('main');
+        return $xtpl->text('main');
+    }
+}
+```
+
+Lưu ý:
+
+- Đối với block global cần chú ý biến \$block_config đây là biến chứa cấu hình của block, tên module chứa block, tên block.
+
+``` php
+array (
+  'blockid' => 2,
+  'numrow' => 5,
+  'bid' => '120',
+  'module' => 'news',
+  'block_name' => 'global.block_blocknews',
+)
+```
+
+- Cần chú ý đến biến `$module_name, $module_data, $module_file`. Vì block global được dùng trên toàn bộ site, đó mỗi module giá trị các biến trên sẽ thay đổi. Cần thay `$module_name` bằng `$block_config[‘module’], $site_mods[$block_config[‘module’]][‘module_data’], $site_mods[$block_config[‘module’]][‘module_file’]`.

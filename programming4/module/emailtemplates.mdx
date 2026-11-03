@@ -1,0 +1,145 @@
+---
+title: "Email Templates"
+description: "Tính năng này có kể từ NukeViet 4.6.00 trở về sau. Email Templates cho phép tạo và quản lý các mẫu thư dùng gửi đi, người sử dụng có thể chỉnh sửa được nội d..."
+---
+
+Tính năng này có kể từ NukeViet 4.6.00 trở về sau. Email Templates cho phép tạo và quản lý các mẫu thư dùng gửi đi, người sử dụng có thể chỉnh sửa được nội dung của email theo ý muốn thay vì lấy cố định trong tệp ngôn ngữ.
+
+Email Templates có 3 loại:
+
+- Email hệ thống: Được tạo sẵn lúc cài đặt NukeViet. Chỉ có thể sửa không thể xóa.
+- Email của module: Được tạo khi cài đặt một module mới và được xóa khi tất cả các module ảo + module gốc bị xóa đi. Chỉ sửa, không xóa được
+- Email tùy biến: Người dùng tự tạo và dùng trong các ứng dụng riêng theo nhu cầu. Có thể xóa đi.
+
+Hướng dẫn này trình bày email của module, cách lập trình để một module sử dụng tính năng này. Giả sử module của bạn đang làm là module **news**
+
+## Tạo tập tin dữ liệu email
+
+Tạo các file modules/news/language/email_xx.php trong đó xx là ngôn ngữ mà bạn dùng. Ví dụ vi, en, fr. Khi cài đặt module trên ngôn ngữ nào đó hệ thống tìm thử có file email_xx.php không, nếu không sẽ tìm đến email_en.php, email_vi.php hoặc bất cứ file email_xx.php nào đầu tiên để thiết lập email. Nội dung trong file như sau
+
+``` php
+<?php
+
+/**
+ * NukeViet Content Management System
+ * @version 4.x
+ * @author VINADES.,JSC <contact@vinades.vn>
+ * @copyright (C) 2009-2023 VINADES.,JSC. All rights reserved
+ * @license GNU/GPL version 2 or any later version
+ * @see https://github.com/nukeviet The NukeViet CMS GitHub project
+ */
+
+if (!defined('NV_MAINFILE')) {
+    exit('Stop!!!');
+}
+
+use NukeViet\Template\Email\Emf;
+
+$module_emails[1] = [
+    'pids' => Emf::P_ALL,
+    't' => 'Gửi email giới thiệu bài viết cho bạn bè tại module news',
+    's' => 'Tin nhắn từ {$from_name}',
+    'c' => 'Xin chào!<br />Bạn của bạn là {$from_name} mong muốn giới thiệu với bạn bài viết “{$post_name}” trên website {$site_name}{if not empty($message)} với lời nhắn:<br />{$message}{/if}.<br/>----------<br/><strong>{$post_name}</strong><br/>{$hometext}<br/><br/>Bạn có thể xem đầy đủ bài viết bằng cách click vào link bên dưới:<br /><a href="{$link}" title="{$post_name}">{$link}</a>'
+];
+$module_emails[2] = [
+    'pids' => Emf::P_ALL,
+    't' => 'Email cảm ơn người báo lỗi tại module news',
+    's' => 'Cảm ơn bạn đã báo lỗi',
+    'c' => 'Xin chào!<br />Ban quản trị website {$site_name} cảm ơn bạn đã gửi đến chúng tôi báo cáo lỗi trong nội dung bài viết. Lỗi mà bạn thông báo đã được chúng tôi sửa lại.<br />Hy vọng sẽ nhận được sự giúp đỡ tiếp theo của bạn trong tương lai.<br />Chúc bạn luôn mạnh khỏe, hạnh phúc và thành công!'
+];
+
+```
+
+Dữ liệu sẽ được viết tiếp vào biến `$module_emails` theo cú pháp bên trên. Trong đó key của `$module_emails` là ID của mẫu email và không được trùng nhau trong 1 module.
+
+- `pids` là ID của plugin trong phần quản lý hooks nếu bạn dùng plugin riêng hoặc các plugin của hệ thống ví dụ `Emf::P_ALL`. `Emf::P_ALL` sẽ được giới thiệu ở phần dưới.
+- `t` là tên gọi mẫu email
+- `s` là tiêu đề email được gửi đi
+- `c` là nội dung email được gửi đi.
+
+Trong tiêu đề và nội dung email được gửi đi, nhà phát triển có thể sử dụng cách thức soạn thảo của Smarty để soạn nội dung email. Xem thêm hướng dẫn tại đây [https://smarty-php.github.io/smarty/5.x/](https://smarty-php.github.io/smarty/5.x/)
+
+Ngoài các thuộc tính bên trên bạn cũng có thể dùng một số thuộc tính khác để chỉ định mẫu email tạo ra:
+
+- `catid` ID danh mục mẫu email
+- `is_disabled` 0 là cho phép gửi email, 1 là đình chỉ gửi email
+- `send_name` tên người nhận phản hồi
+- `send_email` email nhận phản hồi
+- `send_cc` CC
+- `send_bcc` BCC
+- `attachments` đính kèm
+
+## Gửi email đi
+
+``` php
+$send_data = [[
+    'from' => !empty($your_email) ? [$your_name, $your_email] : [],
+    'to' => $friend_email,
+    'data' => [
+        'from_name' => $your_name,
+        'post_name' => $title,
+        'site_name' => $global_config['site_name'],
+        'message' => $your_message,
+        'hometext' => $hometext,
+        'link' => urlRewriteWithDomain(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_cat[$catid]['alias'] . '/' . $alias . '-' . $id . $global_config['rewrite_exturl'], NV_MY_DOMAIN)
+    ]
+]];
+$check = nv_sendmail_from_template([$module_file, 1], $send_data, NV_LANG_INTERFACE);
+```
+
+Cách sử dụng xem hướng dẫn của 2 hàm
+
+- [nv_sendmail_from_template](/programming4/function)
+- [nv_sendmail_template_async](/programming4/function)
+
+## Trình xử lý dữ liệu
+
+Trình xử lý dữ liệu thực ra là một hook, tại đây giải thích trình xử lý dữ liệu `Emf::P_ALL` trong ví dụ bên trên và cách dùng, các trình xử lý dữ liệu tích hợp trong module tạm thời chưa phát triển.
+
+`Emf::P_ALL` trương đương với số 5 là một hook đặc biệt có sẵn trong hệ thống. Tại đây sẽ nhận và xử lý mọi dữ liệu đầu vào từ `data` để chuyển thành biến trong nội dung email.
+
+Ví dụ
+
+``` php
+$send_data = [[
+    'from' => !empty($your_email) ? [$your_name, $your_email] : [],
+    'to' => $friend_email,
+    'data' => [
+        'from_name' => $your_name,
+        'post_name' => $title,
+        'site_name' => $global_config['site_name'],
+        'message' => $your_message,
+        'hometext' => $hometext,
+        'link' => urlRewriteWithDomain(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_cat[$catid]['alias'] . '/' . $alias . '-' . $id . $global_config['rewrite_exturl'], NV_MY_DOMAIN)
+    ]
+]];
+```
+
+Thì trong nội dung email sẽ có được các biến
+
+- `{$from_name}`
+- `{$post_name}`
+- `{$site_name}`
+- `{$message}`
+- `{$hometext}`
+- `{$link}`
+
+## Các biến mặc định luôn luôn có có thể sử dụng được trong nội dung email
+
+- Tên website: `$site_name`
+- Email liên hệ của site: `$site_mail`
+- Số điện thoại của site: `$site_phone`
+- Đường dẫn site trên url: `$NV_BASE_SITEURL`
+- Biến module: `$NV_NAME_VARIABLE`
+- Biến function các module: `$NV_OP_VARIABLE`
+- Biến ngôn ngữ: `$NV_LANG_VARIABLE`
+- Khóa ngôn ngữ data: `$NV_LANG_DATA`
+- Khóa ngôn ngữ giao diện: `$NV_LANG_INTERFACE`
+- Thư mục thumb của hệ thống: `$NV_ASSETS_DIR`
+- Thư mục thumb của các module: `$NV_FILES_DIR`
+
+## Lưu ý khi soạn thảo mẫu email
+
+Các kí tự `'`, `"`, `[`, `]` không được phép sử dụng trong các thẻ Smarty, do đó nếu biểu thị dạng mảng hãy dùng dấu chấm thay thế.
+
+Ví dụ không viết `{$array['key']}` thay vào đó viết `{$array.key}`

@@ -1,0 +1,26 @@
+---
+title: "get_rewrite_domain"
+description: "Khi rewrite các link nội bộ."
+---
+
+Khi rewrite các link nội bộ.
+
+### Tham số
+
+Không có
+
+### Dữ liệu trả về
+
+Trả về chuỗi rỗng hoặc domain rewrite các link
+
+### Ví dụ viết plugin
+
+``` php
+nv_add_hook($module_name, 'get_rewrite_domain', $priority, function($vars) {
+    $domain = '';
+    
+    // Thực hiện code hook tại đây...
+    
+    return $domain;
+});
+```
